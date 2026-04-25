@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supplement Shopping Guide — Amazon Links</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0d1117;--surface:#161b22;--surface2:#1c2330;--border:#30363d;
+  --green:#3fb950;--green-dim:#238636;--orange:#f0883e;--blue:#58a6ff;
+  --red:#f85149;--purple:#bc8cff;--yellow:#d29922;--teal:#39d353;
+  --text:#e6edf3;--text-dim:#8b949e;--text-muted:#484f58;
+  --hf:'Bebas Neue',sans-serif;--bf:'DM Sans',sans-serif;--mf:'Space Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--bf);min-height:100vh;padding:0 0 60px;}
+
+.hero {
+  background:linear-gradient(135deg,#0d1117 0%,#161b22 50%,#0d2818 100%);
+  border-bottom:1px solid var(--border);
+  padding:36px 36px 28px;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before {
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 80% 50%, rgba(63,185,80,.07), transparent 60%);
+  pointer-events:none;
+}
+.hero h1 {
+  font-family:var(--hf);
+  font-size:3rem;
+  letter-spacing:4px;
+  line-height:1;
+  margin-bottom:6px;
+}
+.hero h1 span{color:var(--green);}
+.hero p{color:var(--text-dim);font-size:.9rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;}
+.hero-note {
+  background:rgba(210,153,34,.1);
+  border:1px solid rgba(210,153,34,.3);
+  border-radius:8px;
+  padding:12px 16px;
+  font-size:.82rem;
+  color:#e3b341;
+  display:flex;gap:10px;align-items:flex-start;
+  max-width:760px;
+}
+
+.main{max-width:1200px;margin:0 auto;padding:32px 32px 0;}
+
+.section-header{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:20px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--border);
+}
+.section-header h2{font-family:var(--hf);font-size:1.5rem;letter-spacing:3px;}
+.section-header .count{
+  font-family:var(--mf);font-size:.72rem;
+  background:var(--green-dim);color:#fff;
+  padding:3px 8px;border-radius:4px;
+}
+.section-mb{margin-bottom:40px;}
+
+.supp-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:16px;
+  margin-bottom:8px;
+}
+
+.supp-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  transition:border-color .2s,transform .15s;
+  position:relative;
+  overflow:hidden;
+}
+.supp-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:3px;
+}
+.card-high::before{background:linear-gradient(to right,#b91c1c,#f85149);}
+.card-med::before{background:linear-gradient(to right,#c0612e,var(--orange));}
+.card-low::before{background:linear-gradient(to right,#1f6feb,var(--blue));}
+.supp-card:hover{border-color:var(--green);transform:translateY(-2px);}
+
+.p-badge{
+  display:inline-block;font-size:.62rem;padding:2px 7px;
+  border-radius:3px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+  margin-bottom:8px;width:fit-content;
+}
+.p-high{background:rgba(248,81,73,.2);color:#f85149;border:1px solid rgba(248,81,73,.4);}
+.p-med{background:rgba(240,136,62,.2);color:var(--orange);border:1px solid rgba(240,136,62,.4);}
+.p-low{background:rgba(88,166,255,.2);color:var(--blue);border:1px solid rgba(88,166,255,.4);}
+
+.supp-name{
+  font-family:var(--hf);font-size:1.2rem;letter-spacing:2px;
+  color:var(--text);margin-bottom:3px;line-height:1.2;
+}
+.supp-dose{
+  font-family:var(--mf);font-size:.7rem;color:var(--green);
+  margin-bottom:8px;
+}
+.supp-why{
+  font-size:.8rem;color:var(--text-dim);line-height:1.55;
+  margin-bottom:10px;flex:1;
+}
+.supp-timing{
+  font-size:.75rem;color:var(--orange);
+  margin-bottom:12px;
+  padding:6px 8px;
+  background:rgba(240,136,62,.07);
+  border-radius:4px;
+  border-left:2px solid var(--orange);
+}
+.diab-note{
+  font-size:.74rem;
+  color:#e3b341;
+  background:rgba(210,153,34,.1);
+  border:1px solid rgba(210,153,34,.25);
+  border-radius:5px;
+  padding:6px 9px;
+  margin-bottom:12px;
+  line-height:1.5;
+}
+.diab-note::before{content:'💉 ';}
+
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;}
+.amz-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#ff9900;
+  color:#000;
+  border:none;
+  border-radius:7px;
+  padding:8px 14px;
+  font-family:var(--bf);
+  font-size:.78rem;
+  font-weight:700;
+  cursor:pointer;
+  text-decoration:none;
+  transition:background .15s,transform .15s;
+  letter-spacing:.3px;
+}
+.amz-btn:hover{background:#e68900;transform:translateY(-1px);}
+.amz-btn .amz-icon{font-size:.85rem;}
+.amz-btn-alt{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--surface2);
+  color:var(--text-dim);
+  border:1px solid var(--border);
+  border-radius:7px;
+  padding:8px 14px;
+  font-family:var(--bf);
+  font-size:.78rem;
+  font-weight:600;
+  cursor:pointer;
+  text-decoration:none;
+  transition:all .15s;
+}
+.amz-btn-alt:hover{border-color:var(--green);color:var(--green);}
+
+.brand-tag{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:.7rem;color:var(--text-muted);
+  margin-bottom:6px;
+}
+.brand-tag strong{color:var(--text-dim);}
+
+.timing-table{
+  width:100%;border-collapse:collapse;
+  margin-top:8px;
+}
+.timing-table th{
+  text-align:left;
+  font-family:var(--hf);letter-spacing:2px;font-size:.78rem;
+  color:var(--text-dim);padding:8px 12px;
+  border-bottom:1px solid var(--border);
+}
+.timing-table td{
+  padding:9px 12px;font-size:.8rem;
+  border-bottom:1px solid rgba(48,54,61,.4);
+  vertical-align:middle;
+}
+.timing-table tr:last-child td{border-bottom:none;}
+.timing-table tr:hover td{background:rgba(255,255,255,.02);}
+.timing-table .t-time{font-family:var(--mf);font-size:.68rem;color:var(--green);}
+.timing-table .t-name{font-weight:600;color:var(--text);}
+.timing-table .t-dose{font-family:var(--mf);font-size:.68rem;color:var(--blue);}
+.timing-table .t-link a{
+  color:var(--orange);font-size:.75rem;font-weight:600;text-decoration:none;
+}
+.timing-table .t-link a:hover{text-decoration:underline;}
+
+.total-banner{
+  background:linear-gradient(135deg,rgba(63,185,80,.1),rgba(13,17,23,0));
+  border:1px solid rgba(63,185,80,.3);
+  border-radius:12px;
+  padding:20px 24px;
+  margin-bottom:32px;
+  display:flex;gap:20px;flex-wrap:wrap;align-items:center;
+}
+.total-banner .tb-title{
+  font-family:var(--hf);font-size:1.1rem;letter-spacing:2px;color:var(--green);
+  margin-bottom:4px;
+}
+.total-banner p{font-size:.82rem;color:var(--text-dim);line-height:1.6;flex:1;}
+.cost-chips{display:flex;gap:10px;flex-wrap:wrap;}
+.cost-chip{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:10px 16px;text-align:center;min-width:110px;
+}
+.cost-chip .cv{font-family:var(--hf);font-size:1.3rem;color:var(--orange);letter-spacing:2px;display:block;}
+.cost-chip .cl{font-size:.66rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;}
+
+.alert{border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:.82rem;line-height:1.6;display:flex;gap:10px;}
+.alert-yellow{background:rgba(210,153,34,.1);border:1px solid rgba(210,153,34,.3);color:#e3b341;}
+.alert-green{background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.3);color:#7ee787;}
+.alert-red{background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.3);color:#ff7b72;}
+
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>SUPPLEMENT <span>SHOPPING GUIDE</span></h1>
+  <p>50-Year-Old Athlete · Anti-Inflammatory Protocol · T2 Diabetes (Januvia 100mg)</p>
+  <div class="hero-note">
+    <span>💉</span>
+    <span><strong>Januvia Safety Check:</strong> All supplements listed below are considered safe with Januvia 100mg (sitagliptin). However, always confirm new supplements with your doctor, especially if your HbA1c or blood sugar management changes. Do NOT add Berberine without physician approval — it can over-potentiate blood sugar lowering when combined with medication.</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="total-banner">
+    <div>
+      <div class="tb-title">💰 ESTIMATED MONTHLY COST</div>
+      <p>Starting with HIGH PRIORITY only keeps initial investment low. Build up over 2 months as each becomes habit.</p>
+    </div>
+    <div class="cost-chips">
+      <div class="cost-chip"><span class="cv">$50–75</span><span class="cl">High Priority / Mo</span></div>
+      <div class="cost-chip"><span class="cv">$40–60</span><span class="cl">Medium Priority / Mo</span></div>
+      <div class="cost-chip"><span class="cv">$30–50</span><span class="cl">Optional / Mo</span></div>
+      <div class="cost-chip"><span class="cv">$120–185</span><span class="cl">Full Stack / Mo</span></div>
+    </div>
+  </div>
+
+  <div class="alert alert-green">
+    <span>✅</span>
+    <span><strong>Start Smart:</strong> Begin with the 4 HIGH PRIORITY supplements for the first 2–3 weeks. Once those are habitual, add 1 MEDIUM PRIORITY supplement every 1–2 weeks. Optional supplements can wait until Month 2. Never add more than one new supplement per week so you can track how each one makes you feel.</span>
+  </div>
+
+  <!-- ====== HIGH PRIORITY ====== -->
+  <div class="section-mb">
+    <div class="section-header">
+      <h2>🔴 HIGH PRIORITY</h2>
+      <span class="count">START IMMEDIATELY</span>
+    </div>
+    <div class="supp-grid">
+
+      <!-- OMEGA-3 -->
+      <div class="supp-card card-high">
+        <div class="p-badge p-high">HIGH PRIORITY #1</div>
+        <div class="supp-name">OMEGA-3 FISH OIL</div>
+        <div class="supp-dose">2–3g EPA+DHA daily · 3–4 softgels of standard 1000mg</div>
+        <div class="supp-why">Single most impactful supplement for inflammation. Directly reduces CRP, IL-6, and joint inflammation. Reduces triglycerides (often elevated in T2D), improves insulin sensitivity, and supports heart health. Critical at 50.</div>
+        <div class="diab-note">Lowers triglycerides — often elevated in T2D. Improves insulin sensitivity alongside Januvia.</div>
+        <div class="supp-timing">⏰ Take with breakfast (fat in meal increases absorption significantly)</div>
+        <div class="brand-tag">✅ Best Pick: <strong>Nordic Naturals Ultimate Omega</strong> — top-rated, lemon flavor, no fish burps, triglyceride form for max absorption</div>
+        <div class="btn-row">
+          <a href="https://www.amazon.com/s?k=nordic+naturals+ultimate+omega+softgels" target="_blank" class="amz-btn"><span class="amz-icon">🛒</span> Nordic Naturals (Best)</a>
+          <a href="https://www.amazon.com/s?k=sports+research+omega+3+fish+oil+triple+strength" target="_blank" class="amz-btn-alt">Sports Research Alt</a>
+          <a href="https://www.amazon.com/s?k=dr+tobias+omega+3+fish+oil+2000mg" target="_blank" class="amz-btn-alt">Dr. Tobias (Budget)</a>
+        </div>
+      </div>
+
+      <!-- VITAMIN D3+K2 -->
+      <div class="supp-card card-high">
+        <div class="p-badge p-high">HIGH PRIORITY #2</div>
+        <div class="supp-name">VITAMIN D3 + K2</div>
+        <div class="supp-dose">5,000 IU D3 + 100–200mcg K2 as MK-7 · once daily</div>
+        <div class="supp-why">80% of Americans are deficient. D3 deficiency directly worsens insulin resistance — T2D patients are consistently severely deficient. K2 directs calcium to bones not arteries. Reduces fatigue, muscle weakness, and depression. Never take D3 without K2.</div>
+        <div class="diab-note">D3 deficiency directly worsens insulin resistance. Supplementing D3 measurably improves blood sugar control in T2D patients.</div>
+        <div class="supp-timing">⏰ With morning meal containing fat (required for absorption)</div>
+        <div class="brand-tag">✅ Best Pick: <strong>Sports Research D3+K2</strong> — vegan, Non-GMO, coconut MCT oil for absorption, widely rated #1</div>
+        <div class="btn-row">
+          <a href="https://www.amazon.com/Sports-Research%C2%AE-Vegan-5000iu-Vitamin/dp/B07255MPRN" target="_blank" class="amz-btn"><span class="amz-icon">🛒</span> Sports Research (Best)</a>
+          <a href="https://www.amazon.com/s?k=nature+made+vitamin+d3+k2+5000iu" target="_blank" class="amz-btn-alt">Nature Made Alt</a>
+        </div>
+      </div>
+
+      <!-- MAGNESIUM GLYCINATE -->
+      <div class="supp-card card-high">
+        <div class="p-badge p-high">HIGH PRIORITY #3</div>
+        <div class="supp-name">MAGNESIUM GLYCINATE</div>
+        <div class="supp-dose">300–400mg elemental magnesium · 30–60 min before bed</div>
+        <div class="supp-why">Runners deplete magnesium heavily in sweat. Magnesium is a cofactor for glucose metabolism — deficiency directly worsens insulin resistance. 300+ enzymatic reactions depend on magnesium. Improves deep sleep, reduces muscle cramps, supports cardiovascular health. Glycinate form is best absorbed and gentlest on the stomach.</div>
+        <div class="diab-note">Magnesium deficiency is directly linked to insulin resistance. Supplementing magnesium measurably improves blood sugar control in T2D. This is one of the most important supplements for you.</div>
+        <div class="supp-timing">⏰ 30–60 min before bed — promotes deep sleep and overnight muscle recovery</div>
+        <div class="brand-tag">✅ Best Pick: <strong>Doctor's Best High Absorption Magnesium Glycinate Lysinate</strong> — #1 bestseller, 240 count (4-month supply)</div>
+        <div class="btn-row">
+          <a href="https://www.amazon.com/Doctors-Best-Absorption-Magnesium-Glycinate/dp/B000BD0RT0" target="_blank" class="amz-btn"><span class="amz-icon">🛒</span> Doctor's Best (Best)</a>
+          <a href="https://www.amazon.com/s?k=thorne+magnesium+glycinate" target="_blank" class="amz-btn-alt">Thorne (Premium)</a>
+          <a href="https://www.amazon.com/s?k=nature+made+magnesium+glycinate+200mg" target="_blank" class="amz-btn-alt">Nature Made (Budget)</a>
+        </div>
+      </div>
+
+      <!-- COLLAGEN PEPTIDES -->
+      <div class="supp-card card-high">
+        <div class="p-badge p-high">HIGH PRIORITY #4</div>
+        <div class="supp-name">COLLAGEN PEPTIDES</div>
+        <div class="supp-dose">10–15g per day · always paired with 500mg Vitamin C</div>
+        <div class="supp-why">Collagen synthesis drops ~50% from peak by age 50. Collagen is the main protein in tendons, ligaments, and cartilage — all stressed enormously by 6–8 hour runs. Vitamin C taken alongside increases collagen synthesis 3–4× (Stanford research). Best injury prevention tool available. No flavor, dissolves in any liquid.</div>
+        <div class="supp-timing">⏰ Add to morning shake 30–60 min before exercise for maximum joint benefit</div>
+        <div class="brand-tag">✅ Best Picks: <strong>Vital Proteins</strong> (best known, unflavored) or <strong>Sports Research</strong> (value, same quality)</div>
+        <div class="btn-row">
+          <a href="https://www.amazon.com/s?k=vital+proteins+collagen+peptides+unflavored+20oz" target="_blank" class="amz-btn"><span class="amz-icon">🛒</span> Vital Proteins</a>
+          <a href="https://www.amazon.com/s?k=sports+research+collagen+peptides+unflavored" target="_blank" class="amz-btn-alt">Sports Research</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- VITAMIN C (paired with collagen) -->
+    <div class="alert alert-green" style="margin-top:8px;margin-bottom:0;">
+      <span>💡</span>
+      <span><strong>Don't forget Vitamin C to pair with Collagen:</strong> <a href="https://www.amazon.com/s?k=vitamin+c+500mg+supplement" target="_blank" style="color:var(--orange);font-weight:700;">Search Amazon for Vitamin C 500mg →</a> — Take 500mg alongside collagen peptides every time. Without Vitamin C, collagen synthesis is significantly reduced.</span>
+    </div>
+  </div>
+
+  <!-- ====== MEDIUM PRIORITY ====== -->
+  <div class="section-mb">
+    <div class="section-header">
+      <h2>🟡 MEDIUM PRIORITY</h2>
+      <span class="count" style="background:var(--yellow);color:#000;">ADD WEEKS 3–4</span>
+    </div>
+    <div class="supp-grid">
+
+      <!-- TURMERIC -->
+      <div class="supp-card card-med">
+        <div class="p-badge p-med">MEDIUM PRIORITY #1</div>
+        <div class="supp-name">TURMERIC / CURCUMIN + BIOPERINE</div>
+        <div class="supp-dose">500–1000mg curcumin + 5–10mg BioPerine (black pepper extract)</div>
+        <div class="supp-why">As effective as ibuprofen for joint inflammation — without the gut damage. Multiple studies in T2D show curcumin improves HbA1c, fasting blood glucose, and insulin sensitivity. BioPerine increases absorption by 2,000%. Safe with Januvia. Take with fat-containing meal for best absorption.</div>
+        <div class="diab-note">Multiple clinical studies show curcumin improves HbA1c and fasting glucose in T2D patients. One of the few supplements with direct evidence for diabetes benefit.</div>
+        <div class="supp-timing">⏰ With lunch or dinner — take with fat-containing meal. Take on post-run days especially</div>
+        <div class="brand-tag">✅ Best Pick: <strong>BioSchwartz Turmeric Curcumin with BioPerine 1500mg</strong> — 3rd party tested, USA made, top-rated on Amazon</div>
+        <div class="btn-row">
+          <a href="https://www.amazon.com/Turmeric-Bioperine-Available-Standardized-Curcuminoids/dp/B01DBTFO98" target="_blank" class="amz-btn"><span class="amz-icon">🛒</span> BioSchwartz (Best)</a>
+          <a href="https://www.amazon.com/s?k=naturewise+curcumin+turmeric+2250mg+bioperine" target="_blank" class="amz-btn-alt">NatureWise Alt</a>
+          <a href="https://www.amazon.com/s?k=sports+research+turmeric+curcumin+c3+complex" target="_blank" class="amz-btn-alt">Sports Research Alt</a>
+        </div>
+      </div>
+
+      <!-- CoQ10 UBIQUINOL -->
+      <div class="supp-card card-med">
+        <div class="p-badge p-med">MEDIUM PRIORITY #2</div>
+        <div class="supp-name">CoQ10 — UBIQUINOL FORM</div>
+        <div class="supp-dose">100–200mg ubiquinol form daily (NOT ubiquinone)</div>
+        <div class="supp-why">CoQ10 levels decline significantly after 40. Critical for mitochondrial energy production. Improves exercise performance and reduces fatigue at 50+. Has specific T2D benefits — improves mitochondrial function in insulin-resistant tissue. Always buy ubiquinol (active, pre-converted form) — not ubiquinone.</div>
+        <div class="diab-note">Improves mitochondrial function in insulin-resistant tissue. People with T2D consistently show lower CoQ10 levels. Ubiquinol form is far better absorbed than ubiquinone.</div>
+        <div class="supp-timing">⏰ With morning fat-containing meal (fat-soluble — requires fat for absorption)</div>
+        <div class="brand-tag">✅ Best Pick: <strong>Qunol Mega CoQ10 Ubiquinol 100mg</strong> — most clinically studied ubiquinol brand, excellent absorption</div>
+        <div class="btn-row">
+          <a href="https://www.amazon.com/s?k=qunol+mega+coq10+ubiquinol+100mg+softgels" target="_blank" class="amz-btn"><span class="amz-icon">🛒</span> Qunol Ubiquinol (Best)</a>
+          <a href="https://www.amazon.com/s?k=life+extension+super+ubiquinol+coq10+100mg" target="_blank" class="amz-btn-alt">Life Extension Alt</a>
+        </div>
+      </div>
+
+      <!-- TART CHERRY -->
+      <div class="supp-card card-med">
+        <div class="p-badge p-med">MEDIUM PRIORITY #3</div>
+        <div class="supp-name">TART CHERRY EXTRACT</div>
+        <div class="supp-dose">480mg concentrate capsule OR 8–12 oz juice (UNSWEETENED — no added sugar)</div>
+        <div class="supp-why">Best-studied natural recovery supplement for endurance runners. Significantly reduces post-run muscle soreness (DOMS), speeds recovery time, and improves sleep quality through natural melatonin content. If buying juice form, MUST be no-sugar-added to protect blood sugar. Capsule form is easier to control.</div>
+        <div class="diab-note">⚠️ If buying tart cherry JUICE: must be 100% unsweetened — regular tart cherry juice can have significant sugar. Capsule extract is the safer choice for blood sugar management.</div>
+        <div class="supp-timing">⏰ Post-run within 30–60 min + optionally before bed on training days</div>
+        <div class="brand-tag">✅ Best Pick: <strong>Tart Cherry Extract Capsules</strong> — capsule form is best for T2D to avoid juice sugars</div>
+        <div class="btn-row">
+          <a href="https://www.amazon.com/s?k=tart+cherry+extract+480mg+capsules" target="_blank" class="amz-btn"><span class="amz-icon">🛒</span> Tart Cherry Capsules</a>
+          <a href="https://www.amazon.com/s?k=cheribundi+tart+cherry+juice+no+sugar+added" target="_blank" class="amz-btn-alt">Unsweetened Juice Alt</a>
+        </div>
+      </div>
+
+      <!-- ZINC + COPPER -->
+      <div class="supp-card card-med">
+        <div class="p-badge p-med">MEDIUM PRIORITY #4</div>
+        <div class="supp-name">ZINC + COPPER (PAIRED)</div>
+        <div class="supp-dose">Zinc: 15–25mg + Copper: 1–2mg — always take together</div>
+        <div class="supp-why">Zinc is essential for insulin production and glucose metabolism — frequently depleted in T2D patients. Runners lose zinc in sweat. Low zinc = impaired insulin signaling. Copper MUST be taken alongside zinc to maintain mineral balance — never supplement zinc alone long-term. Also supports testosterone at 50, immune function, and wound healing.</div>
+        <div class="diab-note">Zinc is directly involved in insulin production. T2D patients are frequently zinc-deficient. Addressing this zinc gap may improve insulin signaling alongside Januvia.</div>
+        <div class="supp-timing">⏰ With dinner — zinc on empty stomach commonly causes nausea. Never take zinc alone without copper.</div>
+        <div class="brand-tag">✅ Options: Buy a <strong>combined Zinc+Copper supplement</strong>, or buy PreserVision AREDS 2 which contains the right zinc/copper ratio</div>
+        <div class="btn-row">
+          <a href="https://www.amazon.com/s?k=zinc+with+copper+supplement+25mg+zinc+2mg+copper" target="_blank" class="amz-btn"><span class="amz-icon">🛒</span> Zinc + Copper Combo</a>
+          <a href="https://www.amazon.com/s?k=thorne+zinc+picolinate+with+copper" target="_blank" class="amz-btn-alt">Thorne Zinc+Copper</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ====== OPTIONAL ====== -->
+  <div class="section-mb">
+    <div class="section-header">
+      <h2>🔵 OPTIONAL</h2>
+      <span class="count" style="background:#1f6feb;">ADD MONTH 2+</span>
+    </div>
+    <div class="supp-grid">
+
+      <!-- PROBIOTICS -->
+      <div class="supp-card card-low">
+        <div class="p-badge p-low">OPTIONAL #1</div>
+        <div class="supp-name">PROBIOTICS</div>
+        <div class="supp-dose">10–50 billion CFU · multi-strain · Lactobacillus + Bifidobacterium</div>
+        <div class="supp-why">Gut microbiome diversity is directly linked to blood sugar regulation — T2D patients consistently show reduced gut microbial diversity. Probiotics reduce systemic inflammation and may improve HbA1c. Support immune function and improve nutrient absorption of your other supplements (zinc, magnesium). Safe with Januvia.</div>
+        <div class="diab-note">T2D is strongly associated with reduced gut microbiome diversity. Probiotics directly improve gut health which in turn affects blood sugar regulation.</div>
+        <div class="supp-timing">⏰ Morning on empty stomach (or follow product label — some brands prefer with food)</div>
+        <div class="brand-tag">✅ Best Pick: <strong>Garden of Life Dr. Formulated Probiotics</strong> — 50 billion CFU, 16 strains, shelf-stable, NSF certified</div>
+        <div class="btn-row">
+          <a href="https://www.amazon.com/s?k=garden+of+life+dr+formulated+probiotics+50+billion" target="_blank" class="amz-btn"><span class="amz-icon">🛒</span> Garden of Life (Best)</a>
+          <a href="https://www.amazon.com/s?k=culturelle+probiotics+daily+lactobacillus+GG" target="_blank" class="amz-btn-alt">Culturelle (Budget)</a>
+        </div>
+      </div>
+
+      <!-- CREATINE -->
+      <div class="supp-card card-low">
+        <div class="p-badge p-low">OPTIONAL #2</div>
+        <div class="supp-name">CREATINE MONOHYDRATE</div>
+        <div class="supp-dose">3–5g daily · no loading phase needed · any time of day</div>
+        <div class="supp-why">Offsets age-related muscle loss at 50+. New research shows creatine may improve glucose uptake in skeletal muscle — potentially beneficial for T2D. Also supports bone density, cognitive function, and muscle recovery between long runs. One of the safest, most researched supplements available. No loading phase needed — just 3–5g daily, every day.</div>
+        <div class="diab-note">Emerging research shows creatine may improve glucose uptake in skeletal muscle — complementary to Januvia's mechanism. Generally considered safe with Januvia but confirm with doctor first.</div>
+        <div class="supp-timing">⏰ Any time consistently — timing is less important than daily consistency</div>
+        <div class="brand-tag">✅ Best Picks: <strong>Thorne Creatine</strong> (NSF certified, highest quality) or <strong>BulkSupplements</strong> (best value, pure powder)</div>
+        <div class="btn-row">
+          <a href="https://www.amazon.com/s?k=thorne+creatine+monohydrate+powder+NSF" target="_blank" class="amz-btn"><span class="amz-icon">🛒</span> Thorne (Premium)</a>
+          <a href="https://www.amazon.com/s?k=bulksupplements+creatine+monohydrate+powder+1kg" target="_blank" class="amz-btn-alt">BulkSupplements (Value)</a>
+          <a href="https://www.amazon.com/s?k=optimum+nutrition+micronized+creatine+powder" target="_blank" class="amz-btn-alt">ON Creatine Alt</a>
+        </div>
+      </div>
+
+      <!-- ASHWAGANDHA -->
+      <div class="supp-card card-low">
+        <div class="p-badge p-low">OPTIONAL #3</div>
+        <div class="supp-name">ASHWAGANDHA KSM-66</div>
+        <div class="supp-dose">300–600mg KSM-66 extract (standardized) · evening</div>
+        <div class="supp-why">Reduces cortisol, supports testosterone levels (important at 50), improves recovery from heavy training. Cortisol directly raises blood sugar — so reducing cortisol with ashwagandha has indirect glycemic benefits. KSM-66 is the most clinically studied, highest bioavailable ashwagandha extract. Safe with Januvia.</div>
+        <div class="diab-note">High cortisol directly raises blood sugar — cortisol is a glucose-raising hormone. Reducing cortisol with ashwagandha has indirect blood sugar benefits. Safe with Januvia.</div>
+        <div class="supp-timing">⏰ With dinner in the evening — cortisol-lowering effects are most beneficial at night</div>
+        <div class="brand-tag">✅ Must specify <strong>KSM-66 form</strong> — the most studied and effective extract. Look for "KSM-66" on the label specifically.</div>
+        <div class="btn-row">
+          <a href="https://www.amazon.com/s?k=KSM-66+ashwagandha+600mg+capsules" target="_blank" class="amz-btn"><span class="amz-icon">🛒</span> KSM-66 Ashwagandha</a>
+          <a href="https://www.amazon.com/s?k=jarrow+formulas+ashwagandha+ksm-66+300mg" target="_blank" class="amz-btn-alt">Jarrow KSM-66 Alt</a>
+        </div>
+      </div>
+
+      <!-- B-COMPLEX -->
+      <div class="supp-card card-low">
+        <div class="p-badge p-low">OPTIONAL #4</div>
+        <div class="supp-name">B-COMPLEX (METHYLATED)</div>
+        <div class="supp-dose">Full methylated B-Complex · B12 as methylcobalamin form</div>
+        <div class="supp-why">B12 absorption declines with age — and some research suggests metformin-class drugs can further affect B12 levels (less relevant with Januvia, but worth noting). B vitamins are cofactors for energy metabolism and nerve function. B6, B9, B12 reduce homocysteine — a cardiovascular risk marker elevated in T2D. Methylated form is far better absorbed than standard cyanocobalamin.</div>
+        <div class="diab-note">B vitamins reduce homocysteine — a cardiovascular risk marker commonly elevated in T2D. Methylated B12 (methylcobalamin) is significantly better absorbed than the cheap cyanocobalamin form.</div>
+        <div class="supp-timing">⏰ Morning with breakfast — B vitamins can cause energy/alertness, better in AM</div>
+        <div class="brand-tag">✅ Key: Must say <strong>"methylated"</strong> or have <strong>"methylcobalamin"</strong> as B12 form on the label — avoid cyanocobalamin</div>
+        <div class="btn-row">
+          <a href="https://www.amazon.com/s?k=methylated+b+complex+methylcobalamin+b12" target="_blank" class="amz-btn"><span class="amz-icon">🛒</span> Methylated B-Complex</a>
+          <a href="https://www.amazon.com/s?k=thorne+b+complex+number+6+methylated" target="_blank" class="amz-btn-alt">Thorne B-Complex #6</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ====== DAILY SCHEDULE TABLE ====== -->
+  <div class="section-mb">
+    <div class="section-header">
+      <h2>📋 DAILY SUPPLEMENT SCHEDULE</h2>
+      <span class="count" style="background:var(--purple);">QUICK REFERENCE</span>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;overflow-x:auto;">
+      <table class="timing-table">
+        <thead>
+          <tr>
+            <th>WHEN</th>
+            <th>SUPPLEMENT</th>
+            <th>DOSE</th>
+            <th>PRIORITY</th>
+            <th>BUY ON AMAZON</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="t-time">6:00 AM<br>(in shake)</td>
+            <td class="t-name">Collagen Peptides + Vitamin C</td>
+            <td class="t-dose">10–15g + 500mg Vit C</td>
+            <td><span style="font-size:.7rem;font-weight:700;color:#f85149;">🔴 HIGH</span></td>
+            <td class="t-link"><a href="https://www.amazon.com/s?k=vital+proteins+collagen+peptides+unflavored" target="_blank">→ Shop Collagen</a></td>
+          </tr>
+          <tr>
+            <td class="t-time">Breakfast<br>(with fat)</td>
+            <td class="t-name">Omega-3 Fish Oil</td>
+            <td class="t-dose">2–3g EPA+DHA (3–4 caps)</td>
+            <td><span style="font-size:.7rem;font-weight:700;color:#f85149;">🔴 HIGH</span></td>
+            <td class="t-link"><a href="https://www.amazon.com/s?k=nordic+naturals+ultimate+omega" target="_blank">→ Shop Omega-3</a></td>
+          </tr>
+          <tr>
+            <td class="t-time">Breakfast<br>(with fat)</td>
+            <td class="t-name">Vitamin D3 5,000 IU + K2</td>
+            <td class="t-dose">5,000 IU D3 + 100mcg K2</td>
+            <td><span style="font-size:.7rem;font-weight:700;color:#f85149;">🔴 HIGH</span></td>
+            <td class="t-link"><a href="https://www.amazon.com/Sports-Research%C2%AE-Vegan-5000iu-Vitamin/dp/B07255MPRN" target="_blank">→ Shop D3+K2</a></td>
+          </tr>
+          <tr>
+            <td class="t-time">Breakfast<br>(with fat)</td>
+            <td class="t-name">CoQ10 Ubiquinol</td>
+            <td class="t-dose">100–200mg</td>
+            <td><span style="font-size:.7rem;font-weight:700;color:var(--orange);">🟡 MED</span></td>
+            <td class="t-link"><a href="https://www.amazon.com/s?k=qunol+mega+coq10+ubiquinol+100mg" target="_blank">→ Shop CoQ10</a></td>
+          </tr>
+          <tr>
+            <td class="t-time">Lunch or<br>Dinner</td>
+            <td class="t-name">Turmeric / Curcumin + BioPerine</td>
+            <td class="t-dose">500–1000mg curcumin</td>
+            <td><span style="font-size:.7rem;font-weight:700;color:var(--orange);">🟡 MED</span></td>
+            <td class="t-link"><a href="https://www.amazon.com/Turmeric-Bioperine-Available-Standardized-Curcuminoids/dp/B01DBTFO98" target="_blank">→ Shop Turmeric</a></td>
+          </tr>
+          <tr>
+            <td class="t-time">Any time<br>(consistent)</td>
+            <td class="t-name">Creatine Monohydrate</td>
+            <td class="t-dose">3–5g daily</td>
+            <td><span style="font-size:.7rem;font-weight:700;color:var(--blue);">🔵 OPT</span></td>
+            <td class="t-link"><a href="https://www.amazon.com/s?k=thorne+creatine+monohydrate" target="_blank">→ Shop Creatine</a></td>
+          </tr>
+          <tr>
+            <td class="t-time">Dinner</td>
+            <td class="t-name">Zinc + Copper</td>
+            <td class="t-dose">15–25mg Zn + 1–2mg Cu</td>
+            <td><span style="font-size:.7rem;font-weight:700;color:var(--orange);">🟡 MED</span></td>
+            <td class="t-link"><a href="https://www.amazon.com/s?k=zinc+25mg+with+copper+2mg+supplement" target="_blank">→ Shop Zinc+Copper</a></td>
+          </tr>
+          <tr>
+            <td class="t-time">Dinner</td>
+            <td class="t-name">Ashwagandha KSM-66</td>
+            <td class="t-dose">300–600mg KSM-66</td>
+            <td><span style="font-size:.7rem;font-weight:700;color:var(--blue);">🔵 OPT</span></td>
+            <td class="t-link"><a href="https://www.amazon.com/s?k=ksm-66+ashwagandha+supplement+600mg" target="_blank">→ Shop Ashwagandha</a></td>
+          </tr>
+          <tr>
+            <td class="t-time">Post-Run</td>
+            <td class="t-name">Tart Cherry Extract</td>
+            <td class="t-dose">480mg or 8–12 oz juice</td>
+            <td><span style="font-size:.7rem;font-weight:700;color:var(--orange);">🟡 MED</span></td>
+            <td class="t-link"><a href="https://www.amazon.com/s?k=tart+cherry+extract+480mg+capsule" target="_blank">→ Shop Tart Cherry</a></td>
+          </tr>
+          <tr>
+            <td class="t-time">30–60 min<br>Before Bed</td>
+            <td class="t-name">Magnesium Glycinate</td>
+            <td class="t-dose">300–400mg elemental Mg</td>
+            <td><span style="font-size:.7rem;font-weight:700;color:#f85149;">🔴 HIGH</span></td>
+            <td class="t-link"><a href="https://www.amazon.com/Doctors-Best-Absorption-Magnesium-Glycinate/dp/B000BD0RT0" target="_blank">→ Shop Magnesium</a></td>
+          </tr>
+          <tr>
+            <td class="t-time">Morning<br>Empty Stomach</td>
+            <td class="t-name">Probiotics</td>
+            <td class="t-dose">10–50 billion CFU</td>
+            <td><span style="font-size:.7rem;font-weight:700;color:var(--blue);">🔵 OPT</span></td>
+            <td class="t-link"><a href="https://www.amazon.com/s?k=garden+of+life+probiotics+50+billion+cfu" target="_blank">→ Shop Probiotics</a></td>
+          </tr>
+          <tr>
+            <td class="t-time">Morning<br>with Breakfast</td>
+            <td class="t-name">Methylated B-Complex</td>
+            <td class="t-dose">Full B-Complex (methylcobalamin)</td>
+            <td><span style="font-size:.7rem;font-weight:700;color:var(--blue);">🔵 OPT</span></td>
+            <td class="t-link"><a href="https://www.amazon.com/s?k=methylated+b+complex+methylcobalamin" target="_blank">→ Shop B-Complex</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FINAL NOTES -->
+  <div class="alert alert-red">
+    <span>⚠️</span>
+    <span><strong>Important Disclaimer:</strong> These recommendations are for general wellness and are not medical advice. Always consult your physician before starting new supplements, especially given your Januvia prescription and T2D diagnosis. Monitor your blood sugar when adding new supplements. If HbA1c or blood sugar changes unexpectedly, report to your doctor.</span>
+  </div>
+
+  <div style="text-align:center;padding:20px 0;color:var(--text-muted);font-size:.75rem;font-family:var(--mf);">
+    SUPPLEMENT GUIDE · 50-YEAR-OLD ATHLETE ANTI-INFLAMMATORY PROTOCOL · T2 DIABETES MANAGED
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUILD - A System For Who You're Becoming</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#080808;
+  --offblack:#0f0f0f;
+  --panel:#161616;
+  --gold:#C9A84C;
+  --gold-light:#E8C56A;
+  --white:#F0EFEB;
+  --muted:#6B6B6B;
+  --muted2:#3A3A3A;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden;line-height:1.6}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:24px 48px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(to bottom,rgba(8,8,8,.95),transparent)}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;letter-spacing:6px;color:var(--white);text-transform:uppercase}
+.nav-logo span{color:var(--gold)}
+.nav-cta{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:10px 28px;border:1px solid var(--gold);color:var(--gold);text-decoration:none;transition:all .25s}
+.nav-cta:hover{background:var(--gold);color:var(--black)}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:80px 48px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(165deg,#0a0a0a 0%,#111108 40%,#0d0c07 100%);z-index:0}
+.hero-line{position:absolute;top:0;left:0;width:1px;height:60%;background:linear-gradient(to bottom,transparent,var(--gold),transparent);opacity:.3;animation:lineDown 3s ease infinite}
+@keyframes lineDown{0%,100%{opacity:.15;height:40%}50%{opacity:.4;height:70%}}
+.hero-num{position:absolute;top:50%;right:48px;transform:translateY(-50%);font-family:'Barlow Condensed',sans-serif;font-size:200px;font-weight:900;color:rgba(255,255,255,.02);letter-spacing:-10px;line-height:1;pointer-events:none;user-select:none}
+.hero-tag{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:24px;opacity:0;animation:fadeUp .8s ease .3s forwards}
+.hero-h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(56px,8vw,110px);font-weight:900;line-height:.93;letter-spacing:-1px;text-transform:uppercase;margin-bottom:32px;opacity:0;animation:fadeUp .9s ease .5s forwards;max-width:900px}
+.hero-h1 em{font-style:italic;color:var(--gold);font-weight:300}
+.hero-sub{font-size:16px;color:rgba(240,239,235,.55);max-width:520px;line-height:1.7;margin-bottom:40px;font-weight:300;opacity:0;animation:fadeUp .9s ease .75s forwards}
+.hero-actions{display:flex;align-items:center;gap:24px;opacity:0;animation:fadeUp .9s ease .9s forwards;flex-wrap:wrap}
+.btn-primary{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:16px 44px;background:var(--gold);color:var(--black);text-decoration:none;transition:all .25s;display:inline-block;border:none;cursor:pointer}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-2px)}
+.btn-ghost{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(240,239,235,.4);text-decoration:none;border-bottom:1px solid rgba(240,239,235,.15);padding-bottom:2px;transition:all .25s}
+.btn-ghost:hover{color:var(--white);border-color:var(--white)}
+.hero-scroll{position:absolute;bottom:40px;right:48px;font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:4px;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:12px;opacity:0;animation:fadeUp .9s ease 1.2s forwards}
+.hero-scroll::before{content:'';width:40px;height:1px;background:var(--muted)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+.divider{height:1px;background:linear-gradient(to right,transparent,var(--muted2),transparent)}
+.section-num{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;font-weight:700;margin-bottom:12px}
+.moment{padding:120px 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;background:var(--offblack)}
+.moment-h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:800;line-height:1;letter-spacing:-1px;text-transform:uppercase;margin-bottom:24px}
+.moment-h2 span{color:var(--gold)}
+.moment-body{font-size:15px;color:rgba(240,239,235,.6);line-height:1.8;font-weight:300}
+.moment-right{border-left:1px solid var(--muted2);padding-left:80px}
+.choice-item{padding:28px 0;border-bottom:1px solid var(--muted2);display:flex;gap:20px;align-items:flex-start}
+.choice-item:last-child{border-bottom:none}
+.choice-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.choice-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:5px}
+.choice-desc{font-size:13px;color:var(--muted);line-height:1.6;font-weight:300}
+.marquee-section{overflow:hidden;border-top:1px solid var(--muted2);border-bottom:1px solid var(--muted2);background:var(--panel)}
+.marquee-track{display:flex;animation:marquee 40s linear infinite;white-space:nowrap;padding:20px 0}
+.marquee-track:hover{animation-play-state:paused}
+.marquee-item{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--muted);padding:0 48px;flex-shrink:0}
+.marquee-item span{color:var(--gold);margin-right:8px}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.philosophy{padding:120px 48px;background:var(--black)}
+.phil-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--muted2);margin-top:60px}
+.phil-card{background:var(--black);padding:48px 36px;transition:background .25s}
+.phil-card:hover{background:var(--offblack)}
+.phil-card-num{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:4px;color:var(--gold);font-weight:700;text-transform:uppercase;margin-bottom:20px}
+.phil-card-quote{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;line-height:1.6;color:var(--white);margin-bottom:14px}
+.phil-card-body{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300}
+.big-quote{padding:100px 48px;text-align:center;position:relative;overflow:hidden}
+.big-quote-text{font-family:'Playfair Display',serif;font-size:clamp(24px,4vw,52px);font-style:italic;line-height:1.3;max-width:900px;margin:0 auto 24px;color:var(--white)}
+.big-quote-text strong{font-style:normal;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;font-size:.85em}
+.bq-line{width:40px;height:2px;background:var(--gold);margin:0 auto 32px}
+.variant-label{position:absolute;top:20px;left:20px;font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);padding:4px 12px;z-index:10}
+.variant{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 48px;overflow:hidden}
+.gold-line-left{position:absolute;left:48px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent 10%,var(--gold) 50%,transparent 90%);opacity:.25}
+.baby-section{padding:120px 48px;background:var(--black);display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center}
+.baby-number{font-family:'Barlow Condensed',sans-serif;font-size:clamp(120px,16vw,220px);font-weight:900;color:rgba(201,168,76,.05);line-height:1;text-align:right}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--muted2)}
+.stat{background:var(--panel);padding:48px 40px;text-align:center}
+.stat-num{font-family:'Barlow Condensed',sans-serif;font-size:56px;font-weight:900;color:var(--gold);line-height:1;margin-bottom:8px}
+.stat-label{font-size:12px;color:var(--muted);font-weight:300;text-transform:uppercase;letter-spacing:2px;font-family:'Barlow Condensed',sans-serif}
+.how{padding:120px 48px;background:var(--offblack)}
+.how-h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:900;text-transform:uppercase;letter-spacing:-1px;margin-bottom:12px}
+.how-sub{font-size:14px;color:var(--muted);max-width:500px;font-weight:300;margin-bottom:80px;line-height:1.7}
+.how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--muted2)}
+.how-step{background:var(--offblack);padding:56px 40px;position:relative}
+.how-step-num{font-family:'Barlow Condensed',sans-serif;font-size:80px;font-weight:900;color:rgba(201,168,76,.05);position:absolute;top:24px;right:24px;line-height:1}
+.how-step-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;color:var(--gold)}
+.how-step-desc{font-size:13px;color:var(--muted);line-height:1.8;font-weight:300}
+.gets{padding:120px 48px;background:var(--black)}
+.gets-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--muted2);margin-top:60px}
+.get-item{background:var(--black);padding:40px;display:flex;gap:20px;align-items:flex-start;transition:background .2s}
+.get-item:hover{background:var(--offblack)}
+.get-title{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.get-desc{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300}
+.cta{padding:140px 48px;text-align:center;position:relative;overflow:hidden;background:var(--offblack)}
+.cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(201,168,76,.05) 0%,transparent 70%)}
+.cta-h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(48px,7vw,100px);font-weight:900;line-height:.9;letter-spacing:-2px;text-transform:uppercase;margin-bottom:32px;position:relative;z-index:1}
+.cta-h2 em{font-style:italic;font-weight:300;color:var(--gold)}
+.cta-sub{font-size:15px;color:rgba(240,239,235,.5);max-width:480px;margin:0 auto 48px;line-height:1.7;font-weight:300;position:relative;z-index:1}
+.email-form{display:flex;max-width:480px;margin:0 auto;position:relative;z-index:1;flex-wrap:wrap;gap:12px;justify-content:center}
+.email-input{flex:1;min-width:240px;padding:16px 20px;background:rgba(255,255,255,.04);border:1px solid var(--muted2);color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border .2s}
+.email-input:focus{border-color:var(--gold)}
+.email-input::placeholder{color:var(--muted)}
+.email-submit{padding:16px 36px;background:var(--gold);color:var(--black);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;border:none;cursor:pointer;transition:all .25s;white-space:nowrap}
+.email-submit:hover{background:var(--gold-light)}
+.cta-fine{font-size:11px;color:var(--muted);margin-top:20px;position:relative;z-index:1}
+footer{padding:40px 48px;border-top:1px solid var(--muted2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;letter-spacing:4px;color:var(--muted)}
+.footer-logo span{color:var(--gold)}
+.footer-text{font-size:11px;color:var(--muted);font-weight:300}
+@media(max-width:768px){
+  nav{padding:20px 24px}
+  .hero,.variant{padding:100px 24px 60px}
+  .hero-num{display:none}
+  .moment{grid-template-columns:1fr;gap:40px;padding:80px 24px}
+  .moment-right{border-left:none;padding-left:0;border-top:1px solid var(--muted2);padding-top:40px}
+  .phil-grid,.how-steps,.gets-grid{grid-template-columns:1fr}
+  .how,.gets,.philosophy,.cta,.baby-section{padding:80px 24px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .big-quote{padding:60px 24px}
+  .baby-section{grid-template-columns:1fr;gap:40px}
+  footer{padding:32px 24px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Build<span>.</span></div>
+  <a href="#apply" class="nav-cta">Apply Now</a>
+</nav>
+
+<!-- PRIMARY HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-line"></div>
+  <div class="hero-num">01</div>
+  <div style="position:relative;z-index:1">
+    <div class="hero-tag">A System For Who You're Becoming</div>
+    <h1 class="hero-h1">The version<br>of yourself<br>you keep<br><em>putting off.</em></h1>
+    <p class="hero-sub">You don't need to become a bodybuilder. You need to become the person who shows up. The discipline you build in the gym doesn't stay in the gym &mdash; it follows you into every room of your life.</p>
+    <div class="hero-actions">
+      <a href="#apply" class="btn-primary">Start Your Protocol</a>
+      <a href="#how" class="btn-ghost">See How It Works</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- THE MOMENT -->
+<section class="moment">
+  <div class="reveal">
+    <div class="section-num">01 &mdash; The Choice</div>
+    <h2 class="moment-h2">You get home.<br><span>You're exhausted.</span><br>The couch is right there.</h2>
+    <p class="moment-body">Every person who has ever changed their life has stood in that exact moment. Shoes by the door. Couch across the room. Body saying no. The human condition is to seek comfort. That pull is real &mdash; it's biological, it's ancient, and it is not a character flaw.</p>
+    <p class="moment-body" style="margin-top:16px">But here's what no one tells you about discipline: it's not about wanting to go. It's about going anyway. And every time you do, you build something that lasts far longer than the workout.</p>
+    <p style="margin-top:24px;color:var(--gold);font-style:italic;font-family:'Playfair Display',serif;font-size:17px;line-height:1.6">"Fear is a mile wide and an inch deep. Once you step through it, it disappears."</p>
+  </div>
+  <div class="moment-right reveal">
+    <div class="choice-item">
+      <div class="choice-icon">&#127947;</div>
+      <div>
+        <div class="choice-title">What You Do In The Gym</div>
+        <div class="choice-desc">You show up when you're tired. You do the set you don't want to do. You don't quit when it gets hard.</div>
+      </div>
+    </div>
+    <div class="choice-item">
+      <div class="choice-icon">&#128188;</div>
+      <div>
+        <div class="choice-title">What That Builds At Work</div>
+        <div class="choice-desc">You finish what you start. You don't fold under pressure. You do hard things without needing to be perfect first.</div>
+      </div>
+    </div>
+    <div class="choice-item">
+      <div class="choice-icon">&#10084;</div>
+      <div>
+        <div class="choice-title">What That Builds In Relationships</div>
+        <div class="choice-desc">You show up consistently. You don't run from difficulty. You do what you say you're going to do.</div>
+      </div>
+    </div>
+    <div class="choice-item">
+      <div class="choice-icon">&#129504;</div>
+      <div>
+        <div class="choice-title">What That Builds Inside</div>
+        <div class="choice-desc">Confidence doesn't come from affirmations in the mirror. It comes from an undeniable stack of proof that you are who you say you are.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item"><span>&mdash;</span> Discipline Is Transferable</div>
+    <div class="marquee-item"><span>&mdash;</span> Fear Is A Mile Wide And An Inch Deep</div>
+    <div class="marquee-item"><span>&mdash;</span> Outwork Your Self Doubt</div>
+    <div class="marquee-item"><span>&mdash;</span> Self Discipline Is Essential To Happiness</div>
+    <div class="marquee-item"><span>&mdash;</span> Control How You Respond</div>
+    <div class="marquee-item"><span>&mdash;</span> Be Harder To Kill</div>
+    <div class="marquee-item"><span>&mdash;</span> Balance Not Perfection</div>
+    <div class="marquee-item"><span>&mdash;</span> Discipline Is Transferable</div>
+    <div class="marquee-item"><span>&mdash;</span> Fear Is A Mile Wide And An Inch Deep</div>
+    <div class="marquee-item"><span>&mdash;</span> Outwork Your Self Doubt</div>
+    <div class="marquee-item"><span>&mdash;</span> Self Discipline Is Essential To Happiness</div>
+    <div class="marquee-item"><span>&mdash;</span> Control How You Respond</div>
+    <div class="marquee-item"><span>&mdash;</span> Be Harder To Kill</div>
+    <div class="marquee-item"><span>&mdash;</span> Balance Not Perfection</div>
+  </div>
+</div>
+
+<!-- PHILOSOPHY GRID -->
+<section class="philosophy">
+  <div class="section-num reveal">02 &mdash; The Philosophy</div>
+  <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:900;text-transform:uppercase;letter-spacing:-1px;max-width:600px;margin-bottom:8px" class="reveal">This is about more<br>than how you look.</h2>
+  <p style="font-size:14px;color:var(--muted);max-width:520px;font-weight:300;line-height:1.7" class="reveal">Every principle you learn in a gym is a principle that works everywhere. That is not a metaphor. It is a mechanism.</p>
+  <div class="phil-grid">
+    <div class="phil-card reveal">
+      <div class="phil-card-num">Principle 01</div>
+      <div class="phil-card-quote">"You don't become confident by shouting affirmations in the mirror."</div>
+      <div class="phil-card-body">Confidence is built from proof. Every workout you didn't want to do but did anyway is a brick. Over time you build something unshakeable &mdash; not because you believe in yourself, but because you've earned the right to.</div>
+    </div>
+    <div class="phil-card reveal">
+      <div class="phil-card-num">Principle 02</div>
+      <div class="phil-card-quote">"If you can't take responsibility for something, you can't get better at it."</div>
+      <div class="phil-card-body">Results follow accountability. The moment you stop blaming your schedule, your genetics, your circumstances &mdash; that's the moment everything becomes possible. The gym teaches you this faster than anything.</div>
+    </div>
+    <div class="phil-card reveal">
+      <div class="phil-card-num">Principle 03</div>
+      <div class="phil-card-quote">"Imagine if babies stopped learning to walk because of their falls."</div>
+      <div class="phil-card-body">Something difficult cannot stay difficult forever. The first week is hard. By week six it's your routine. The difficulty was never permanent &mdash; you just had to stay in long enough to find out.</div>
+    </div>
+    <div class="phil-card reveal">
+      <div class="phil-card-num">Principle 04</div>
+      <div class="phil-card-quote">"When you feel control over your life, you feel happy."</div>
+      <div class="phil-card-body">Science backs this. When you control your body, your habits, your schedule &mdash; that sense of control spills into everything. External chaos matters less. You become the stable variable in your own life.</div>
+    </div>
+    <div class="phil-card reveal">
+      <div class="phil-card-num">Principle 05</div>
+      <div class="phil-card-quote">"I am going to be harder to kill if I keep consistently showing up."</div>
+      <div class="phil-card-body">Resilience is physical and mental. The body that keeps going when it wants to stop teaches the mind something it never forgets. You become someone who doesn't fold. That is character, not just fitness.</div>
+    </div>
+    <div class="phil-card reveal">
+      <div class="phil-card-num">Principle 06</div>
+      <div class="phil-card-quote">"Discipline your emotions to make good decisions."</div>
+      <div class="phil-card-body">Every rep you finish when you want to quit is practice in emotional regulation. You are training your brain to override impulse. That skill transfers to every conversation, every negotiation, every moment that tests you.</div>
+    </div>
+  </div>
+</section>
+
+<!-- BIG QUOTE 1 -->
+<div class="big-quote" style="background:var(--offblack)">
+  <div class="bq-line"></div>
+  <div class="big-quote-text reveal">"Self discipline is not punishment. It is the foundation of <strong>FREEDOM</strong> &mdash; freedom from regret, from self-doubt, from wondering what you could have been."</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- VARIANT A - PROOF ANGLE -->
+<section class="variant" style="background:linear-gradient(160deg,#080808 0%,#0c0c08 50%,#080808 100%)">
+  <div class="variant-label">Headline Variant A &mdash; The Proof Angle</div>
+  <div class="gold-line-left"></div>
+  <div style="position:relative;z-index:1;max-width:800px">
+    <div class="section-num" style="opacity:0;animation:fadeUp .8s ease .2s forwards">Use this if your audience needs to feel capable</div>
+    <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(52px,8vw,100px);font-weight:900;line-height:.92;letter-spacing:-2px;text-transform:uppercase;margin-bottom:28px;opacity:0;animation:fadeUp .9s ease .4s forwards">
+      You don't get<br>confident.<br>You <span style="color:var(--gold);font-style:italic;font-weight:300">earn</span> it.
+    </h2>
+    <p style="font-size:16px;color:rgba(240,239,235,.5);max-width:480px;line-height:1.8;font-weight:300;margin-bottom:40px;opacity:0;animation:fadeUp .9s ease .6s forwards">Confidence is not a feeling you wait for. It's a result you build. Every morning alarm you answer. Every meal you prepare. Every rep you finish when you wanted to stop. That's your proof. Stack enough of it and doubt doesn't stand a chance.</p>
+    <div style="opacity:0;animation:fadeUp .9s ease .8s forwards;display:flex;gap:20px;flex-wrap:wrap;align-items:center">
+      <a href="#apply" class="btn-primary">Start Building Proof</a>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase">Outwork your self doubt</span>
+    </div>
+  </div>
+</section>
+
+<!-- BABY SECTION -->
+<section class="baby-section">
+  <div class="reveal">
+    <div class="section-num">03 &mdash; The Truth About Hard</div>
+    <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,4vw,54px);font-weight:900;text-transform:uppercase;letter-spacing:-1px;line-height:1;margin-bottom:28px">Something difficult<br>cannot stay <span style="color:var(--gold)">difficult</span><br>forever.</h2>
+    <p style="font-size:15px;color:rgba(240,239,235,.55);line-height:1.8;font-weight:300;max-width:440px;margin-bottom:24px">Imagine if babies stopped learning to walk because they kept falling. They don't. They fall and they get up, they fall and they get up &mdash; until one day they're running and they don't even remember it was ever hard.</p>
+    <p style="font-size:15px;color:rgba(240,239,235,.55);line-height:1.8;font-weight:300;max-width:440px">The first week of training is hard. The first month of eating well is hard. Six weeks in, it's your life. You don't need more willpower. You need to survive long enough for the habit to take over from the will.</p>
+    <div style="margin-top:32px;padding:24px;border-left:2px solid var(--gold);background:rgba(201,168,76,.04)">
+      <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:var(--white);line-height:1.6">We build the system that carries you through the hard part. By the time it gets easy, you've already become someone different.</div>
+    </div>
+  </div>
+  <div class="reveal">
+    <div class="baby-number">6<br>wks.</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;text-align:right;margin-top:16px">Average time for a habit<br>to stop feeling like effort</div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat reveal"><div class="stat-num">4AM</div><div class="stat-label">Daily protocol email</div></div>
+  <div class="stat reveal"><div class="stat-num">100%</div><div class="stat-label">Personalized to you</div></div>
+  <div class="stat reveal"><div class="stat-num">8</div><div class="stat-label">Week transformation system</div></div>
+  <div class="stat reveal"><div class="stat-num">0</div><div class="stat-label">Decisions you have to make</div></div>
+</div>
+
+<!-- VARIANT B - FEAR ANGLE -->
+<section class="variant" style="background:#090808">
+  <div class="variant-label">Headline Variant B &mdash; The Fear Angle</div>
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(201,168,76,.04) 0%,transparent 60%)"></div>
+  <div style="position:relative;z-index:1;max-width:900px">
+    <div class="section-num" style="opacity:0;animation:fadeUp .8s ease .2s forwards">Use this if your audience is scared to start</div>
+    <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(52px,8vw,100px);font-weight:900;line-height:.92;letter-spacing:-2px;text-transform:uppercase;margin-bottom:28px;opacity:0;animation:fadeUp .9s ease .4s forwards">
+      Fear is a mile wide.<br><span style="color:var(--gold);font-weight:300;font-style:italic">An inch deep.</span>
+    </h2>
+    <p style="font-size:16px;color:rgba(240,239,235,.5);max-width:500px;line-height:1.8;font-weight:300;margin-bottom:16px;opacity:0;animation:fadeUp .9s ease .6s forwards">The fear of starting is always bigger than the act of starting. The gym looks intimidating from the parking lot. The protocol looks hard on paper. The discipline sounds exhausting before you build it.</p>
+    <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:20px;color:var(--gold);margin-bottom:40px;opacity:0;animation:fadeUp .9s ease .7s forwards">Step through it. It disappears.</p>
+    <div style="opacity:0;animation:fadeUp .9s ease .8s forwards">
+      <a href="#apply" class="btn-primary">Take The First Step</a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="section-num reveal">04 &mdash; The System</div>
+  <h2 class="how-h2 reveal">We remove every<br>excuse not to show up.</h2>
+  <p class="how-sub reveal">The number one reason people fail isn't laziness. It's decision fatigue. When you don't know what to do, you don't do anything. We solve that completely.</p>
+  <div class="how-steps">
+    <div class="how-step reveal">
+      <div class="how-step-num">01</div>
+      <div style="font-size:28px;margin-bottom:20px">&#128203;</div>
+      <div class="how-step-title">Your Protocol, Built</div>
+      <div class="how-step-desc">We build a fully personalized 8-week system around your life &mdash; your schedule, your goals, your starting point. You're not following a generic plan. You're following yours.</div>
+    </div>
+    <div class="how-step reveal">
+      <div class="how-step-num">02</div>
+      <div style="font-size:28px;margin-bottom:20px">&#9993;</div>
+      <div class="how-step-title">4AM Daily Brief</div>
+      <div class="how-step-desc">Every morning you wake up to an email telling you exactly what to do that day. From the moment you open your eyes to when you go to sleep. No thinking. No planning. Just execute.</div>
+    </div>
+    <div class="how-step reveal">
+      <div class="how-step-num">03</div>
+      <div style="font-size:28px;margin-bottom:20px">&#128230;</div>
+      <div class="how-step-title">Supplements Delivered</div>
+      <div class="how-step-desc">Your supplement stack arrives at your door, organized by when you take them. Morning bag. Pre-workout. Bedtime. Open the bag. Take what's in it. Done.</div>
+    </div>
+    <div class="how-step reveal">
+      <div class="how-step-num">04</div>
+      <div style="font-size:28px;margin-bottom:20px">&#128202;</div>
+      <div class="how-step-title">Track Everything</div>
+      <div class="how-step-desc">Your personal dashboard tracks your compliance, weight trend, streak, and progress. Check off your day as you go. Watch the ring fill green. Feel what accountability actually feels like.</div>
+    </div>
+    <div class="how-step reveal">
+      <div class="how-step-num">05</div>
+      <div style="font-size:28px;margin-bottom:20px">&#127859;</div>
+      <div class="how-step-title">Eat Real Food, Cheap</div>
+      <div class="how-step-desc">Six meals a day, around 2,800 calories, $13.10. Whole foods, high protein, simple prep. Cheaper than one restaurant dinner. And you know exactly why you're eating what you're eating.</div>
+    </div>
+    <div class="how-step reveal">
+      <div class="how-step-num">06</div>
+      <div style="font-size:28px;margin-bottom:20px">&#128260;</div>
+      <div class="how-step-title">Adjust As You Grow</div>
+      <div class="how-step-desc">As you progress, your protocol evolves. Mesocycles build on each other. Cardio scales up. You're not doing the same thing forever &mdash; you're always moving forward.</div>
+    </div>
+  </div>
+</section>
+
+<!-- VARIANT C - CONTROL ANGLE -->
+<section class="variant" style="background:#070707">
+  <div class="variant-label">Headline Variant C &mdash; The Control Angle</div>
+  <div class="gold-line-left"></div>
+  <div style="position:relative;z-index:1;max-width:800px">
+    <div class="section-num" style="opacity:0;animation:fadeUp .8s ease .2s forwards">Use this if your audience feels like life is happening to them</div>
+    <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(52px,8vw,100px);font-weight:900;line-height:.92;letter-spacing:-2px;text-transform:uppercase;margin-bottom:28px;opacity:0;animation:fadeUp .9s ease .4s forwards">
+      You feel happy<br>when you feel<br>in <span style="color:var(--gold);font-style:italic;font-weight:300">control.</span>
+    </h2>
+    <p style="font-size:16px;color:rgba(240,239,235,.5);max-width:500px;line-height:1.8;font-weight:300;margin-bottom:16px;opacity:0;animation:fadeUp .9s ease .6s forwards">This is not philosophy. It's psychology. When external factors run your life, positive feelings become rare. When you control your habits, your body, your daily decisions &mdash; that sense of agency creates genuine happiness.</p>
+    <p style="font-size:16px;color:rgba(240,239,235,.5);max-width:500px;line-height:1.8;font-weight:300;margin-bottom:40px;opacity:0;animation:fadeUp .9s ease .65s forwards">Self discipline is not the path to a better body. It is the path to a better life.</p>
+    <div style="opacity:0;animation:fadeUp .9s ease .8s forwards">
+      <a href="#apply" class="btn-primary">Take Back Control</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT YOU GET -->
+<section class="gets">
+  <div class="section-num reveal">05 &mdash; What's Included</div>
+  <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:900;text-transform:uppercase;letter-spacing:-1px;margin-bottom:8px;max-width:500px" class="reveal">Everything.<br>You just show up.</h2>
+  <div class="gets-grid">
+    <div class="get-item reveal">
+      <div style="font-size:24px;flex-shrink:0">&#128247;</div>
+      <div><div class="get-title">Personalized Dashboard</div><div class="get-desc">Your entire protocol in one place. Training, nutrition, supplements, progress tracking &mdash; accessible on any device, personalized specifically to you.</div></div>
+    </div>
+    <div class="get-item reveal">
+      <div style="font-size:24px;flex-shrink:0">&#9200;</div>
+      <div><div class="get-title">Daily 4AM Email</div><div class="get-desc">Wake up to your full day mapped out. Every meal, every exercise, every supplement, every timing cue. From eyes-open to lights-out. Zero planning required.</div></div>
+    </div>
+    <div class="get-item reveal">
+      <div style="font-size:24px;flex-shrink:0">&#9745;</div>
+      <div><div class="get-title">Live Accountability Tracker</div><div class="get-desc">Check tasks off throughout the day. Watch your completion ring fill. A weekly chart shows your trend. See your own consistency building in real time.</div></div>
+    </div>
+    <div class="get-item reveal">
+      <div style="font-size:24px;flex-shrink:0">&#128230;</div>
+      <div><div class="get-title">Supplements To Your Door</div><div class="get-desc">Pre-organized by timing. Morning bag, pre-workout, bedtime. Open it, take it. No research, no confusion. It's handled.</div></div>
+    </div>
+    <div class="get-item reveal">
+      <div style="font-size:24px;flex-shrink:0">&#127859;</div>
+      <div><div class="get-title">Meal Plans + Recipes</div><div class="get-desc">Simple, cheap, high-protein meals with full recipes and grocery lists. $13 a day for six meals. Less than most people spend on one restaurant visit.</div></div>
+    </div>
+    <div class="get-item reveal">
+      <div style="font-size:24px;flex-shrink:0">&#128260;</div>
+      <div><div class="get-title">Weekly Inspiration + Variety</div><div class="get-desc">A new recipe, playlist picks, and a piece of philosophy matched to where you are in the protocol &mdash; so it never feels stale.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BIG QUOTE 2 -->
+<div class="big-quote" style="background:var(--black)">
+  <div class="bq-line"></div>
+  <div class="big-quote-text reveal">"You can still have the pizza. This is not about being perfect. It's about being <strong>CONSISTENT</strong> &mdash; and consistent beats perfect every single time."</div>
+</div>
+
+<!-- VARIANT D - IDENTITY ANGLE -->
+<section class="variant" style="background:#060606;min-height:75vh">
+  <div class="variant-label">Headline Variant D &mdash; The Identity Angle</div>
+  <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(201,168,76,.03) 0%,transparent 50%)"></div>
+  <div style="position:relative;z-index:1;max-width:900px">
+    <div class="section-num" style="opacity:0;animation:fadeUp .8s ease .2s forwards">Use this for an audience that wants to feel tougher and more resilient</div>
+    <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(52px,8vw,100px);font-weight:900;line-height:.92;letter-spacing:-2px;text-transform:uppercase;margin-bottom:28px;opacity:0;animation:fadeUp .9s ease .4s forwards">
+      I am going to be<br><span style="color:var(--gold)">harder to kill</span><br>if I keep<br>showing up.
+    </h2>
+    <p style="font-size:16px;color:rgba(240,239,235,.5);max-width:520px;line-height:1.8;font-weight:300;margin-bottom:40px;opacity:0;animation:fadeUp .9s ease .6s forwards">Not harder to kill in a dramatic sense. Harder to knock down. Harder to discourage. Harder to exhaust. Harder to break. The person who consistently shows up becomes someone that life has a much harder time defeating.</p>
+    <div style="opacity:0;animation:fadeUp .9s ease .8s forwards">
+      <a href="#apply" class="btn-primary">Build That Person</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="apply">
+  <h2 class="cta-h2 reveal">This is where<br>it <em>starts.</em></h2>
+  <p class="cta-sub reveal">No gym experience required. No perfect diet history. No idea what you're doing. That's exactly who this is built for. The only thing you need is the decision to begin.</p>
+  <div class="email-form reveal">
+    <input type="email" class="email-input" placeholder="Your email address">
+    <button class="email-submit" onclick="this.textContent='You Are In';this.style.background='#27ae60'">Apply Now</button>
+  </div>
+  <p class="cta-fine reveal">We review every application. Personalized protocols take 48 hours to build. Limited spots per month.</p>
+</section>
+
+<footer>
+  <div class="footer-logo">Build<span>.</span></div>
+  <div class="footer-text">A system for who you're becoming.</div>
+  <div class="footer-text" style="color:rgba(107,107,107,.4);font-size:10px;letter-spacing:1px">&copy; 2026 BUILD</div>
+</footer>
+
+<script>
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('in');observer.unobserve(e.target)}
+  });
+},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
