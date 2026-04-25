@@ -1979,17 +1979,17 @@ function parseSheet(data) {
 }
 
 function loadClientData() {
-  fetch(SHEET_URL + 'Client')
-    .then(r => r.text())
-    .then(data => {
-      const client = parseSheet(data);
+  fetch(BRIDGE_URL + '?id=' + SHEET_ID + '&sheet=Client')
+    .then(r => r.json())
+    .then(client => {
       const nameEl = document.getElementById('client-name');
       const protocolEl = document.getElementById('client-protocol');
       const wakeEl = document.getElementById('client-wake');
       if (nameEl) nameEl.textContent = client['Name'] || '';
       if (protocolEl) protocolEl.textContent = client['Protocol'] || '';
-      if (wakeEl) wakeEl.textContent = 'Wake Time: ' + client['Wake Time'] || '';
-    });
+      if (wakeEl) wakeEl.textContent = 'Wake Time: ' + (client['Wake Time'] || '');
+    })
+    .catch(err => console.log('Sheet fetch error:', err));
 }
 window.addEventListener('load', loadClientData);
   function switchTab(tab) {
