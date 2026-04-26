@@ -1979,17 +1979,20 @@ function parseSheet(data) {
 }
 
 function loadClientData() {
-  fetch(BRIDGE_URL + '?id=' + SHEET_ID + '&sheet=Client')
-    .then(r => r.json())
-    .then(client => {
-      const nameEl = document.getElementById('client-name');
-      const protocolEl = document.getElementById('client-protocol');
-      const wakeEl = document.getElementById('client-wake');
-      if (nameEl) nameEl.textContent = client['Name'] || '';
-      if (protocolEl) protocolEl.textContent = client['Protocol'] || '';
-      if (wakeEl) wakeEl.textContent = 'Wake Time: ' + (client['Wake Time'] || '');
-    })
-    .catch(err => console.log('Sheet fetch error:', err));
+  const script = document.createElement('script');
+  const callbackName = 'sheetCallback_' + Date.now();
+  window[callbackName] = function(data) {
+    const nameEl = document.getElementById('client-name');
+    const protocolEl = document.getElementById('client-protocol');
+    const wakeEl = document.getElementById('client-wake');
+    if (nameEl) nameEl.textContent = data['Name'] || '';
+    if (protocolEl) protocolEl.textContent = data['Protocol'] || '';
+    if (wakeEl) wakeEl.textContent = 'Wake Time: ' + (data['Wake Time'] || '');
+    document.body.removeChild(script);
+    delete window[callbackName];
+  };
+  script.src = BRIDGE_URL + '?id=' + SHEET_ID + '&sheet=Client&callback=' + callbackName;
+  document.body.appendChild(script);
 }
 window.addEventListener('load', loadClientData);
   function switchTab(tab) {
