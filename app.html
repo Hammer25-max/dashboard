@@ -1,0 +1,2433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hammertime Fitness -- Client Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2330;
+    --border: #30363d;
+    --green: #3fb950;
+    --green-dim: #238636;
+    --orange: #f0883e;
+    --blue: #58a6ff;
+    --red: #f85149;
+    --purple: #bc8cff;
+    --teal: #39d353;
+    --yellow: #d29922;
+    --text: #e6edf3;
+    --text-dim: #8b949e;
+    --text-muted: #484f58;
+    --heading-font: 'Bebas Neue', sans-serif;
+    --body-font: 'DM Sans', sans-serif;
+    --mono-font: 'Space Mono', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body-font);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 40%, #0d2818 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 32px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.6);
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .header-title h1 {
+    font-family: var(--heading-font);
+    font-size: 2.6rem;
+    letter-spacing: 3px;
+    color: var(--text);
+    line-height: 1;
+  }
+  .header-title span {
+    color: var(--green);
+  }
+  .header-title p {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-top: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .stats-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .stat-chip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    text-align: center;
+  }
+  .stat-chip .val {
+    font-family: var(--heading-font);
+    font-size: 1.4rem;
+    color: var(--green);
+    letter-spacing: 2px;
+    display: block;
+  }
+  .stat-chip .lbl {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-family: var(--body-font);
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 12px 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active {
+    color: var(--green);
+    border-bottom-color: var(--green);
+  }
+
+  /* MAIN */
+  .main {
+    padding: 28px 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* SECTION HEADERS */
+  .section-title {
+    font-family: var(--heading-font);
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .section-sub {
+    color: var(--text-dim);
+    font-size: 0.875rem;
+    margin-bottom: 24px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-family: var(--heading-font);
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    color: var(--text);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title .icon { font-size: 1rem; }
+
+  /* GRID LAYOUTS */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  @media (max-width: 900px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--green), var(--surface));
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 18px;
+    animation: slideIn 0.4s ease both;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--green);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 8px var(--green);
+  }
+  .timeline-item .time {
+    font-family: var(--mono-font);
+    font-size: 0.75rem;
+    color: var(--green);
+    margin-bottom: 3px;
+    letter-spacing: 1px;
+  }
+  .timeline-item .action {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .timeline-item .detail {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+  .timeline-item .tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+  }
+  .tag-nutrition { background: rgba(63,185,80,0.15); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
+  .tag-exercise { background: rgba(88,166,255,0.15); color: var(--blue); border: 1px solid rgba(88,166,255,0.3); }
+  .tag-recovery { background: rgba(188,140,255,0.15); color: var(--purple); border: 1px solid rgba(188,140,255,0.3); }
+  .tag-mental { background: rgba(240,136,62,0.15); color: var(--orange); border: 1px solid rgba(240,136,62,0.3); }
+
+  /* FOOD SWAP TABLE */
+  .swap-table { width: 100%; border-collapse: collapse; }
+  .swap-table th {
+    text-align: left;
+    font-family: var(--heading-font);
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .swap-table td {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    border-bottom: 1px solid rgba(48,54,61,0.5);
+    vertical-align: top;
+  }
+  .swap-table tr:last-child td { border-bottom: none; }
+  .swap-table .old { color: #f85149; }
+  .swap-table .new { color: var(--green); font-weight: 600; }
+  .swap-table .why { color: var(--text-dim); font-size: 0.78rem; line-height: 1.4; }
+  .swap-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* SUPPLEMENT CARDS */
+  .supp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+  .supp-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .supp-card:hover { border-color: var(--green); transform: translateY(-2px); }
+  .supp-card .supp-name {
+    font-family: var(--heading-font);
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .supp-card .supp-dose {
+    font-family: var(--mono-font);
+    font-size: 0.75rem;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .supp-card .supp-why {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .supp-card .supp-timing {
+    font-size: 0.75rem;
+    color: var(--orange);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .priority-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .p-high { background: rgba(248,81,73,0.2); color: #f85149; border: 1px solid rgba(248,81,73,0.4); }
+  .p-med { background: rgba(240,136,62,0.2); color: var(--orange); border: 1px solid rgba(240,136,62,0.4); }
+  .p-low { background: rgba(88,166,255,0.2); color: var(--blue); border: 1px solid rgba(88,166,255,0.4); }
+
+  /* EXERCISE CARDS */
+  .exercise-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .exercise-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .exercise-card .ex-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .exercise-card .ex-sets {
+    font-family: var(--mono-font);
+    font-size: 0.72rem;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+  .exercise-card .ex-how {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+  .ex-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .ex-spine { background: rgba(63,185,80,0.15); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
+  .ex-core { background: rgba(88,166,255,0.15); color: var(--blue); border: 1px solid rgba(88,166,255,0.3); }
+  .ex-mobility { background: rgba(188,140,255,0.15); color: var(--purple); border: 1px solid rgba(188,140,255,0.3); }
+
+  /* RUN FUELING */
+  .run-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .run-block .run-title {
+    font-family: var(--heading-font);
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    color: var(--orange);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .run-phases { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  @media (max-width: 700px) { .run-phases { grid-template-columns: 1fr; } }
+  .run-phase {
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 14px;
+    border-top: 3px solid var(--green-dim);
+  }
+  .run-phase.during { border-top-color: var(--orange); }
+  .run-phase.after { border-top-color: var(--blue); }
+  .run-phase h4 {
+    font-family: var(--heading-font);
+    font-size: 0.95rem;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  .run-phase ul { list-style: none; }
+  .run-phase ul li {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(48,54,61,0.3);
+    line-height: 1.4;
+  }
+  .run-phase ul li:last-child { border-bottom: none; }
+  .run-phase ul li::before { content: '→ '; color: var(--green); font-weight: 700; }
+
+  /* CALENDAR */
+  .cal-container { overflow-x: auto; }
+  .cal-week { margin-bottom: 28px; }
+  .cal-week-label {
+    font-family: var(--heading-font);
+    font-size: 1rem;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .cal-week-label span {
+    background: var(--green-dim);
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 3px;
+    letter-spacing: 1px;
+  }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; min-width: 700px; }
+  .cal-day-header {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 6px 0;
+  }
+  .cal-day {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 8px;
+    min-height: 110px;
+    transition: border-color 0.2s;
+    position: relative;
+  }
+  .cal-day:hover { border-color: var(--text-muted); }
+  .cal-day.run-day { border-color: rgba(240,136,62,0.5); background: rgba(240,136,62,0.05); }
+  .cal-day.rest-day { border-color: rgba(88,166,255,0.2); }
+  .cal-day .day-num {
+    font-family: var(--mono-font);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .cal-event {
+    font-size: 0.68rem;
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-bottom: 3px;
+    line-height: 1.3;
+    font-weight: 500;
+  }
+  .ev-run { background: rgba(240,136,62,0.25); color: var(--orange); }
+  .ev-core { background: rgba(63,185,80,0.2); color: var(--green); }
+  .ev-rest { background: rgba(88,166,255,0.15); color: var(--blue); }
+  .ev-supp { background: rgba(188,140,255,0.15); color: var(--purple); }
+  .ev-food { background: rgba(210,153,34,0.2); color: var(--yellow); }
+
+  /* PROGRESS TRACKER */
+  .progress-bar-wrap { margin-bottom: 12px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 5px; }
+  .progress-track { height: 6px; background: var(--surface2); border-radius: 6px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 6px; transition: width 1s ease; }
+  .fill-green { background: linear-gradient(to right, var(--green-dim), var(--green)); }
+  .fill-orange { background: linear-gradient(to right, #c0612e, var(--orange)); }
+  .fill-blue { background: linear-gradient(to right, #1f6feb, var(--blue)); }
+  .fill-purple { background: linear-gradient(to right, #7c3aed, var(--purple)); }
+
+  /* ALERT BOXES */
+  .alert {
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .alert-green { background: rgba(63,185,80,0.1); border: 1px solid rgba(63,185,80,0.3); color: #7ee787; }
+  .alert-orange { background: rgba(240,136,62,0.1); border: 1px solid rgba(240,136,62,0.3); color: #ffb77c; }
+  .alert-blue { background: rgba(88,166,255,0.1); border: 1px solid rgba(88,166,255,0.3); color: #a5c8ff; }
+
+  /* MACROS */
+  .macro-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+  .macro-pill {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .macro-pill .m-name { color: var(--text-dim); }
+  .macro-pill .m-val { color: var(--text); font-weight: 700; }
+
+  /* MORNING ROUTINE STEPS */
+  .routine-steps { display: flex; flex-direction: column; gap: 0; }
+  .routine-step {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    position: relative;
+  }
+  .step-time-col {
+    width: 80px;
+    flex-shrink: 0;
+    padding: 14px 12px 14px 0;
+    text-align: right;
+  }
+  .step-time {
+    font-family: var(--mono-font);
+    font-size: 0.72rem;
+    color: var(--green);
+    font-weight: 700;
+    line-height: 1;
+  }
+  .step-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 14px;
+  }
+  .step-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 10px rgba(63,185,80,0.6);
+    flex-shrink: 0;
+    margin-top: 18px;
+    z-index: 1;
+  }
+  .step-line {
+    width: 2px;
+    flex: 1;
+    background: linear-gradient(to bottom, var(--green-dim), rgba(35,134,54,0.1));
+    margin-top: 2px;
+  }
+  .routine-step:last-child .step-line { display: none; }
+  .step-content {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    transition: border-color 0.2s;
+  }
+  .step-content:hover { border-color: rgba(63,185,80,0.4); }
+  .step-content h4 { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .step-content p { font-size: 0.8rem; color: var(--text-dim); line-height: 1.5; }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--border); margin: 24px 0; }
+
+  /* BADGE */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    font-weight: 600;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+  /* WEEK PHASE BANNER */
+  .phase-banner {
+    background: linear-gradient(135deg, rgba(35,134,54,0.2), rgba(13,17,23,0));
+    border: 1px solid rgba(35,134,54,0.3);
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    font-size: 0.82rem;
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="header-title">
+  <!-- BRAND -->
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+    <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="14" y="16" width="5" height="13" rx="1.5" fill="#C9A84C"/>
+      <rect x="4" y="6" width="24" height="12" rx="3" fill="#C9A84C"/>
+      <rect x="8" y="6" width="7" height="12" rx="0" fill="#E8C56A"/>
+      <rect x="14" y="9" width="3" height="7" rx="1" fill="#C9A84C" opacity="0.5"/>
+    </svg>
+    <span style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:4px;color:rgba(240,239,235,.4);text-transform:uppercase;">Hammertime Fitness</span>
+  </div>
+  <h1 id="client-name" style="font-family:'Bebas Neue',sans-serif;font-size:36px;font-weight:900;letter-spacing:4px;color:#f0efeb;text-transform:uppercase;margin-bottom:4px;">Loading...</h1>
+  <p id="client-protocol" style="font-family:'Bebas Neue',sans-serif;font-size:22px;font-weight:900;letter-spacing:4px;color:#3fb950;text-transform:uppercase;margin-bottom:4px;">Loading...</p>
+  <p id="client-wake" style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:4px;color:#8b949e;text-transform:uppercase;">Loading...</p>
+      </div>
+<div class="stats-row">
+      <div class="stat-chip">
+        <span class="val">50</span>
+        <span class="lbl">Age</span>
+      </div>
+      <div class="stat-chip">
+        <span class="val">3×</span>
+        <span class="lbl">Run Days/Wk</span>
+      </div>
+      <div class="stat-chip">
+        <span class="val">13–15h</span>
+        <span class="lbl">Weekly Miles</span>
+      </div>
+      <div class="stat-chip">
+        <span class="val">8 WK</span>
+        <span class="lbl">Program</span>
+      </div>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('overview')">📋 Daily Overview</button>
+    <button class="tab-btn" onclick="switchTab('morning')">🌅 Morning Routine</button>
+    <button class="tab-btn" onclick="switchTab('nutrition')">🥗 Nutrition Swaps</button>
+    <button class="tab-btn" onclick="switchTab('running')">🏃 Run Fueling</button>
+    <button class="tab-btn" onclick="switchTab('supplements')">💊 Supplements</button>
+    <button class="tab-btn" onclick="switchTab('core')">💪 Core & Spine</button>
+    <button class="tab-btn" onclick="switchTab('calendar')">📅 8-Week Calendar</button>
+    <button class="tab-btn" onclick="switchTab('log')">📓 Daily Log</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ===== TAB: OVERVIEW ===== -->
+  <div id="tab-overview" class="tab-content active">
+    <div class="section-title">DAILY SCHEDULE</div>
+    <div class="section-sub">Your complete day mapped from wake to sleep — non-run days shown. Run day adjustments noted.</div>
+
+    <div class="alert alert-green">
+      <span>✅</span>
+      <span><strong>Your current diet is already solid.</strong> High protein, healthy fats, low sugar. The anti-inflammatory protocol makes targeted upgrades — not a full overhaul. You're 70% there already.</span>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="icon">🌙</span> NON-RUN DAY (Mon / Wed / Fri)</div>
+        <div class="timeline">
+
+          <div class="timeline-item">
+            <div class="time">5:45 AM</div>
+            <div class="action">Wake Up — Hydration First</div>
+            <div class="detail">16–20 oz water immediately. Add a pinch of sea salt + squeeze of lemon for electrolytes. Kickstarts digestion and metabolism.</div>
+            <span class="tag tag-recovery">Recovery</span>
+          </div>
+
+          <div class="timeline-item">
+            <div class="time">6:00 AM</div>
+            <div class="action">Morning Routine Block (20–25 min)</div>
+            <div class="detail">Mobility flow, breathing, spine work, gratitude journaling. See Morning Routine tab for full protocol.</div>
+            <span class="tag tag-exercise">Exercise</span>
+          </div>
+
+          <div class="timeline-item">
+            <div class="time">6:00 AM</div>
+            <div class="action">24g Whey Protein Shake ✅</div>
+            <div class="detail">Keep as-is. Take your fish oil (2g), Vitamin D3 (5,000 IU), and Magnesium glycinate with this if taken in AM.</div>
+            <span class="tag tag-nutrition">Nutrition</span>
+          </div>
+
+          <div class="timeline-item">
+            <div class="time">7:00 AM</div>
+            <div class="action">32 Almonds ✅</div>
+            <div class="detail">Keep as-is. Great anti-inflammatory fat source. Consider swapping to walnuts 3–4 days/week (higher omega-3).</div>
+            <span class="tag tag-nutrition">Nutrition</span>
+          </div>
+
+          <div class="timeline-item">
+            <div class="time">9:00 AM</div>
+            <div class="action">Eggs + Keto Toast + Berries ⚡ (upgrade)</div>
+            <div class="detail">6 eggs ✅ (keep). Swap keto toast → sprouted grain or skip. Upgrade berries → add blueberries + tart cherry (highest anti-inflammatory). Add a drizzle of olive oil or avocado.</div>
+            <span class="tag tag-nutrition">Nutrition</span>
+          </div>
+
+          <div class="timeline-item">
+            <div class="time">11:30 AM</div>
+            <div class="action">Triple Zero Greek Yogurt + Peanut Butter ⚡ (upgrade)</div>
+            <div class="detail">Triple Zero is fine. Swap PB → natural almond butter (lower omega-6, higher vitamin E). Or keep PB — it's not bad, just less optimal.</div>
+            <span class="tag tag-nutrition">Nutrition</span>
+          </div>
+
+          <div class="timeline-item">
+            <div class="time">1:00 PM</div>
+            <div class="action">Spinach Salad ⚡ (upgrade)</div>
+            <div class="detail">Spinach ✅ great base. Swap Italian dressing → EVOO + apple cider vinegar + lemon + garlic. Add salmon, sardines, or grilled chicken for protein. Add walnuts. Sunflower seeds ✅ keep.</div>
+            <span class="tag tag-nutrition">Nutrition</span>
+          </div>
+
+          <div class="timeline-item">
+            <div class="time">3:00–4:00 PM</div>
+            <div class="action">Core & Spine Session (15–20 min)</div>
+            <div class="detail">McGill Big 3 + Bird Dog + Dead Bug + Hip Mobility. See Core & Spine tab for exercises.</div>
+            <span class="tag tag-exercise">Exercise</span>
+          </div>
+
+          <div class="timeline-item">
+            <div class="time">6:00 PM</div>
+            <div class="action">Dinner</div>
+            <div class="detail">Prioritize: salmon or fatty fish 3–4×/week, leafy greens, colorful vegetables, olive oil cooking. Limit: processed vegetable oils, fried foods, excess alcohol.</div>
+            <span class="tag tag-nutrition">Nutrition</span>
+          </div>
+
+          <div class="timeline-item">
+            <div class="time">8:00 PM</div>
+            <div class="action">Evening Wind-Down</div>
+            <div class="detail">Magnesium glycinate (if not taken AM) — 30–60 min before bed. Aids sleep quality and muscle recovery. No screens 30 min before sleep target.</div>
+            <span class="tag tag-recovery">Recovery</span>
+          </div>
+
+          <div class="timeline-item">
+            <div class="time">9:30–10:00 PM</div>
+            <div class="action">Sleep Target</div>
+            <div class="detail">7.5–9 hours is critical at 50 for recovery, testosterone maintenance, and inflammation control. Sleep is your #1 performance tool.</div>
+            <span class="tag tag-recovery">Recovery</span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🏃</span> RUN DAY ADJUSTMENTS (Tue / Thu / Sat or Sun)</div>
+        <div class="timeline">
+
+          <div class="timeline-item">
+            <div class="time">Pre-Run</div>
+            <div class="action">Shift Eating Around Your Run Window</div>
+            <div class="detail">See the Run Fueling tab for exact timing based on 3–4 hr vs 6–8 hr run length. Eating and fueling strategy differs significantly between these.</div>
+            <span class="tag tag-nutrition">Nutrition</span>
+          </div>
+
+          <div class="timeline-item">
+            <div class="time">Day Before</div>
+            <div class="action">Carb Load Night Before Long Run (Sat/Sun)</div>
+            <div class="detail">Add 1 cup brown rice, sweet potato, or pasta to Friday/Saturday dinner. Hydrate aggressively. Electrolyte drink in evening.</div>
+            <span class="tag tag-nutrition">Nutrition</span>
+          </div>
+
+          <div class="timeline-item">
+            <div class="time">Post-Run</div>
+            <div class="action">Recovery Window Priority</div>
+            <div class="detail">Within 30–45 min: 30–40g protein + 60–80g fast carbs. Tart cherry juice or concentrate (reduces DOMS), electrolyte drink, collagen peptides + vitamin C for joint repair.</div>
+            <span class="tag tag-recovery">Recovery</span>
+          </div>
+
+          <div class="timeline-item">
+            <div class="time">Run Days</div>
+            <div class="action">Skip Core Work on Same Day as Long Runs</div>
+            <div class="detail">For 6–8 hr runs (Sat/Sun), skip the core session that day. Focus only on recovery: stretching, foam rolling, hydration, nutrition. Core can wait.</div>
+            <span class="tag tag-exercise">Exercise</span>
+          </div>
+
+          <div class="timeline-item">
+            <div class="time">Run Days</div>
+            <div class="action">Increase Caloric Intake</div>
+            <div class="detail">Short runs (3–4h): add 400–600 kcal. Long runs (6–8h): add 800–1200 kcal throughout the day. Never restrict calories on run days — your body needs the fuel.</div>
+            <span class="tag tag-nutrition">Nutrition</span>
+          </div>
+
+          <div class="timeline-item">
+            <div class="time">Evening</div>
+            <div class="action">Enhanced Recovery Protocol</div>
+            <div class="detail">After long runs add: cold shower or ice bath (10 min), compression socks, elevation of legs for 15–20 min. Magnesium bath if available.</div>
+            <span class="tag tag-recovery">Recovery</span>
+          </div>
+
+        </div>
+
+        <div class="divider"></div>
+        <div class="card-title" style="font-size:0.9rem;">📊 WEEKLY TRAINING LOAD</div>
+        <div class="progress-bar-wrap">
+          <div class="progress-label"><span>Tuesday (Short Run)</span><span>3–4 hrs</span></div>
+          <div class="progress-track"><div class="progress-fill fill-orange" style="width:45%"></div></div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-label"><span>Thursday (Short Run)</span><span>3–4 hrs</span></div>
+          <div class="progress-track"><div class="progress-fill fill-orange" style="width:45%"></div></div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-label"><span>Saturday/Sunday (Long Run)</span><span>6–8 hrs</span></div>
+          <div class="progress-track"><div class="progress-fill fill-red" style="width:90%"></div></div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-label"><span>Core & Spine (Daily)</span><span>15–20 min</span></div>
+          <div class="progress-track"><div class="progress-fill fill-green" style="width:100%"></div></div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-label"><span>Mobility / Stretching</span><span>10 min daily</span></div>
+          <div class="progress-track"><div class="progress-fill fill-blue" style="width:100%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB: MORNING ROUTINE ===== -->
+  <div id="tab-morning" class="tab-content">
+    <div class="section-title">MORNING ROUTINE</div>
+    <div class="section-sub">A structured, consistent morning protocol — do this every single day before adding anything else.</div>
+
+    <div class="alert alert-orange">
+      <span>⚡</span>
+      <span><strong>The 1% Rule:</strong> Do this routine for 4–6 weeks before adding new habits. Consistency beats intensity. Master the basics first, then layer in the additions marked "Month 2+".</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <div class="card">
+          <div class="card-title">🌅 PHASE 1 — LAUNCH (Start Immediately)</div>
+          <div class="routine-steps">
+            <div class="routine-step">
+              <div class="step-time-col"><div class="step-time">5:45<br>AM</div></div>
+              <div class="step-connector"><div class="step-dot"></div><div class="step-line"></div></div>
+              <div class="step-content">
+                <h4>💧 Hydration First — Before Anything</h4>
+                <p>16–20 oz cold water with a pinch of Himalayan salt and half a lemon squeezed in. Drink before checking phone. This rehydrates after 7–8 hrs without fluid, restores electrolytes, and triggers digestion.</p>
+              </div>
+            </div>
+            <div class="routine-step">
+              <div class="step-time-col"><div class="step-time">5:50<br>AM</div></div>
+              <div class="step-connector"><div class="step-dot"></div><div class="step-line"></div></div>
+              <div class="step-content">
+                <h4>🧘 Diaphragmatic Breathing (3 min)</h4>
+                <p>Lie on back, knees bent. Breathe in through nose 4 counts (belly rises), hold 2, out through mouth 6 counts. Activates parasympathetic nervous system, reduces morning cortisol spike, primes the core for movement.</p>
+              </div>
+            </div>
+            <div class="routine-step">
+              <div class="step-time-col"><div class="step-time">5:53<br>AM</div></div>
+              <div class="step-connector"><div class="step-dot"></div><div class="step-line"></div></div>
+              <div class="step-content">
+                <h4>🐱 Cat-Cow Stretch (2 min)</h4>
+                <p>On hands and knees. Slow controlled movement through full spinal range. 10–15 reps. Best thing you can do first thing — lubricates discs, restores spinal mobility after being horizontal all night.</p>
+              </div>
+            </div>
+            <div class="routine-step">
+              <div class="step-time-col"><div class="step-time">5:55<br>AM</div></div>
+              <div class="step-connector"><div class="step-dot"></div><div class="step-line"></div></div>
+              <div class="step-content">
+                <h4>🦅 McGill Big 3 (7–8 min)</h4>
+                <p>Modified curl-up (3×10) → Bird Dog (3×8 each side) → Side Plank (3×20 sec). These three exercises, designed by spine researcher Dr. Stuart McGill, are the gold standard for spine stability and back health. Do these DAILY without exception.</p>
+              </div>
+            </div>
+            <div class="routine-step">
+              <div class="step-time-col"><div class="step-time">6:03<br>AM</div></div>
+              <div class="step-connector"><div class="step-dot"></div><div class="step-line"></div></div>
+              <div class="step-content">
+                <h4>🏋️ Glute Bridge + Hip Flexor Stretch (4 min)</h4>
+                <p>Glute bridge holds 3×15 → Pigeon pose or half-kneeling hip flexor stretch 60 sec each side. Weak glutes and tight hip flexors are the #1 cause of lower back problems in runners. This directly counters that.</p>
+              </div>
+            </div>
+            <div class="routine-step">
+              <div class="step-time-col"><div class="step-time">6:07<br>AM</div></div>
+              <div class="step-connector"><div class="step-dot"></div><div class="step-line"></div></div>
+              <div class="step-content">
+                <h4>🥛 Protein Shake + Supplements (3 min)</h4>
+                <p>24g whey protein shake. Take with: Fish Oil (2g), Vitamin D3/K2 (5,000 IU), Collagen Peptides (10g added to shake). This is your first "macro hit" of the day and starts muscle protein synthesis.</p>
+              </div>
+            </div>
+            <div class="routine-step">
+              <div class="step-time-col"><div class="step-time">6:10<br>AM</div></div>
+              <div class="step-connector"><div class="step-dot"></div><div class="step-line"></div></div>
+              <div class="step-content">
+                <h4>📓 3-Minute Gratitude + Intention (3 min)</h4>
+                <p>Write 3 things you're grateful for and 1 intention for the day. Research shows consistent gratitude practice reduces inflammation markers (IL-6, TNF-α), improves sleep quality, and reduces perceived pain. Takes 3 minutes, pays back all day.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <div class="card-title">🚀 PHASE 2 — ADD ONS (Weeks 5–8 and beyond)</div>
+          <div class="routine-steps">
+            <div class="routine-step">
+              <div class="step-time-col"><div class="step-time">MONTH<br>2+</div></div>
+              <div class="step-connector"><div class="step-dot" style="background:var(--blue);box-shadow:0 0 10px rgba(88,166,255,0.6)"></div><div class="step-line" style="background:linear-gradient(to bottom,#1f6feb,rgba(31,111,235,0.1))"></div></div>
+              <div class="step-content">
+                <h4>🧊 Cold Exposure (1–3 min)</h4>
+                <p>End your morning shower with 60–90 seconds of cold water. Builds stress resilience, stimulates norepinephrine (mood + focus), reduces systemic inflammation. Work up to this — start with 15 seconds, add 10 sec/week.</p>
+              </div>
+            </div>
+            <div class="routine-step">
+              <div class="step-time-col"><div class="step-time">MONTH<br>2+</div></div>
+              <div class="step-connector"><div class="step-dot" style="background:var(--blue);box-shadow:0 0 10px rgba(88,166,255,0.6)"></div><div class="step-line" style="background:linear-gradient(to bottom,#1f6feb,rgba(31,111,235,0.1))"></div></div>
+              <div class="step-content">
+                <h4>☀️ Sunlight Exposure (10 min)</h4>
+                <p>Step outside within first hour of waking. No sunglasses for first few minutes. Anchors circadian rhythm, boosts serotonin and natural vitamin D synthesis, and dramatically improves nighttime sleep quality. Non-negotiable on clear days.</p>
+              </div>
+            </div>
+            <div class="routine-step">
+              <div class="step-time-col"><div class="step-time">MONTH<br>3+</div></div>
+              <div class="step-connector"><div class="step-dot" style="background:var(--purple);box-shadow:0 0 10px rgba(188,140,255,0.6)"></div><div class="step-line" style="background:linear-gradient(to bottom,#7c3aed,rgba(124,58,237,0.1))"></div></div>
+              <div class="step-content">
+                <h4>🧠 5-Minute Meditation</h4>
+                <p>Box breathing or guided meditation. Strong evidence for reduced cortisol, improved HRV (heart rate variability — the key metric for recovery), and better inflammatory response. Apps: Waking Up, Headspace, or just a timer with box breathing.</p>
+              </div>
+            </div>
+            <div class="routine-step">
+              <div class="step-time-col"><div class="step-time">MONTH<br>3+</div></div>
+              <div class="step-connector"><div class="step-dot" style="background:var(--purple);box-shadow:0 0 10px rgba(188,140,255,0.6)"></div><div class="step-line" style="background:linear-gradient(to bottom,#7c3aed,rgba(124,58,237,0.1))"></div></div>
+              <div class="step-content">
+                <h4>📚 10-Minute Reading / Learning</h4>
+                <p>Non-screen. Physical book or audiobook. Keeps the brain sharp, reduces cognitive decline risk, and provides mental separation before the "noise" of the day starts. Feeds long-term mental health.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📊 CURRENT TOTAL TIME</div>
+          <div class="macro-row">
+            <div class="macro-pill"><span class="m-name">Phase 1 Morning Block</span><span class="m-val" style="color:var(--green)">~25 min</span></div>
+            <div class="macro-pill"><span class="m-name">Phase 2 Add-Ons</span><span class="m-val" style="color:var(--blue)">+20 min</span></div>
+            <div class="macro-pill"><span class="m-name">Full Routine (Month 3)</span><span class="m-val" style="color:var(--purple)">~45 min</span></div>
+          </div>
+          <div class="alert alert-blue" style="margin-top:0;">
+            <span>💡</span>
+            <span>Start with Phase 1 only. 25 minutes every morning for 4–6 weeks. Once it's automatic — add Phase 2 elements one at a time. Never add two new habits in the same week.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB: NUTRITION ===== -->
+  <div id="tab-nutrition" class="tab-content">
+    <div class="section-title">ANTI-INFLAMMATORY DIET PROTOCOL</div>
+    <div class="section-sub">Your current diet is already 70% anti-inflammatory. These swaps complete the picture.</div>
+
+    <div class="alert alert-green">
+      <span>🌿</span>
+      <span><strong>What is Anti-Inflammatory Eating?</strong> At 50, chronic low-grade inflammation drives joint pain, fatigue, slower recovery, and increased disease risk. An anti-inflammatory diet lowers markers like CRP, IL-6, and TNF-α — the same inflammation that slows your recovery between runs.</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚡ YOUR CURRENT DIET → ANTI-INFLAMMATORY UPGRADES</div>
+      <table class="swap-table">
+        <thead>
+          <tr>
+            <th>MEAL/TIME</th>
+            <th>WHAT YOU EAT NOW</th>
+            <th>THE SWAP / UPGRADE</th>
+            <th>WHY IT MATTERS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--text-dim);font-size:0.78rem;">6:00 AM</td>
+            <td class="old">24g Whey Protein Shake</td>
+            <td class="new">✅ Keep — add 10g Collagen Peptides + pinch turmeric</td>
+            <td class="why">Collagen supports joint health (critical for running at 50). Turmeric (curcumin) is one of the most studied anti-inflammatory compounds.</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-dim);font-size:0.78rem;">7:00 AM</td>
+            <td class="old">32 Almonds</td>
+            <td class="new">⚡ Alternate 50/50: Walnuts + Almonds (16 of each)</td>
+            <td class="why">Walnuts are the only nut high in ALA omega-3 fatty acids. Dramatically better omega-3:6 ratio than almonds alone. Almonds still great for Vitamin E.</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-dim);font-size:0.78rem;">9:00 AM</td>
+            <td class="old">Keto Toast</td>
+            <td class="new">⚡ Swap to: 1/2 cup oats (run days) or drop entirely (rest days)</td>
+            <td class="why">On run days, oats provide slow-release beta-glucan fiber — anti-inflammatory and great sustained energy. On rest days, you may not need the extra carbs.</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-dim);font-size:0.78rem;">9:00 AM</td>
+            <td class="old">1/2 cup mixed frozen berries</td>
+            <td class="new">✅ Keep + upgrade to: blueberries + tart cherry + strawberry</td>
+            <td class="why">Blueberries have highest ORAC (antioxidant) score of all fruit. Tart cherry is clinically proven to reduce post-run muscle soreness and DOMS. This is one of the best things you can eat.</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-dim);font-size:0.78rem;">9:00 AM</td>
+            <td class="old">6 Whole Eggs</td>
+            <td class="new">✅ Keep — ideal. Add a drizzle of olive oil or avocado</td>
+            <td class="why">Eggs are anti-inflammatory at whole form. The yolk contains choline (brain), lutein/zeaxanthin (eyes), and selenium. Pasture-raised eggs have 3× more omega-3 than conventional.</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-dim);font-size:0.78rem;">11:30 AM</td>
+            <td class="old">Triple Zero Greek Yogurt</td>
+            <td class="new">✅ Keep — consider plain full-fat Greek yogurt 3–4×/week</td>
+            <td class="why">Full-fat dairy has conjugated linoleic acid (CLA), which is anti-inflammatory. The artificial sweeteners in Triple Zero are not harmful but plain has better gut microbiome benefits.</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-dim);font-size:0.78rem;">11:30 AM</td>
+            <td class="old">2 tbsp Peanut Butter</td>
+            <td class="new">⚡ Swap to: Natural Almond Butter or Walnut Butter</td>
+            <td class="why">Peanuts are technically legumes with higher omega-6 content. Almond butter has higher Vitamin E (anti-inflammatory), better fat profile. If you love PB, stick with natural (no added oils).</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-dim);font-size:0.78rem;">1:00 PM</td>
+            <td class="old">Italian Dressing</td>
+            <td class="new">🔄 Replace with: EVOO + ACV + lemon + garlic + Dijon</td>
+            <td class="why">Commercial Italian dressing uses soybean/canola oil — high omega-6, pro-inflammatory. Extra virgin olive oil (EVOO) is the most researched anti-inflammatory food compound (oleocanthal acts like ibuprofen).</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-dim);font-size:0.78rem;">1:00 PM</td>
+            <td class="old">Shredded Cheese on Salad</td>
+            <td class="new">⚡ Upgrade to: Feta cheese or goat cheese</td>
+            <td class="why">Feta and goat cheese are made from sheep/goat milk, which has A2 beta-casein protein — easier to digest and less inflammatory than A1 cow milk protein. Plus more zinc and calcium per calorie.</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-dim);font-size:0.78rem;">1:00 PM</td>
+            <td class="old">Spinach Base</td>
+            <td class="new">✅ Keep + occasionally add arugula, kale, or mixed greens</td>
+            <td class="why">Spinach is excellent. Rotating greens gives different polyphenols. Arugula has glucosinolates (cancer-fighting). Kale has the highest sulforaphane — one of the most potent anti-inflammatory compounds found in food.</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-dim);font-size:0.78rem;">Dinner</td>
+            <td class="old">Variable</td>
+            <td class="new">🎯 Target: Salmon or fatty fish 3×/week + colorful vegetables + olive oil</td>
+            <td class="why">Wild salmon is the single highest food source of EPA/DHA omega-3 fatty acids — the most powerful dietary anti-inflammatory. One 4 oz serving = more benefit than 3 fish oil capsules. Eat it often.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">🟢 ALWAYS EAT MORE OF</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span class="badge">🫒 Extra Virgin Olive Oil</span>
+          <span class="badge">🐟 Fatty Fish (salmon, sardines, mackerel)</span>
+          <span class="badge">🫐 Blueberries & Tart Cherry</span>
+          <span class="badge">🥦 Cruciferous Veg (broccoli, kale)</span>
+          <span class="badge">🥬 Leafy Greens</span>
+          <span class="badge">🫚 Avocado & Avocado Oil</span>
+          <span class="badge">🧄 Garlic & Onion</span>
+          <span class="badge">🫘 Walnuts</span>
+          <span class="badge">🍵 Green Tea</span>
+          <span class="badge">🌿 Turmeric + Black Pepper</span>
+          <span class="badge">🫛 Lentils & Beans</span>
+          <span class="badge">🍊 Colorful Peppers</span>
+          <span class="badge">🍒 Tart Cherry Juice</span>
+          <span class="badge">🌱 Flaxseeds & Chia Seeds</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🔴 MINIMIZE / AVOID</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span class="badge" style="border-color:rgba(248,81,73,0.4);color:#f85149;">🫙 Seed Oils (canola, soybean, corn oil)</span>
+          <span class="badge" style="border-color:rgba(248,81,73,0.4);color:#f85149;">🍺 Alcohol (especially daily)</span>
+          <span class="badge" style="border-color:rgba(248,81,73,0.4);color:#f85149;">🍞 Refined Carbs & White Bread</span>
+          <span class="badge" style="border-color:rgba(248,81,73,0.4);color:#f85149;">🧂 Excess Processed Sodium</span>
+          <span class="badge" style="border-color:rgba(248,81,73,0.4);color:#f85149;">🍟 Fried Foods</span>
+          <span class="badge" style="border-color:rgba(248,81,73,0.4);color:#f85149;">🥩 Processed Meats (hot dogs, deli)</span>
+          <span class="badge" style="border-color:rgba(248,81,73,0.4);color:#f85149;">🍭 Added Sugars & Soda</span>
+          <span class="badge" style="border-color:rgba(248,81,73,0.4);color:#f85149;">🧁 Trans Fats / Margarine</span>
+          <span class="badge" style="border-color:rgba(248,81,73,0.4);color:#f85149;">🌡️ Excessive Omega-6 Intake</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB: RUN FUELING ===== -->
+  <div id="tab-running" class="tab-content">
+    <div class="section-title">RUN FUELING PROTOCOL</div>
+    <div class="section-sub">Fueling strategy matched to your exact training sessions. Timing is everything.</div>
+
+    <div class="alert alert-orange">
+      <span>⚠️</span>
+      <span><strong>Critical at 50:</strong> Your glycogen storage and fat mobilization efficiency are different than at 30. You MUST fuel before long runs (6–8h) and during. Running fasted for this duration destroys muscle tissue, tanks hormones, and increases inflammation. Fuel is not optional.</span>
+    </div>
+
+    <!-- SHORT RUN -->
+    <div class="run-block">
+      <div class="run-title">⚡ SHORT RUNS — TUESDAY & THURSDAY (3–4 Hours)</div>
+      <div class="run-phases">
+        <div class="run-phase">
+          <h4>🍌 BEFORE (1–2 hrs prior)</h4>
+          <ul>
+            <li>1 banana + 1 tbsp almond butter</li>
+            <li>OR: 1/2 cup oats with honey + berries</li>
+            <li>OR: 1 slice sprouted grain bread + 1 tbsp almond butter</li>
+            <li>6–8 oz water + pinch of salt</li>
+            <li>Optional: black coffee (natural performance booster — wait 90 min after waking)</li>
+            <li>Skip heavy protein/fat within 60 min of run start</li>
+          </ul>
+        </div>
+        <div class="run-phase during">
+          <h4>🏃 DURING (Every 45–60 min)</h4>
+          <ul>
+            <li>Water: 6–8 oz every 20–30 min</li>
+            <li>Electrolyte drink or tabs (sodium, potassium, magnesium)</li>
+            <li>At 60 min mark: 1 gel or 2 Medjool dates</li>
+            <li>At 90 min+: another gel or banana pieces</li>
+            <li>20–30g carbs per hour minimum</li>
+            <li>At 50 yrs: don't wait until you're thirsty to drink</li>
+          </ul>
+        </div>
+        <div class="run-phase after">
+          <h4>✅ AFTER (Within 30–45 min)</h4>
+          <ul>
+            <li>30–40g protein (whey shake or chocolate milk)</li>
+            <li>40–60g fast carbs (banana, rice cakes, or fruit)</li>
+            <li>8–12 oz tart cherry juice (reduces muscle soreness)</li>
+            <li>16–20 oz electrolyte water</li>
+            <li>10g collagen + vitamin C within 60 min</li>
+            <li>Full meal within 1.5–2 hours</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- LONG RUN -->
+    <div class="run-block">
+      <div class="run-title" style="color:var(--red)">🔥 LONG RUNS — SATURDAY OR SUNDAY (6–8 Hours)</div>
+      <div class="run-phases">
+        <div class="run-phase">
+          <h4>🍚 NIGHT BEFORE</h4>
+          <ul>
+            <li>Carb-focused dinner: pasta, brown rice, or sweet potato (1–1.5 cups)</li>
+            <li>Moderate protein (4–6 oz chicken or fish)</li>
+            <li>Electrolyte drink with dinner</li>
+            <li>Avoid high fiber, high fat, or anything new</li>
+            <li>No alcohol the night before</li>
+            <li>Sleep 8–9 hours — critical</li>
+          </ul>
+        </div>
+        <div class="run-phase">
+          <h4>🌅 MORNING OF (2–3 hrs before)</h4>
+          <ul>
+            <li>1 cup oats with banana + 1 tbsp honey</li>
+            <li>OR: 2 slices sprouted bread + 1 tbsp almond butter + banana</li>
+            <li>Skip eggs/heavy protein — hard to digest</li>
+            <li>16 oz electrolyte water</li>
+            <li>Optional: small coffee (not on empty stomach)</li>
+            <li>Light 15-min mobility warm-up before starting</li>
+          </ul>
+        </div>
+        <div class="run-phase during">
+          <h4>🏃 DURING (6–8 hrs)</h4>
+          <ul>
+            <li>40–60g carbs per hour (mandatory)</li>
+            <li>Alternate: gels, chews, dates, PB&J bites, banana</li>
+            <li>Every 45–60 min: eat something</li>
+            <li>Electrolytes every 60–90 min — sodium critical</li>
+            <li>600–800 ml fluid per hour (more in heat)</li>
+            <li>Real food after hour 3 (gut needs variety)</li>
+            <li>Consider: Tailwind, UCAN, or Precision Hydration</li>
+          </ul>
+        </div>
+      </div>
+      <div style="margin-top:14px;">
+        <div class="run-phase after" style="border-top-color:var(--purple)">
+          <h4 style="color:var(--purple)">🌙 AFTER LONG RUN — FULL RECOVERY PROTOCOL</h4>
+          <ul>
+            <li>Within 30 min: 40–50g protein + 80–100g carbs (chocolate milk is ideal, or whey + banana)</li>
+            <li>12 oz tart cherry concentrate or juice (huge for DOMS prevention)</li>
+            <li>24–32 oz electrolyte water over 2 hours</li>
+            <li>10g collagen peptides + 500mg Vitamin C (joint/tendon repair)</li>
+            <li>Full meal 1.5 hrs later: salmon + sweet potato + vegetables</li>
+            <li>Foam roll: glutes, IT band, calves, thoracic spine</li>
+            <li>Legs up wall 15 min or compression socks for 2–3 hrs</li>
+            <li>Magnesium glycinate before bed (300–400mg)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📅 THE DAY AFTER A LONG RUN — ACTIVE RECOVERY</div>
+      <div class="grid-2">
+        <div>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="time">Morning</div>
+              <div class="action">Light Mobility Only — No Hard Training</div>
+              <div class="detail">10 min gentle cat-cow, hip circles, forward fold. No McGill Big 3 — your core worked hard. Just gentle movement.</div>
+            </div>
+            <div class="timeline-item">
+              <div class="time">All Day</div>
+              <div class="action">High Protein + Anti-Inflammatory Eating</div>
+              <div class="detail">Salmon + sweet potato + leafy greens. Tart cherry juice in AM. Turmeric golden milk in evening. Your inflammation markers peak 24–48 hrs after a long run — eat to fight it.</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="time">Afternoon</div>
+              <div class="action">15 min Easy Walk (Optional)</div>
+              <div class="detail">Light walking flushes lactic acid and promotes blood flow without adding fatigue load. Better than complete rest for recovery.</div>
+            </div>
+            <div class="timeline-item">
+              <div class="time">Evening</div>
+              <div class="action">Prioritize Sleep Quality</div>
+              <div class="detail">Magnesium glycinate before bed. Keep room cool (65–68°F). Sleep is when 90% of repair happens — guard it.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB: SUPPLEMENTS ===== -->
+  <div id="tab-supplements" class="tab-content">
+    <div class="section-title">SUPPLEMENT PROTOCOL</div>
+    <div class="section-sub">Evidence-based supplements specifically beneficial at 50+, for long-distance running, and anti-inflammatory support. Ranked by priority.</div>
+
+    <div class="alert alert-orange">
+      <span>⚠️</span>
+      <span><strong>Start slow.</strong> Don't add all of these at once. Begin with the HIGH PRIORITY tier for 2–4 weeks, then add MEDIUM, then LOW. Always check with your doctor, especially if taking any medications.</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔴 HIGH PRIORITY — Start Immediately</div>
+      <div class="supp-grid">
+        <div class="supp-card">
+          <div class="priority-badge p-high">HIGH PRIORITY</div>
+          <div class="supp-name">OMEGA-3 FISH OIL</div>
+          <div class="supp-dose">2–3g EPA+DHA per day (3–4 capsules of standard)</div>
+          <div class="supp-why">The single most impactful supplement for inflammation control. Directly reduces CRP, IL-6, and joint inflammation. Critical for heart health at 50. Reduces post-run soreness when taken consistently.</div>
+          <div class="supp-timing">⏰ Take with breakfast (fat in the meal increases absorption)</div>
+        </div>
+        <div class="supp-card">
+          <div class="priority-badge p-high">HIGH PRIORITY</div>
+          <div class="supp-name">VITAMIN D3 + K2</div>
+          <div class="supp-dose">5,000 IU D3 + 100–200 mcg K2 MK-7</div>
+          <div class="supp-why">80% of Americans are deficient. D3 deficiency causes fatigue, muscle weakness, depression, bone loss, and elevated inflammatory markers. K2 directs calcium to bones not arteries. Synergistic pair — never take D3 without K2.</div>
+          <div class="supp-timing">⏰ Take with morning meal that contains fat</div>
+        </div>
+        <div class="supp-card">
+          <div class="priority-badge p-high">HIGH PRIORITY</div>
+          <div class="supp-name">MAGNESIUM GLYCINATE</div>
+          <div class="supp-dose">300–400mg elemental magnesium at night</div>
+          <div class="supp-why">Runners are especially prone to magnesium depletion (lost in sweat). Magnesium is involved in 300+ enzymatic reactions. Deficiency causes muscle cramps, poor sleep, anxiety, and cardiovascular risk. Glycinate form is best absorbed and gentlest on stomach.</div>
+          <div class="supp-timing">⏰ 30–60 min before bed (promotes deep sleep)</div>
+        </div>
+        <div class="supp-card">
+          <div class="priority-badge p-high">HIGH PRIORITY</div>
+          <div class="supp-name">COLLAGEN PEPTIDES</div>
+          <div class="supp-dose">10–15g per day + 500mg Vitamin C</div>
+          <div class="supp-why">At 50, collagen synthesis drops ~50% from peak. Collagen is the main protein in tendons, ligaments, and cartilage. Running puts enormous stress on joints. Taken with vitamin C, collagen synthesis increases 3–4× (proven by Stanford research). Best insurance for injury prevention.</div>
+          <div class="supp-timing">⏰ Take 30–60 min BEFORE exercise or post-run</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🟡 MEDIUM PRIORITY — Add at Week 3–4</div>
+      <div class="supp-grid">
+        <div class="supp-card">
+          <div class="priority-badge p-med">MEDIUM PRIORITY</div>
+          <div class="supp-name">TURMERIC / CURCUMIN</div>
+          <div class="supp-dose">500–1000mg curcumin with 5–10mg piperine (black pepper)</div>
+          <div class="supp-why">Curcumin is as effective as ibuprofen for joint pain and inflammation in multiple studies — without the gut damage. Piperine (black pepper extract) increases absorption by 2,000%. Take with fat for better uptake.</div>
+          <div class="supp-timing">⏰ With lunch or dinner. Post-run on training days</div>
+        </div>
+        <div class="supp-card">
+          <div class="priority-badge p-med">MEDIUM PRIORITY</div>
+          <div class="supp-name">COENZYME Q10 (CoQ10)</div>
+          <div class="supp-dose">100–200mg ubiquinol form (not ubiquinone)</div>
+          <div class="supp-why">CoQ10 is critical for mitochondrial energy production. Levels decline significantly after 40. At 50, supplementing CoQ10 improves exercise performance, reduces fatigue, and has strong cardiovascular benefits. Ubiquinol is the active, pre-converted form — worth paying more for.</div>
+          <div class="supp-timing">⏰ Take with morning meal containing fat</div>
+        </div>
+        <div class="supp-card">
+          <div class="priority-badge p-med">MEDIUM PRIORITY</div>
+          <div class="supp-name">TART CHERRY EXTRACT</div>
+          <div class="supp-dose">480mg concentrate or 8–12 oz juice (no sugar added)</div>
+          <div class="supp-why">One of the best-studied natural recovery aids for runners. Significantly reduces post-run muscle soreness (DOMS), speeds recovery, and improves sleep quality due to natural melatonin content. Used by professional marathon runners.</div>
+          <div class="supp-timing">⏰ Post-run and/or before bed on training days</div>
+        </div>
+        <div class="supp-card">
+          <div class="priority-badge p-med">MEDIUM PRIORITY</div>
+          <div class="supp-name">ZINC + COPPER</div>
+          <div class="supp-dose">15–25mg zinc + 1–2mg copper (always pair them)</div>
+          <div class="supp-why">Zinc supports testosterone production (important at 50), immune function, and wound healing. Runners deplete zinc in sweat. Copper must be taken with zinc to maintain proper ratio — never supplement zinc alone long-term.</div>
+          <div class="supp-timing">⏰ Take with dinner (zinc on empty stomach can cause nausea)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔵 LOWER PRIORITY / OPTIONAL — Add in Month 2+</div>
+      <div class="supp-grid">
+        <div class="supp-card">
+          <div class="priority-badge p-low">OPTIONAL</div>
+          <div class="supp-name">PROBIOTICS</div>
+          <div class="supp-dose">10–50 billion CFU, multi-strain</div>
+          <div class="supp-why">Gut health is directly linked to systemic inflammation. A healthy microbiome reduces inflammatory cytokines, improves nutrient absorption (including magnesium and zinc), and supports immune function. Look for Lactobacillus and Bifidobacterium strains.</div>
+          <div class="supp-timing">⏰ Morning on empty stomach or with breakfast</div>
+        </div>
+        <div class="supp-card">
+          <div class="priority-badge p-low">OPTIONAL</div>
+          <div class="supp-name">CREATINE MONOHYDRATE</div>
+          <div class="supp-dose">3–5g daily (no loading phase needed)</div>
+          <div class="supp-why">Emerging research strongly supports creatine at 50+ for maintaining muscle mass, cognitive function, and bone density. Not just for bodybuilders — it's one of the most researched and safest supplements. Offsets age-related muscle and strength loss.</div>
+          <div class="supp-timing">⏰ Any time — consistency matters more than timing</div>
+        </div>
+        <div class="supp-card">
+          <div class="priority-badge p-low">OPTIONAL</div>
+          <div class="supp-name">ASHWAGANDHA (KSM-66)</div>
+          <div class="supp-dose">300–600mg KSM-66 extract</div>
+          <div class="supp-why">Adaptogen that reduces cortisol, supports testosterone levels, improves recovery, and reduces exercise-induced inflammation. Particularly useful for athletes training under high stress loads (like 6–8 hr runs).</div>
+          <div class="supp-timing">⏰ Evening with dinner for best cortisol-lowering effect</div>
+        </div>
+        <div class="supp-card">
+          <div class="priority-badge p-low">OPTIONAL</div>
+          <div class="supp-name">B-COMPLEX</div>
+          <div class="supp-dose">Full B-Complex (B12 as methylcobalamin)</div>
+          <div class="supp-why">B12 absorption declines with age. B vitamins are cofactors for energy metabolism, nerve function, and homocysteine regulation (cardiovascular marker). Particularly important if diet is not heavily varied. Methylcobalamin form is better absorbed.</div>
+          <div class="supp-timing">⏰ Morning with breakfast</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📋 DAILY SUPPLEMENT TIMING SUMMARY</div>
+      <div style="overflow-x:auto;">
+        <table class="swap-table">
+          <thead>
+            <tr><th>TIME</th><th>SUPPLEMENT</th><th>DOSE</th><th>WITH / WITHOUT FOOD</th></tr>
+          </thead>
+          <tbody>
+            <tr><td style="color:var(--green);font-family:var(--mono-font);font-size:0.75rem;">6:00 AM</td><td>Collagen Peptides (in shake)</td><td>10–15g</td><td class="why">With protein shake</td></tr>
+            <tr><td style="color:var(--green);font-family:var(--mono-font);font-size:0.75rem;">Breakfast</td><td>Fish Oil (Omega-3)</td><td>2–3g EPA+DHA</td><td class="why">With fat-containing meal</td></tr>
+            <tr><td style="color:var(--green);font-family:var(--mono-font);font-size:0.75rem;">Breakfast</td><td>Vitamin D3 (5,000 IU) + K2</td><td>5000 IU / 100mcg</td><td class="why">With fat-containing meal</td></tr>
+            <tr><td style="color:var(--green);font-family:var(--mono-font);font-size:0.75rem;">Breakfast</td><td>CoQ10 (Ubiquinol)</td><td>100–200mg</td><td class="why">With fat-containing meal</td></tr>
+            <tr><td style="color:var(--orange);font-family:var(--mono-font);font-size:0.75rem;">Lunch/Dinner</td><td>Turmeric/Curcumin + Piperine</td><td>500–1000mg</td><td class="why">With meal containing fat</td></tr>
+            <tr><td style="color:var(--orange);font-family:var(--mono-font);font-size:0.75rem;">Dinner</td><td>Zinc + Copper</td><td>15–25mg / 1–2mg</td><td class="why">With dinner (not empty stomach)</td></tr>
+            <tr><td style="color:var(--blue);font-family:var(--mono-font);font-size:0.75rem;">Pre-Bed</td><td>Magnesium Glycinate</td><td>300–400mg</td><td class="why">30–60 min before sleep</td></tr>
+            <tr><td style="color:var(--blue);font-family:var(--mono-font);font-size:0.75rem;">Post-Run</td><td>Tart Cherry Juice/Extract</td><td>8–12 oz or 480mg</td><td class="why">After runs + optionally before bed</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB: CORE & SPINE ===== -->
+  <div id="tab-core" class="tab-content">
+    <div class="section-title">CORE & SPINE PROTOCOL</div>
+    <div class="section-sub">Daily spine strengthening — the most important 15–20 minutes of your day for long-term health and running performance.</div>
+
+    <div class="alert alert-green">
+      <span>🦴</span>
+      <span><strong>Why this matters at 50:</strong> The spine is the central highway of the body. Weak spinal stabilizers are the root cause of most back pain, running inefficiency, and injury risk. The exercises below are chosen specifically because they build deep stabilizers — not superficial "six pack" muscles — which actually protect the spine under load.</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🥇 THE McGILL BIG 3 — Do These Every Day No Matter What</div>
+      <div class="exercise-grid">
+        <div class="exercise-card">
+          <div class="ex-tag ex-spine">Spine Protection</div>
+          <div class="ex-name">1. Modified Curl-Up</div>
+          <div class="ex-sets">3 sets × 10 reps — 8-second holds</div>
+          <div class="ex-how">Lie on back, one knee bent, one leg straight. Hands under lower back (maintains neutral curve). Lift only head and shoulders — NOT a crunch. Hold 8 sec. Never flatten your back to the floor. This protects lumbar discs while training anterior core stabilizers.</div>
+        </div>
+        <div class="exercise-card">
+          <div class="ex-tag ex-spine">Spine Protection</div>
+          <div class="ex-name">2. Bird Dog</div>
+          <div class="ex-sets">3 sets × 8 reps each side — 8-second holds</div>
+          <div class="ex-how">On hands and knees, spine neutral. Simultaneously extend one arm forward and opposite leg back. Do NOT rotate hips. Hold 8 sec, return slowly, sweep floor on way back in. The spine stabilization demand here is enormous. This is the king of back exercises.</div>
+        </div>
+        <div class="exercise-card">
+          <div class="ex-tag ex-spine">Spine Protection</div>
+          <div class="ex-name">3. Side Plank</div>
+          <div class="ex-sets">3 sets × 20–30 sec each side</div>
+          <div class="ex-how">Forearm side plank, body in straight line. Modified version: knees bent (start here). Standard: legs straight. The quadratus lumborum (QL) — the deep lateral stabilizer — is trained here. QL weakness is a primary cause of lower back pain and running asymmetry.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💪 FOUNDATION EXERCISES — 3–4 Times Per Week</div>
+      <div class="exercise-grid">
+        <div class="exercise-card">
+          <div class="ex-tag ex-core">Core</div>
+          <div class="ex-name">Dead Bug</div>
+          <div class="ex-sets">3 sets × 8 reps each side</div>
+          <div class="ex-how">Lie on back, arms up, knees bent 90°. Brace core and PRESS low back into floor. Lower opposite arm/leg toward floor simultaneously — stop before back lifts. Return. This teaches anti-extension core stability and trains transverse abdominis (the "inner core belt").</div>
+        </div>
+        <div class="exercise-card">
+          <div class="ex-tag ex-core">Core + Glutes</div>
+          <div class="ex-name">Glute Bridge + Hold</div>
+          <div class="ex-sets">3 sets × 15 reps + 3 × 30-sec holds</div>
+          <div class="ex-how">Lie on back, feet flat. Drive hips up squeezing glutes hard at top. Hold 3 sec, lower slow. Weak glutes = lower back overload. This is non-negotiable. Progress to single-leg bridge when ready. Add resistance band above knees for extra activation.</div>
+        </div>
+        <div class="exercise-card">
+          <div class="ex-tag ex-core">Anti-Rotation</div>
+          <div class="ex-name">Pallof Press (Band or Cable)</div>
+          <div class="ex-sets">3 sets × 10 reps each side</div>
+          <div class="ex-how">Stand side-on to anchor point with band. Press band straight out from chest, hold 2 sec, return. The key: resist rotation of your trunk. Trains deep oblique stabilizers that protect the spine during the rotational forces of running. Use a doorframe with band.</div>
+        </div>
+        <div class="exercise-card">
+          <div class="ex-tag ex-spine">Spine Decompression</div>
+          <div class="ex-name">Cat-Cow + Thoracic Rotation</div>
+          <div class="ex-sets">2 × 10 each, both daily</div>
+          <div class="ex-how">Cat-cow: slow, full range, breathe fully. Thoracic rotation: from all-fours, place one hand behind head, rotate elbow to ceiling. Opens thoracic spine — critical for runners who get stiff in the mid-back from forward-leaning posture. Do EVERY morning.</div>
+        </div>
+        <div class="exercise-card">
+          <div class="ex-tag ex-mobility">Hip Mobility</div>
+          <div class="ex-name">90/90 Hip Stretch</div>
+          <div class="ex-sets">60–90 sec each side, daily</div>
+          <div class="ex-how">Sit with front leg at 90° and back leg at 90° to the side. Sit tall, keep hips level. Lean forward over front shin gently. Addresses both internal and external hip rotation — the most common mobility deficit in runners over 40. Tight hips = back pain.</div>
+        </div>
+        <div class="exercise-card">
+          <div class="ex-tag ex-mobility">Flexibility</div>
+          <div class="ex-name">Half-Kneeling Hip Flexor Stretch</div>
+          <div class="ex-sets">90 sec each side, daily</div>
+          <div class="ex-how">Kneel on one knee (pad it). Drive hips forward gently, squeeze rear glute to increase stretch. The psoas (deep hip flexor) attaches directly to lumbar vertebrae — when tight it pulls the spine into extension and creates chronic low back pain. This is urgent.</div>
+        </div>
+        <div class="exercise-card">
+          <div class="ex-tag ex-spine">Spinal Extension</div>
+          <div class="ex-name">Superman Hold</div>
+          <div class="ex-sets">3 sets × 10 reps × 5-sec hold</div>
+          <div class="ex-how">Lie face down. Simultaneously lift arms, chest, and legs off floor. Hold 5 sec, lower slowly. Trains erector spinae and multifidus — the deep spinal extensors that maintain upright posture during long runs. Essential counter to the forward-lean running posture.</div>
+        </div>
+        <div class="exercise-card">
+          <div class="ex-tag ex-core">Balance + Core</div>
+          <div class="ex-name">Single Leg Stand (Eyes Closed)</div>
+          <div class="ex-sets">3 × 30 sec each leg</div>
+          <div class="ex-how">Stand on one leg, micro-bend the knee. Progress to eyes closed. This seems too easy — it isn't. Single-leg proprioception declines rapidly after 40. Poor balance = running injury. Closing eyes dramatically increases the neurological challenge to stabilizing muscles.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📅 WEEKLY CORE SCHEDULE</div>
+      <div style="overflow-x:auto;">
+        <table class="swap-table">
+          <thead>
+            <tr><th>DAY</th><th>McGILL BIG 3</th><th>FOUNDATION EXERCISES</th><th>MOBILITY</th><th>TOTAL TIME</th></tr>
+          </thead>
+          <tbody>
+            <tr><td style="color:var(--text)">Monday</td><td class="new">✅ All 3</td><td class="new">Dead Bug + Glute Bridge + Superman</td><td class="new">Cat-Cow + Hip Flexor</td><td style="color:var(--blue)">~18 min</td></tr>
+            <tr><td style="color:var(--orange)">Tuesday (RUN)</td><td class="new">✅ All 3 (pre-run)</td><td style="color:var(--text-muted)">Skip heavy work on run days</td><td class="new">Cat-Cow + 90/90 Hip</td><td style="color:var(--blue)">~10 min</td></tr>
+            <tr><td style="color:var(--text)">Wednesday</td><td class="new">✅ All 3</td><td class="new">Pallof Press + Single Leg + Glute Bridge</td><td class="new">Thoracic Rotation + Hip Flexor</td><td style="color:var(--blue)">~20 min</td></tr>
+            <tr><td style="color:var(--orange)">Thursday (RUN)</td><td class="new">✅ All 3 (pre-run)</td><td style="color:var(--text-muted)">Skip — run is the load</td><td class="new">Cat-Cow + Hip Circles</td><td style="color:var(--blue)">~10 min</td></tr>
+            <tr><td style="color:var(--text)">Friday</td><td class="new">✅ All 3</td><td class="new">Full circuit — all 8 exercises</td><td class="new">Full hip mobility sequence</td><td style="color:var(--blue)">~22 min</td></tr>
+            <tr><td style="color:var(--red)">Saturday/Sunday (LONG RUN)</td><td class="new">Pre-run: Cat-Cow only</td><td style="color:var(--text-muted)">Skip — too much systemic load</td><td class="new">Post-run foam roll + stretching</td><td style="color:var(--blue)">~10 min</td></tr>
+            <tr><td style="color:var(--text)">Recovery Day</td><td class="new">✅ Gentle Big 3</td><td style="color:var(--text-muted)">Light only if feeling good</td><td class="new">Full mobility focus, foam rolling</td><td style="color:var(--blue)">~15 min</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB: CALENDAR ===== -->
+  <div id="tab-calendar" class="tab-content">
+    <div class="section-title">8-WEEK PROGRAM CALENDAR</div>
+    <div class="section-sub">Your complete roadmap — every day mapped out. Follow this and look back at individual tabs for details on each component.</div>
+
+    <div class="alert alert-blue">
+      <span>📌</span>
+      <span><strong>How to use this calendar:</strong> Each day shows your key priorities. Green = core/exercise. Orange = run day. Blue = rest/recovery. Yellow = nutrition focus. Purple = supplement reminder. Run days always show pre/post fueling reminders.</span>
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+      <span class="badge" style="border-color:rgba(240,136,62,0.4);color:var(--orange);">🏃 Run Day</span>
+      <span class="badge" style="border-color:rgba(63,185,80,0.4);color:var(--green);">💪 Core Work</span>
+      <span class="badge" style="border-color:rgba(88,166,255,0.4);color:var(--blue);">🌊 Rest/Recovery</span>
+      <span class="badge" style="border-color:rgba(188,140,255,0.4);color:var(--purple);">💊 Supp Check</span>
+      <span class="badge" style="border-color:rgba(210,153,34,0.4);color:var(--yellow);">🥗 Nutrition Focus</span>
+    </div>
+
+    <div class="cal-container">
+
+      <!-- WEEK 1 -->
+      <div class="cal-week">
+        <div class="cal-week-label">WEEK 1 <span>FOUNDATION — Establish Baseline</span></div>
+        <div class="cal-grid">
+          <div class="cal-day-header">MON</div><div class="cal-day-header">TUE</div><div class="cal-day-header">WED</div><div class="cal-day-header">THU</div><div class="cal-day-header">FRI</div><div class="cal-day-header">SAT</div><div class="cal-day-header">SUN</div>
+          <div class="cal-day">
+            <div class="day-num">Day 1</div>
+            <div class="cal-event ev-core">💪 McGill Big 3</div>
+            <div class="cal-event ev-core">🐱 Cat-Cow + Hip Flex</div>
+            <div class="cal-event ev-supp">💊 Start Fish Oil + D3</div>
+            <div class="cal-event ev-food">🥗 EVOO dressing swap</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 2 — RUN (Short)</div>
+            <div class="cal-event ev-run">🏃 3–4 hr Run</div>
+            <div class="cal-event ev-food">🍌 Pre-run: Banana + AB</div>
+            <div class="cal-event ev-core">💪 Big 3 pre-run</div>
+            <div class="cal-event ev-food">🥤 Post-run: shake + cherry</div>
+          </div>
+          <div class="cal-day">
+            <div class="day-num">Day 3</div>
+            <div class="cal-event ev-core">💪 McGill Big 3</div>
+            <div class="cal-event ev-core">💪 Dead Bug + Glute Bridge</div>
+            <div class="cal-event ev-food">🥗 Walnut/almond swap</div>
+            <div class="cal-event ev-supp">💊 Mag Glycinate PM</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 4 — RUN (Short)</div>
+            <div class="cal-event ev-run">🏃 3–4 hr Run</div>
+            <div class="cal-event ev-food">🍌 Pre-run fuel</div>
+            <div class="cal-event ev-core">💪 Big 3 pre-run</div>
+            <div class="cal-event ev-food">🥤 Post-run recovery</div>
+          </div>
+          <div class="cal-day">
+            <div class="day-num">Day 5</div>
+            <div class="cal-event ev-core">💪 Full Core Circuit</div>
+            <div class="cal-event ev-core">🧘 Full hip mobility</div>
+            <div class="cal-event ev-food">🥗 Try collagen in shake</div>
+            <div class="cal-event ev-supp">💊 All supps check</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 6 — LONG RUN</div>
+            <div class="cal-event ev-food">🍚 Night before carb load</div>
+            <div class="cal-event ev-run">🏃 6–8 hr Long Run</div>
+            <div class="cal-event ev-food">🧂 Hourly fueling</div>
+            <div class="cal-event ev-rest">🌊 Full recovery PM</div>
+          </div>
+          <div class="cal-day rest-day">
+            <div class="day-num">Day 7 — RECOVERY</div>
+            <div class="cal-event ev-rest">🌊 Complete Rest</div>
+            <div class="cal-event ev-core">🧘 Gentle stretching</div>
+            <div class="cal-event ev-food">🐟 Salmon + vegs dinner</div>
+            <div class="cal-event ev-supp">💊 Anti-inflam foods</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEEK 2 -->
+      <div class="cal-week">
+        <div class="cal-week-label">WEEK 2 <span>FOUNDATION — Solidify Routine</span></div>
+        <div class="cal-grid">
+          <div class="cal-day-header">MON</div><div class="cal-day-header">TUE</div><div class="cal-day-header">WED</div><div class="cal-day-header">THU</div><div class="cal-day-header">FRI</div><div class="cal-day-header">SAT</div><div class="cal-day-header">SUN</div>
+          <div class="cal-day">
+            <div class="day-num">Day 8</div>
+            <div class="cal-event ev-core">💪 McGill Big 3</div>
+            <div class="cal-event ev-core">🦅 Bird Dog focus</div>
+            <div class="cal-event ev-food">🥗 Greek yogurt swap try</div>
+            <div class="cal-event ev-supp">💊 Morning supps ✓</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 9 — RUN (Short)</div>
+            <div class="cal-event ev-run">🏃 3–4 hr Run</div>
+            <div class="cal-event ev-food">🍌 Pre: oats + banana</div>
+            <div class="cal-event ev-core">💪 Big 3 pre-run</div>
+            <div class="cal-event ev-food">🥤 Post: protein + carbs</div>
+          </div>
+          <div class="cal-day">
+            <div class="day-num">Day 10</div>
+            <div class="cal-event ev-core">💪 McGill Big 3</div>
+            <div class="cal-event ev-core">💪 Pallof Press + SL Stand</div>
+            <div class="cal-event ev-food">🧄 EVOO + garlic dressing</div>
+            <div class="cal-event ev-supp">💊 Turmeric: add this week</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 11 — RUN (Short)</div>
+            <div class="cal-event ev-run">🏃 3–4 hr Run</div>
+            <div class="cal-event ev-food">🍌 Pre-run fuel ✓</div>
+            <div class="cal-event ev-core">💪 Big 3 pre-run</div>
+            <div class="cal-event ev-food">🍒 Tart cherry post-run</div>
+          </div>
+          <div class="cal-day">
+            <div class="day-num">Day 12</div>
+            <div class="cal-event ev-core">💪 Full Core Circuit</div>
+            <div class="cal-event ev-core">🏃 Superman holds</div>
+            <div class="cal-event ev-food">🐟 Plan salmon dinner</div>
+            <div class="cal-event ev-supp">💊 Check supplement stack</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 13 — LONG RUN</div>
+            <div class="cal-event ev-food">🍚 Carb load Friday PM</div>
+            <div class="cal-event ev-run">🏃 6–8 hr Long Run</div>
+            <div class="cal-event ev-food">⏱️ Every 45 min: eat!</div>
+            <div class="cal-event ev-rest">🌊 Ice/cold shower PM</div>
+          </div>
+          <div class="cal-day rest-day">
+            <div class="day-num">Day 14 — RECOVERY</div>
+            <div class="cal-event ev-rest">🌊 Active Recovery</div>
+            <div class="cal-event ev-core">🧘 Foam roll + stretch</div>
+            <div class="cal-event ev-food">🥗 High protein day</div>
+            <div class="cal-event ev-supp">💊 Mag glycinate PM</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEEK 3 -->
+      <div class="cal-week">
+        <div class="cal-week-label">WEEK 3 <span>BUILD — Increase Core Volume</span></div>
+        <div class="cal-grid">
+          <div class="cal-day-header">MON</div><div class="cal-day-header">TUE</div><div class="cal-day-header">WED</div><div class="cal-day-header">THU</div><div class="cal-day-header">FRI</div><div class="cal-day-header">SAT</div><div class="cal-day-header">SUN</div>
+          <div class="cal-day">
+            <div class="day-num">Day 15</div>
+            <div class="cal-event ev-core">💪 Big 3 + Dead Bug</div>
+            <div class="cal-event ev-core">🦋 90/90 hip stretch</div>
+            <div class="cal-event ev-food">🫐 Upgrade to tart cherry mix</div>
+            <div class="cal-event ev-supp">💊 CoQ10: add this week</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 16 — RUN (Short)</div>
+            <div class="cal-event ev-run">🏃 3–4 hr Run</div>
+            <div class="cal-event ev-food">🍌 Pre-run: oats</div>
+            <div class="cal-event ev-core">💪 Big 3 pre-run</div>
+            <div class="cal-event ev-food">🥤 Post: collagen + Vit C</div>
+          </div>
+          <div class="cal-day">
+            <div class="day-num">Day 17</div>
+            <div class="cal-event ev-core">💪 Full circuit (all 8)</div>
+            <div class="cal-event ev-core">🧘 Thoracic rotation</div>
+            <div class="cal-event ev-food">🐟 Salmon dinner night</div>
+            <div class="cal-event ev-supp">💊 Mid-week check-in</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 18 — RUN (Short)</div>
+            <div class="cal-event ev-run">🏃 3–4 hr Run</div>
+            <div class="cal-event ev-food">🍌 Pre-run fuel</div>
+            <div class="cal-event ev-core">💪 Big 3 pre-run</div>
+            <div class="cal-event ev-food">🥤 Post recovery ✓</div>
+          </div>
+          <div class="cal-day">
+            <div class="day-num">Day 19</div>
+            <div class="cal-event ev-core">💪 Big 3 + Pallof Press</div>
+            <div class="cal-event ev-core">💪 Glute Bridge single leg</div>
+            <div class="cal-event ev-food">🥗 Full anti-inflam day</div>
+            <div class="cal-event ev-supp">💊 Pre-long run prep</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 20 — LONG RUN</div>
+            <div class="cal-event ev-food">🍚 Carb load ✓</div>
+            <div class="cal-event ev-run">🏃 6–8 hr Long Run</div>
+            <div class="cal-event ev-food">🧂 Electrolytes every hr</div>
+            <div class="cal-event ev-rest">🌊 Recovery protocol PM</div>
+          </div>
+          <div class="cal-day rest-day">
+            <div class="day-num">Day 21 — RECOVERY</div>
+            <div class="cal-event ev-rest">🌊 Rest Day</div>
+            <div class="cal-event ev-core">🧘 Gentle yoga/stretch</div>
+            <div class="cal-event ev-food">🍒 Tart cherry morning</div>
+            <div class="cal-event ev-supp">💊 Anti-inflam meals</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEEK 4 -->
+      <div class="cal-week">
+        <div class="cal-week-label">WEEK 4 <span>DELOAD — Recover & Assess Progress</span></div>
+        <div class="cal-grid">
+          <div class="cal-day-header">MON</div><div class="cal-day-header">TUE</div><div class="cal-day-header">WED</div><div class="cal-day-header">THU</div><div class="cal-day-header">FRI</div><div class="cal-day-header">SAT</div><div class="cal-day-header">SUN</div>
+          <div class="cal-day">
+            <div class="day-num">Day 22</div>
+            <div class="cal-event ev-core">💪 Big 3 (lighter)</div>
+            <div class="cal-event ev-rest">🌊 Deload week</div>
+            <div class="cal-event ev-food">🥗 Anti-inflam focus</div>
+            <div class="cal-event ev-supp">💊 Supps consistent</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 23 — RUN (Easy)</div>
+            <div class="cal-event ev-run">🏃 2–3 hr Easy Pace</div>
+            <div class="cal-event ev-food">🍌 Light pre-run fuel</div>
+            <div class="cal-event ev-core">💪 Big 3 only</div>
+            <div class="cal-event ev-food">🥤 Post recovery ✓</div>
+          </div>
+          <div class="cal-day">
+            <div class="day-num">Day 24</div>
+            <div class="cal-event ev-core">💪 Big 3 + mobility</div>
+            <div class="cal-event ev-rest">🌊 Active recovery</div>
+            <div class="cal-event ev-food">🐟 High omega-3 day</div>
+            <div class="cal-event ev-supp">💊 Check how you feel</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 25 — RUN (Easy)</div>
+            <div class="cal-event ev-run">🏃 2–3 hr Easy Pace</div>
+            <div class="cal-event ev-food">🍌 Pre-run fuel</div>
+            <div class="cal-event ev-core">💪 Big 3 only</div>
+            <div class="cal-event ev-food">🥤 Post recovery ✓</div>
+          </div>
+          <div class="cal-day">
+            <div class="day-num">Day 26</div>
+            <div class="cal-event ev-rest">🌊 Rest / Foam Roll</div>
+            <div class="cal-event ev-core">🧘 Hip mobility focus</div>
+            <div class="cal-event ev-food">📊 Review diet swaps made</div>
+            <div class="cal-event ev-supp">💊 Month 1 assessment</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 27 — MOD LONG RUN</div>
+            <div class="cal-event ev-food">🍚 Carb load ✓</div>
+            <div class="cal-event ev-run">🏃 4–5 hr Run (reduced)</div>
+            <div class="cal-event ev-food">🧂 Fuel every 45 min</div>
+            <div class="cal-event ev-rest">🌊 Recovery protocol</div>
+          </div>
+          <div class="cal-day rest-day">
+            <div class="day-num">Day 28 — REST</div>
+            <div class="cal-event ev-rest">🌊 Full Rest Day</div>
+            <div class="cal-event ev-core">🧘 Light stretch only</div>
+            <div class="cal-event ev-food">🥗 Gut-rest eating</div>
+            <div class="cal-event ev-supp">💊 Plan Month 2 adds</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEEK 5 -->
+      <div class="cal-week">
+        <div class="cal-week-label">WEEK 5 <span>MONTH 2 — Add Phase 2 Morning Routine + New Supps</span></div>
+        <div class="cal-grid">
+          <div class="cal-day-header">MON</div><div class="cal-day-header">TUE</div><div class="cal-day-header">WED</div><div class="cal-day-header">THU</div><div class="cal-day-header">FRI</div><div class="cal-day-header">SAT</div><div class="cal-day-header">SUN</div>
+          <div class="cal-day">
+            <div class="day-num">Day 29</div>
+            <div class="cal-event ev-core">💪 Big 3 + Full Circuit</div>
+            <div class="cal-event ev-supp">🧊 Start cold shower ends</div>
+            <div class="cal-event ev-food">🥗 Add probiotic today</div>
+            <div class="cal-event ev-supp">💊 Full supplement stack</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 30 — RUN (Short)</div>
+            <div class="cal-event ev-run">🏃 3–4 hr Run</div>
+            <div class="cal-event ev-food">🍌 Pre-run fuel</div>
+            <div class="cal-event ev-core">💪 Big 3 pre-run</div>
+            <div class="cal-event ev-food">🥤 Full recovery protocol</div>
+          </div>
+          <div class="cal-day">
+            <div class="day-num">Day 31</div>
+            <div class="cal-event ev-core">💪 Big 3 + Glute work</div>
+            <div class="cal-event ev-core">☀️ 10 min morning sun</div>
+            <div class="cal-event ev-food">🐟 Salmon dinner ✓</div>
+            <div class="cal-event ev-supp">💊 Zinc + Copper start</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 32 — RUN (Short)</div>
+            <div class="cal-event ev-run">🏃 3–4 hr Run</div>
+            <div class="cal-event ev-food">🍌 Pre-run fuel</div>
+            <div class="cal-event ev-core">💪 Big 3 pre-run</div>
+            <div class="cal-event ev-food">🥤 Post recovery ✓</div>
+          </div>
+          <div class="cal-day">
+            <div class="day-num">Day 33</div>
+            <div class="cal-event ev-core">💪 Full Circuit</div>
+            <div class="cal-event ev-core">🧘 Full hip mobility</div>
+            <div class="cal-event ev-food">🥗 Assess energy levels</div>
+            <div class="cal-event ev-supp">💊 Creatine — consider</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 34 — LONG RUN</div>
+            <div class="cal-event ev-food">🍚 Full carb load</div>
+            <div class="cal-event ev-run">🏃 6–8 hr Long Run</div>
+            <div class="cal-event ev-food">⏱️ Fueling every 45 min</div>
+            <div class="cal-event ev-rest">🌊 Full recovery PM</div>
+          </div>
+          <div class="cal-day rest-day">
+            <div class="day-num">Day 35 — RECOVERY</div>
+            <div class="cal-event ev-rest">🌊 Rest Day</div>
+            <div class="cal-event ev-core">🧘 Foam roll + stretch</div>
+            <div class="cal-event ev-food">🍒 Tart cherry AM</div>
+            <div class="cal-event ev-supp">💊 Recovery nutrition</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEEK 6 -->
+      <div class="cal-week">
+        <div class="cal-week-label">WEEK 6 <span>STRENGTH — Push Core Volume Up</span></div>
+        <div class="cal-grid">
+          <div class="cal-day-header">MON</div><div class="cal-day-header">TUE</div><div class="cal-day-header">WED</div><div class="cal-day-header">THU</div><div class="cal-day-header">FRI</div><div class="cal-day-header">SAT</div><div class="cal-day-header">SUN</div>
+          <div class="cal-day">
+            <div class="day-num">Day 36</div>
+            <div class="cal-event ev-core">💪 Big 3 (add reps)</div>
+            <div class="cal-event ev-core">💪 SL Bridge + Dead Bug</div>
+            <div class="cal-event ev-food">🥗 Gut check — feeling better?</div>
+            <div class="cal-event ev-supp">💊 All supps consistent</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 37 — RUN (Short)</div>
+            <div class="cal-event ev-run">🏃 3–4 hr Run</div>
+            <div class="cal-event ev-food">🍌 Pre-run fuel ✓</div>
+            <div class="cal-event ev-core">💪 Big 3 pre-run</div>
+            <div class="cal-event ev-food">🥤 Post: cherry + protein</div>
+          </div>
+          <div class="cal-day">
+            <div class="day-num">Day 38</div>
+            <div class="cal-event ev-core">💪 Full Circuit + holds</div>
+            <div class="cal-event ev-core">🦋 Advanced hip mobility</div>
+            <div class="cal-event ev-food">🐟 Omega-3 rich day</div>
+            <div class="cal-event ev-supp">💊 Evening Ashwagandha try</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 39 — RUN (Short)</div>
+            <div class="cal-event ev-run">🏃 3–4 hr Run</div>
+            <div class="cal-event ev-food">🍌 Pre-run oats</div>
+            <div class="cal-event ev-core">💪 Big 3 pre-run</div>
+            <div class="cal-event ev-food">🥤 Post recovery ✓</div>
+          </div>
+          <div class="cal-day">
+            <div class="day-num">Day 40</div>
+            <div class="cal-event ev-core">💪 Big 3 + Full Circuit</div>
+            <div class="cal-event ev-supp">🧊 Cold shower up to 90s</div>
+            <div class="cal-event ev-food">🥗 Anti-inflam week review</div>
+            <div class="cal-event ev-food">🍚 Prep for long run</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 41 — LONG RUN</div>
+            <div class="cal-event ev-food">🍚 Carb load + hydrate</div>
+            <div class="cal-event ev-run">🏃 6–8 hr Long Run</div>
+            <div class="cal-event ev-food">⏱️ Real food after hr 3</div>
+            <div class="cal-event ev-rest">🌊 Full recovery PM</div>
+          </div>
+          <div class="cal-day rest-day">
+            <div class="day-num">Day 42 — REST</div>
+            <div class="cal-event ev-rest">🌊 Rest / Walk only</div>
+            <div class="cal-event ev-core">🧘 Gentle stretch</div>
+            <div class="cal-event ev-food">🐟 Anti-inflam meals</div>
+            <div class="cal-event ev-supp">💊 Sleep quality check</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEEK 7 -->
+      <div class="cal-week">
+        <div class="cal-week-label">WEEK 7 <span>PEAK — Strongest Training Week</span></div>
+        <div class="cal-grid">
+          <div class="cal-day-header">MON</div><div class="cal-day-header">TUE</div><div class="cal-day-header">WED</div><div class="cal-day-header">THU</div><div class="cal-day-header">FRI</div><div class="cal-day-header">SAT</div><div class="cal-day-header">SUN</div>
+          <div class="cal-day">
+            <div class="day-num">Day 43</div>
+            <div class="cal-event ev-core">💪 Big 3 advanced</div>
+            <div class="cal-event ev-core">💪 Full circuit extended</div>
+            <div class="cal-event ev-food">🥗 Peak anti-inflam diet</div>
+            <div class="cal-event ev-supp">💊 Full stack consistent</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 44 — RUN (Short)</div>
+            <div class="cal-event ev-run">🏃 3–4 hr Run</div>
+            <div class="cal-event ev-food">🍌 Pre-run fuel</div>
+            <div class="cal-event ev-core">💪 Big 3 pre-run</div>
+            <div class="cal-event ev-food">🥤 Post: full protocol</div>
+          </div>
+          <div class="cal-day">
+            <div class="day-num">Day 45</div>
+            <div class="cal-event ev-core">💪 Full Circuit Peak</div>
+            <div class="cal-event ev-core">☀️ Full morning routine</div>
+            <div class="cal-event ev-food">🐟 Salmon + kale dinner</div>
+            <div class="cal-event ev-supp">💊 Supps all consistent</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 46 — RUN (Short)</div>
+            <div class="cal-event ev-run">🏃 3–4 hr Run</div>
+            <div class="cal-event ev-food">🍌 Pre-run fuel</div>
+            <div class="cal-event ev-core">💪 Big 3 pre-run</div>
+            <div class="cal-event ev-food">🥤 Cherry + protein</div>
+          </div>
+          <div class="cal-day">
+            <div class="day-num">Day 47</div>
+            <div class="cal-event ev-core">💪 Big 3 + Mobility</div>
+            <div class="cal-event ev-food">🍚 Begin 2-day carb load</div>
+            <div class="cal-event ev-food">💧 Aggressive hydration</div>
+            <div class="cal-event ev-supp">💊 Pre-long run prep</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 48 — PEAK LONG RUN</div>
+            <div class="cal-event ev-run">🏃 6–8 hr Long Run</div>
+            <div class="cal-event ev-food">⏱️ Perfect fueling day</div>
+            <div class="cal-event ev-food">🧂 Electrolytes every hr</div>
+            <div class="cal-event ev-rest">🌊 Full recovery PM</div>
+          </div>
+          <div class="cal-day rest-day">
+            <div class="day-num">Day 49 — REST</div>
+            <div class="cal-event ev-rest">🌊 Complete Rest</div>
+            <div class="cal-event ev-core">🧘 Foam roll + gentle</div>
+            <div class="cal-event ev-food">🍒 Anti-inflam eating</div>
+            <div class="cal-event ev-supp">💊 Prep Week 8</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEEK 8 -->
+      <div class="cal-week">
+        <div class="cal-week-label">WEEK 8 <span>DELOAD + REFLECT — Assess, Adjust, Plan Next Phase</span></div>
+        <div class="cal-grid">
+          <div class="cal-day-header">MON</div><div class="cal-day-header">TUE</div><div class="cal-day-header">WED</div><div class="cal-day-header">THU</div><div class="cal-day-header">FRI</div><div class="cal-day-header">SAT</div><div class="cal-day-header">SUN</div>
+          <div class="cal-day">
+            <div class="day-num">Day 50</div>
+            <div class="cal-event ev-core">💪 Big 3 (easy)</div>
+            <div class="cal-event ev-rest">🌊 Deload week</div>
+            <div class="cal-event ev-food">🥗 Reflect on diet changes</div>
+            <div class="cal-event ev-supp">💊 Assess supplement feel</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 51 — RUN (Easy)</div>
+            <div class="cal-event ev-run">🏃 2 hr Easy</div>
+            <div class="cal-event ev-food">🍌 Light fuel</div>
+            <div class="cal-event ev-core">💪 Big 3 only</div>
+            <div class="cal-event ev-food">🥤 Post recovery ✓</div>
+          </div>
+          <div class="cal-day">
+            <div class="day-num">Day 52</div>
+            <div class="cal-event ev-core">💪 Big 3 + Mobility</div>
+            <div class="cal-event ev-rest">🌊 Body scan: any pains?</div>
+            <div class="cal-event ev-food">🐟 Salmon + turmeric</div>
+            <div class="cal-event ev-supp">💊 8-week supp review</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 53 — RUN (Easy)</div>
+            <div class="cal-event ev-run">🏃 2 hr Easy Pace</div>
+            <div class="cal-event ev-food">🍌 Light pre-run</div>
+            <div class="cal-event ev-core">💪 Big 3 only</div>
+            <div class="cal-event ev-food">🥤 Recovery ✓</div>
+          </div>
+          <div class="cal-day">
+            <div class="day-num">Day 54</div>
+            <div class="cal-event ev-rest">🌊 Rest + Foam Roll</div>
+            <div class="cal-event ev-core">🧘 Full mobility session</div>
+            <div class="cal-event ev-food">📊 Log how you feel vs Day 1</div>
+            <div class="cal-event ev-supp">💊 Plan next 8 weeks</div>
+          </div>
+          <div class="cal-day run-day">
+            <div class="day-num">Day 55 — MOD LONG</div>
+            <div class="cal-event ev-food">🍚 Moderate carb load</div>
+            <div class="cal-event ev-run">🏃 4 hr Run (reduced)</div>
+            <div class="cal-event ev-food">⏱️ Fuel as normal</div>
+            <div class="cal-event ev-rest">🌊 Recovery protocol</div>
+          </div>
+          <div class="cal-day rest-day">
+            <div class="day-num">Day 56 — COMPLETE</div>
+            <div class="cal-event ev-rest">🎯 8 WEEKS DONE</div>
+            <div class="cal-event ev-core">🧘 Celebrate + Reflect</div>
+            <div class="cal-event ev-food">🥗 Plan continues daily</div>
+            <div class="cal-event ev-supp">💊 Routines are now habits</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+      <div class="card-title">🎯 WHAT SUCCESS LOOKS LIKE AT 8 WEEKS</div>
+      <div class="grid-3">
+        <div>
+          <div style="font-weight:700;color:var(--green);margin-bottom:8px;font-size:0.9rem;">🟢 ENERGY & RECOVERY</div>
+          <ul style="list-style:none;">
+            <li style="font-size:0.8rem;color:var(--text-dim);padding:4px 0;border-bottom:1px solid rgba(48,54,61,0.5);">→ Waking up feeling rested</li>
+            <li style="font-size:0.8rem;color:var(--text-dim);padding:4px 0;border-bottom:1px solid rgba(48,54,61,0.5);">→ Less soreness day after long runs</li>
+            <li style="font-size:0.8rem;color:var(--text-dim);padding:4px 0;border-bottom:1px solid rgba(48,54,61,0.5);">→ More consistent energy through day</li>
+            <li style="font-size:0.8rem;color:var(--text-dim);padding:4px 0;">→ Less afternoon energy crash</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-weight:700;color:var(--blue);margin-bottom:8px;font-size:0.9rem;">🔵 BODY & PERFORMANCE</div>
+          <ul style="list-style:none;">
+            <li style="font-size:0.8rem;color:var(--text-dim);padding:4px 0;border-bottom:1px solid rgba(48,54,61,0.5);">→ Stronger lower back, less stiffness</li>
+            <li style="font-size:0.8rem;color:var(--text-dim);padding:4px 0;border-bottom:1px solid rgba(48,54,61,0.5);">→ Improved posture during running</li>
+            <li style="font-size:0.8rem;color:var(--text-dim);padding:4px 0;border-bottom:1px solid rgba(48,54,61,0.5);">→ Reduced joint aches and inflammation</li>
+            <li style="font-size:0.8rem;color:var(--text-dim);padding:4px 0;">→ Leaner body composition</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-weight:700;color:var(--purple);margin-bottom:8px;font-size:0.9rem;">🟣 MENTAL & HABITS</div>
+          <ul style="list-style:none;">
+            <li style="font-size:0.8rem;color:var(--text-dim);padding:4px 0;border-bottom:1px solid rgba(48,54,61,0.5);">→ Morning routine feels automatic</li>
+            <li style="font-size:0.8rem;color:var(--text-dim);padding:4px 0;border-bottom:1px solid rgba(48,54,61,0.5);">→ Consistent supplement schedule</li>
+            <li style="font-size:0.8rem;color:var(--text-dim);padding:4px 0;border-bottom:1px solid rgba(48,54,61,0.5);">→ Diet swaps feel natural, not forced</li>
+            <li style="font-size:0.8rem;color:var(--text-dim);padding:4px 0;">→ Sharper mental clarity and mood</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- DAILY LOG TAB CONTENT -->
+<div id="tab-log" class="tab-content" style="padding:24px 0;">
+
+  <!-- TOP ROW: RING + WEIGHT -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+
+    <!-- COMPLETION RING -->
+    <div style="background:var(--surface);border-radius:12px;padding:24px;border:1px solid var(--border);text-align:center;">
+      <p style="font-size:0.7rem;letter-spacing:3px;color:var(--text-muted);text-transform:uppercase;font-weight:700;margin-bottom:16px;">Today's Completion</p>
+      <div style="position:relative;display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;">
+        <svg width="150" height="150" viewBox="0 0 150 150">
+          <circle cx="75" cy="75" r="58" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="12"/>
+          <circle id="log-ring" cx="75" cy="75" r="58" fill="none" stroke="var(--green)" stroke-width="12"
+            stroke-linecap="round" stroke-dasharray="0 365" stroke-dashoffset="-91"
+            style="transition:stroke-dasharray .5s ease,stroke .4s ease;"/>
+        </svg>
+        <div style="position:absolute;text-align:center;">
+          <div id="log-pct" style="font-size:34px;font-weight:900;color:var(--green);line-height:1;font-family:var(--heading-font);">0%</div>
+          <div id="log-pct-label" style="font-size:0.65rem;color:var(--text-muted);margin-top:2px;">tasks done</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+        <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px;text-align:center;">
+          <div id="log-morning-ct" style="font-size:1.1rem;font-weight:700;color:var(--green);font-family:var(--heading-font);">0/4</div>
+          <div style="font-size:0.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Morning</div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px;text-align:center;">
+          <div id="log-run-ct" style="font-size:1.1rem;font-weight:700;color:var(--blue);font-family:var(--heading-font);">0/3</div>
+          <div style="font-size:0.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Training</div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px;text-align:center;">
+          <div id="log-nutr-ct" style="font-size:1.1rem;font-weight:700;color:var(--orange);font-family:var(--heading-font);">0/5</div>
+          <div style="font-size:0.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Nutrition</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEIGHT TRACKER -->
+    <div style="background:var(--surface);border-radius:12px;padding:24px;border:1px solid var(--border);">
+      <p style="font-size:0.7rem;letter-spacing:3px;color:var(--text-muted);text-transform:uppercase;font-weight:700;margin-bottom:16px;">Weight Log</p>
+      <div style="display:flex;gap:10px;margin-bottom:16px;">
+        <input type="number" id="wt-input" step="0.1" placeholder="e.g. 182.4" style="flex:1;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:1rem;outline:none;"/>
+        <button onclick="logWeight()" style="padding:10px 18px;background:var(--green);color:#000;border:none;border-radius:8px;font-weight:700;font-size:0.8rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">Log</button>
+      </div>
+      <div id="wt-history" style="display:flex;flex-direction:column;gap:6px;max-height:180px;overflow-y:auto;"></div>
+    </div>
+
+  </div>
+
+  <!-- WEEKLY BARS -->
+  <div style="background:var(--surface);border-radius:12px;padding:24px;border:1px solid var(--border);margin-bottom:20px;">
+    <p style="font-size:0.7rem;letter-spacing:3px;color:var(--text-muted);text-transform:uppercase;font-weight:700;margin-bottom:16px;">This Week's Progress</p>
+    <div id="weekly-bars" style="display:flex;align-items:flex-end;gap:8px;height:80px;margin-bottom:8px;"></div>
+    <div id="weekly-avg" style="font-size:0.8rem;color:var(--text-muted);text-align:center;"></div>
+  </div>
+
+  <!-- CHECKLIST FORM -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+
+    <!-- LEFT: MORNING + TRAINING -->
+    <div>
+      <!-- MORNING -->
+      <div style="background:var(--surface);border-radius:12px;padding:20px;border:1px solid var(--border);margin-bottom:16px;">
+        <p style="font-size:0.7rem;letter-spacing:3px;color:var(--text-muted);text-transform:uppercase;font-weight:700;margin-bottom:12px;">Morning Protocol</p>
+        <div id="morning-checks" style="display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+      <!-- TRAINING -->
+      <div style="background:var(--surface);border-radius:12px;padding:20px;border:1px solid var(--border);">
+        <p style="font-size:0.7rem;letter-spacing:3px;color:var(--text-muted);text-transform:uppercase;font-weight:700;margin-bottom:12px;">Training & Movement</p>
+        <div id="training-checks" style="display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: NUTRITION + NOTES + SAVE -->
+    <div>
+      <!-- NUTRITION -->
+      <div style="background:var(--surface);border-radius:12px;padding:20px;border:1px solid var(--border);margin-bottom:16px;">
+        <p style="font-size:0.7rem;letter-spacing:3px;color:var(--text-muted);text-transform:uppercase;font-weight:700;margin-bottom:12px;">Nutrition</p>
+        <div id="nutrition-checks" style="display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+      <!-- NOTES + SAVE -->
+      <div style="background:var(--surface);border-radius:12px;padding:20px;border:1px solid var(--border);">
+        <p style="font-size:0.7rem;letter-spacing:3px;color:var(--text-muted);text-transform:uppercase;font-weight:700;margin-bottom:10px;">Notes / Changes Today</p>
+        <textarea id="log-notes" rows="3" placeholder="Any swaps, how you felt, PR on the run..." style="width:100%;padding:10px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.85rem;resize:vertical;outline:none;margin-bottom:12px;box-sizing:border-box;"></textarea>
+        <!-- RATE THE DAY -->
+        <p style="font-size:0.7rem;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;font-weight:700;margin-bottom:8px;">Rate The Day</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;">
+          <div style="text-align:center;">
+            <div style="font-size:0.7rem;color:var(--text-muted);margin-bottom:6px;">Energy</div>
+            <div id="stars-energy" style="display:flex;justify-content:center;gap:2px;"></div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:0.7rem;color:var(--text-muted);margin-bottom:6px;">Run/Effort</div>
+            <div id="stars-effort" style="display:flex;justify-content:center;gap:2px;"></div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:0.7rem;color:var(--text-muted);margin-bottom:6px;">Recovery</div>
+            <div id="stars-recovery" style="display:flex;justify-content:center;gap:2px;"></div>
+          </div>
+        </div>
+        <button onclick="saveLog()" style="width:100%;padding:12px;background:var(--green);color:#000;border:none;border-radius:8px;font-weight:700;font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;">Save Today's Log</button>
+        <div id="save-confirm" style="text-align:center;font-size:0.8rem;color:var(--green);margin-top:8px;display:none;">Saved successfully</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- LOG HISTORY -->
+  <div style="margin-top:20px;background:var(--surface);border-radius:12px;padding:20px;border:1px solid var(--border);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <p style="font-size:0.7rem;letter-spacing:3px;color:var(--text-muted);text-transform:uppercase;font-weight:700;margin:0;">Log History</p>
+      <div id="streak-badge" style="font-size:0.75rem;color:var(--green);font-weight:700;"></div>
+    </div>
+    <div id="log-history" style="display:flex;flex-direction:column;gap:10px;"></div>
+  </div>
+
+</div><!-- end tab-log and main -->
+
+<script>
+  const SHEET_ID = '1XFlH1mOOtI-Mx3oAiNZRrkOBcuVqI7kt-6ukTzNsXhU';
+  const BRIDGE_URL = 'https://script.google.com/macros/s/AKfycbwhA3Uky1B4XdxErxdoFHktVpkabiNTGO6RmAr4AMiFj1SjxEzxGxVG_tcxtuHxIStqDQ/exec';
+  const SHEET_URL = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=';
+
+function parseSheet(data) {
+  const json = JSON.parse(data.substr(47).slice(0, -2));
+  const result = {};
+  json.table.rows.forEach(row => {
+    if (row.c && row.c[0] && row.c[1]) {
+      result[row.c[0].v] = row.c[1].v;
+    }
+  });
+  return result;
+}
+
+function loadClientData() {
+  const script = document.createElement('script');
+  const callbackName = 'sheetCallback_' + Date.now();
+  window[callbackName] = function(data) {
+    console.log('Data:', JSON.stringify(data));
+    const nameEl = document.getElementById('client-name');
+    const protocolEl = document.getElementById('client-protocol');
+    const wakeEl = document.getElementById('client-wake');
+    console.log('Els:', nameEl, protocolEl, wakeEl);
+    if (nameEl) nameEl.textContent = data['Name'] || '';
+    if (protocolEl) protocolEl.textContent = data['Protocol'] || '';
+    if (wakeEl) {
+      let w = data['Wake Time'] || '';
+      if (w.toString().includes('T')) {
+        const d = new Date(w);
+        w = d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+      }
+      wakeEl.textContent = 'Wake Time: ' + w;
+    }
+    document.body.removeChild(script);
+    delete window[callbackName];
+  };
+  script.src = BRIDGE_URL + '?id=' + SHEET_ID + '&sheet=Client&callback=' + callbackName;
+  document.body.appendChild(script);
+}
+window.addEventListener('DOMContentLoaded', function() { setTimeout(loadClientData, 500); });
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // Animate progress bars on load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.querySelectorAll('.progress-fill').forEach(bar => {
+        const w = bar.style.width;
+        bar.style.width = '0%';
+        setTimeout(() => { bar.style.width = w; }, 100);
+      });
+    }, 300);
+  });
+
+  // ===== DAILY LOG SYSTEM =====
+  const LOG_KEY = 'bill_log_v1';
+  const WT_KEY = 'bill_wt_v1';
+
+  const MORNING_ITEMS = [
+    {id:'water', icon:'💧', label:'Wake up hydration — 16oz water + electrolytes'},
+    {id:'supps', icon:'💊', label:'Morning supplements — Omega-3, D3+K2, CoQ10'},
+    {id:'spine', icon:'💪', label:'Spine + core routine — 20 min'},
+    {id:'collagen', icon:'🦴', label:'Collagen 15g + Vitamin C (run days — 45 min before)'},
+  ];
+
+  const TRAINING_ITEMS = [
+    {id:'run', icon:'🏃', label:'Run completed'},
+    {id:'steps', icon:'👟', label:'10,000 steps target hit'},
+    {id:'stretching', icon:'🧘', label:'Post-run stretching / mobility'},
+  ];
+
+  const NUTRITION_ITEMS = [
+    {id:'breakfast', icon:'🥚', label:'Breakfast — protein + healthy fats'},
+    {id:'lunch', icon:'🥗', label:'Lunch — spinach salad + protein'},
+    {id:'snack', icon:'🫙', label:'Snack — Greek yogurt + PB'},
+    {id:'dinner', icon:'🍗', label:'Dinner — high protein + anti-inflammatory'},
+    {id:'magnesium', icon:'🌙', label:'Magnesium glycinate 400mg before bed'},
+  ];
+
+  const ALL_ITEMS = [...MORNING_ITEMS, ...TRAINING_ITEMS, ...NUTRITION_ITEMS];
+  const ratings = {energy:0, effort:0, recovery:0};
+
+  function getLogs() { try { return JSON.parse(localStorage.getItem(LOG_KEY)||'[]'); } catch(e) { return []; } }
+  function saveLogs(arr) { try { localStorage.setItem(LOG_KEY, JSON.stringify(arr)); } catch(e) {} }
+  function getWeights() { try { return JSON.parse(localStorage.getItem(WT_KEY)||'[]'); } catch(e) { return []; } }
+  function saveWeights(arr) { try { localStorage.setItem(WT_KEY, JSON.stringify(arr)); } catch(e) {} }
+
+  function buildChecks(containerId, items) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    el.innerHTML = items.map(it => `
+      <div id="chk-${it.id}" onclick="toggleCheck('${it.id}')" style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s;user-select:none;">
+        <div id="box-${it.id}" style="width:18px;height:18px;border-radius:4px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;transition:all .15s;"></div>
+        <span style="font-size:0.75rem;">${it.icon} ${it.label}</span>
+      </div>`).join('');
+  }
+
+  function buildStars(containerId, group) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    el.innerHTML = [1,2,3,4,5].map(n =>
+      `<span onclick="setStar('${group}',${n})" id="star-${group}-${n}" style="font-size:18px;cursor:pointer;opacity:.25;transition:opacity .15s;">⭐</span>`
+    ).join('');
+  }
+
+  function setStar(group, val) {
+    ratings[group] = val;
+    for (let i=1;i<=5;i++) {
+      const s = document.getElementById(`star-${group}-${i}`);
+      if (s) s.style.opacity = i<=val ? '1' : '.25';
+    }
+  }
+
+  function toggleCheck(id) {
+    const chk = document.getElementById('chk-'+id);
+    const box = document.getElementById('box-'+id);
+    if (!chk) return;
+    const checked = chk.dataset.checked === '1';
+    if (!checked) {
+      chk.dataset.checked = '1';
+      chk.style.background = 'rgba(63,185,80,.08)';
+      chk.style.borderColor = 'rgba(63,185,80,.3)';
+      box.style.background = 'var(--green)';
+      box.style.borderColor = 'var(--green)';
+      box.textContent = '✓';
+      box.style.color = '#000';
+    } else {
+      chk.dataset.checked = '0';
+      chk.style.background = 'rgba(255,255,255,.03)';
+      chk.style.borderColor = 'var(--border)';
+      box.style.background = 'transparent';
+      box.style.borderColor = 'var(--border)';
+      box.textContent = '';
+    }
+    updateRing();
+  }
+
+  function getChecked(items) {
+    return items.filter(it => document.getElementById('chk-'+it.id)?.dataset.checked === '1').map(it => it.id);
+  }
+
+  function updateRing() {
+    const total = ALL_ITEMS.length;
+    const mTotal = MORNING_ITEMS.length;
+    const rTotal = TRAINING_ITEMS.length;
+    const nTotal = NUTRITION_ITEMS.length;
+    const checked = ALL_ITEMS.filter(it => document.getElementById('chk-'+it.id)?.dataset.checked==='1').length;
+    const mChecked = MORNING_ITEMS.filter(it => document.getElementById('chk-'+it.id)?.dataset.checked==='1').length;
+    const rChecked = TRAINING_ITEMS.filter(it => document.getElementById('chk-'+it.id)?.dataset.checked==='1').length;
+    const nChecked = NUTRITION_ITEMS.filter(it => document.getElementById('chk-'+it.id)?.dataset.checked==='1').length;
+    const pct = Math.round((checked/total)*100);
+    const circ = 365;
+    const filled = (pct/100)*circ;
+    const ring = document.getElementById('log-ring');
+    const pctEl = document.getElementById('log-pct');
+    const labelEl = document.getElementById('log-pct-label');
+    if (ring) {
+      ring.setAttribute('stroke-dasharray', `${filled} ${circ}`);
+      const col = pct<25?'var(--red)':pct<50?'var(--orange)':pct<80?'var(--yellow)':'var(--green)';
+      ring.setAttribute('stroke', col);
+      if (pctEl) { pctEl.textContent = pct+'%'; pctEl.style.color = col; }
+    }
+    if (labelEl) labelEl.textContent = `${checked} of ${total} tasks`;
+    const mEl = document.getElementById('log-morning-ct');
+    const rEl = document.getElementById('log-run-ct');
+    const nEl = document.getElementById('log-nutr-ct');
+    if (mEl) mEl.textContent = `${mChecked}/${mTotal}`;
+    if (rEl) rEl.textContent = `${rChecked}/${rTotal}`;
+    if (nEl) nEl.textContent = `${nChecked}/${nTotal}`;
+  }
+
+  function logWeight() {
+    const val = parseFloat(document.getElementById('wt-input').value);
+    if (!val || val < 50 || val > 400) return;
+    const arr = getWeights();
+    const today = new Date().toISOString().split('T')[0];
+    const idx = arr.findIndex(e => e.date === today);
+    if (idx >= 0) arr[idx].weight = val; else arr.push({date:today, weight:val});
+    arr.sort((a,b) => a.date.localeCompare(b.date));
+    saveWeights(arr);
+    document.getElementById('wt-input').value = '';
+    renderWeightHistory();
+  }
+
+  function renderWeightHistory() {
+    const arr = getWeights().slice().reverse().slice(0,7);
+    const el = document.getElementById('wt-history');
+    if (!el) return;
+    if (!arr.length) { el.innerHTML = '<p style="font-size:0.75rem;color:var(--text-muted);">No weight logged yet.</p>'; return; }
+    el.innerHTML = arr.map(e => {
+      const d = new Date(e.date+'T12:00:00');
+      const label = d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);">
+        <span style="font-size:0.75rem;color:var(--text-muted);">${label}</span>
+        <span style="font-size:0.9rem;font-weight:700;color:var(--text);font-family:var(--heading-font);">${e.weight} lbs</span>
+      </div>`;
+    }).join('');
+  }
+
+  function saveLog() {
+    const today = new Date().toISOString().split('T')[0];
+    const entry = {
+      date: today,
+      morning: getChecked(MORNING_ITEMS),
+      training: getChecked(TRAINING_ITEMS),
+      nutrition: getChecked(NUTRITION_ITEMS),
+      notes: document.getElementById('log-notes').value.trim(),
+      energy: ratings.energy,
+      effort: ratings.effort,
+      recovery: ratings.recovery,
+      saved: new Date().toISOString()
+    };
+    const logs = getLogs();
+    const idx = logs.findIndex(e => e.date === today);
+    if (idx >= 0) logs[idx] = entry; else logs.push(entry);
+    logs.sort((a,b) => b.date.localeCompare(a.date));
+    saveLogs(logs);
+    renderLogHistory();
+    renderWeeklyBars();
+    const confirm = document.getElementById('save-confirm');
+    if (confirm) { confirm.style.display='block'; setTimeout(()=>confirm.style.display='none',2000); }
+  }
+
+  function renderWeeklyBars() {
+    const logs = getLogs();
+    const today = new Date();
+    const dow = today.getDay();
+    const mondayOffset = dow===0 ? -6 : 1-dow;
+    const monday = new Date(today);
+    monday.setDate(today.getDate()+mondayOffset);
+    const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const total = ALL_ITEMS.length;
+    const barsEl = document.getElementById('weekly-bars');
+    const avgEl = document.getElementById('weekly-avg');
+    if (!barsEl) return;
+    let html = '';
+    let totalPct = 0; let dayCount = 0;
+    for (let i=0;i<7;i++) {
+      const d = new Date(monday);
+      d.setDate(monday.getDate()+i);
+      const ds = d.toISOString().split('T')[0];
+      const isToday = ds === today.toISOString().split('T')[0];
+      const isFuture = d > today;
+      const entry = logs.find(e => e.date===ds);
+      let pct = 0;
+      if (entry) {
+        const checked = (entry.morning||[]).length+(entry.training||[]).length+(entry.nutrition||[]).length;
+        pct = Math.min(100,Math.round((checked/total)*100));
+        totalPct+=pct; dayCount++;
+      }
+      const col = pct===0?'rgba(255,255,255,.06)':pct<50?'rgba(239,68,68,.4)':pct<80?'rgba(234,179,8,.5)':'rgba(63,185,80,.5)';
+      const height = isFuture ? 4 : Math.max(4, pct*0.64);
+      html += `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div style="font-size:0.6rem;color:${isToday?'var(--green)':isFuture?'rgba(255,255,255,.2)':'var(--text-muted)'};">${pct>0?pct+'%':''}</div>
+        <div style="flex:1;width:100%;display:flex;align-items:flex-end;">
+          <div style="width:100%;height:${height}px;background:${col};border-radius:3px 3px 0 0;transition:height .4s ease;${isToday?'outline:1px solid var(--green);':''}"></div>
+        </div>
+        <div style="font-size:0.65rem;font-weight:700;color:${isToday?'var(--green)':isFuture?'rgba(255,255,255,.2)':'var(--text-muted)'};">${days[i]}</div>
+      </div>`;
+    }
+    barsEl.innerHTML = html;
+    if (avgEl) avgEl.textContent = dayCount>0 ? `Week average: ${Math.round(totalPct/dayCount)}% completion` : 'Start logging to see your weekly progress';
+  }
+
+  function renderLogHistory() {
+    const logs = getLogs();
+    const histEl = document.getElementById('log-history');
+    const streakEl = document.getElementById('streak-badge');
+    if (!histEl) return;
+    // Streak
+    if (streakEl) {
+      let streak = 0;
+      const todayStr = new Date().toISOString().split('T')[0];
+      let check = new Date();
+      while (true) {
+        const ds = check.toISOString().split('T')[0];
+        if (logs.find(e=>e.date===ds)) { streak++; check.setDate(check.getDate()-1); }
+        else break;
+        if (streak>200) break;
+      }
+      streakEl.textContent = streak>0 ? `🔥 ${streak} day streak` : '';
+    }
+    if (!logs.length) { histEl.innerHTML = '<p style="font-size:0.8rem;color:var(--text-muted);text-align:center;padding:20px 0;">No entries yet. Log your first day above.</p>'; return; }
+    const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const DOWS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    histEl.innerHTML = logs.slice(0,14).map(e => {
+      const d = new Date(e.date+'T12:00:00');
+      const label = `${DOWS[d.getDay()]} ${MONTHS[d.getMonth()]} ${d.getDate()}`;
+      const total2 = ALL_ITEMS.length;
+      const checked2 = (e.morning||[]).length+(e.training||[]).length+(e.nutrition||[]).length;
+      const pct2 = Math.round((checked2/total2)*100);
+      const col2 = pct2<50?'var(--red)':pct2<80?'var(--yellow)':'var(--green)';
+      const starsHtml = (val) => [1,2,3,4,5].map(i=>`<span style="opacity:${i<=val?1:.2};font-size:11px;">⭐</span>`).join('');
+      return `<div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:14px 16px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <span style="font-size:0.85rem;font-weight:700;color:var(--text);">${label}</span>
+          <span style="font-size:0.85rem;font-weight:700;color:${col2};font-family:var(--heading-font);">${pct2}%</span>
+        </div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:0.7rem;color:var(--text-muted);margin-bottom:${e.notes?'8px':'0'};">
+          ${e.energy?`<span>Energy: ${starsHtml(e.energy)}</span>`:''}
+          ${e.effort?`<span>Effort: ${starsHtml(e.effort)}</span>`:''}
+          ${e.recovery?`<span>Recovery: ${starsHtml(e.recovery)}</span>`:''}
+        </div>
+        ${e.notes?`<p style="font-size:0.75rem;color:var(--text-muted);margin:0;font-style:italic;">${e.notes}</p>`:''}
+      </div>`;
+    }).join('');
+  }
+
+  function initLog() {
+    buildChecks('morning-checks', MORNING_ITEMS);
+    buildChecks('training-checks', TRAINING_ITEMS);
+    buildChecks('nutrition-checks', NUTRITION_ITEMS);
+    buildStars('stars-energy','energy');
+    buildStars('stars-effort','effort');
+    buildStars('stars-recovery','recovery');
+    updateRing();
+    renderWeeklyBars();
+    renderWeightHistory();
+    renderLogHistory();
+  }
+
+  // Init log when tab is clicked
+  const origSwitch = window.switchTab;
+  window.switchTab = function(tab) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-'+tab).classList.add('active');
+    event.target.classList.add('active');
+    if (tab === 'log') initLog();
+  };
+
+</script>
+</body>
+</html>
