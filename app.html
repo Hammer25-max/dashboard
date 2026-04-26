@@ -1987,8 +1987,14 @@ function loadClientData() {
     const wakeEl = document.getElementById('client-wake');
     if (nameEl) nameEl.textContent = data['Name'] || '';
     if (protocolEl) protocolEl.textContent = data['Protocol'] || '';
-    if (wakeEl) wakeEl.textContent = 'Wake Time: ' + (data['Wake Time'] || '');
-    document.body.removeChild(script);
+if (wakeEl) {
+  let wakeVal = data['Wake Time'] || '';
+  if (wakeVal && wakeVal.toString().includes('T')) {
+    const d = new Date(wakeVal);
+    wakeVal = d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+  }
+  wakeEl.textContent = 'Wake Time: ' + wakeVal;
+}    document.body.removeChild(script);
     delete window[callbackName];
   };
   script.src = BRIDGE_URL + '?id=' + SHEET_ID + '&sheet=Client&callback=' + callbackName;
