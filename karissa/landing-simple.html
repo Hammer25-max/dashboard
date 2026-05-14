@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hammertime Fitness -- Built For Your Real Life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Barlow+Condensed:wght@300;400;600;700;800;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#0a0808;
+  --offblack:#110e0d;
+  --panel:#181514;
+  --rose:#c47a6a;
+  --rose-light:#d9967f;
+  --rose-pale:rgba(196,122,106,.15);
+  --sage:#7a9e8e;
+  --sage-dim:rgba(122,158,142,.12);
+  --gold:#C9A84C;
+  --white:#F5F0EB;
+  --muted:#7a6f6a;
+  --muted2:#2A2220;
+  --border:#252020;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,8,8,.97);border-bottom:1px solid var(--border);padding:16px 40px;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:4px;text-transform:uppercase;}
+.logo span{color:var(--rose);}
+.nav-cta{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:9px 22px;border:1px solid rgba(196,122,106,.4);color:var(--rose);text-decoration:none;transition:all .2s;}
+.nav-cta:hover{background:var(--rose);color:var(--black);}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:120px 64px 80px;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 80% 30%,rgba(196,122,106,.08) 0%,transparent 55%),radial-gradient(ellipse at 10% 80%,rgba(122,158,142,.06) 0%,transparent 45%),#0a0808;z-index:0;}
+.hero-content{position:relative;z-index:1;max-width:620px;}
+.hero-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:5px;color:var(--rose);text-transform:uppercase;font-weight:700;margin-bottom:20px;opacity:0;animation:fadeUp .6s ease .2s forwards;}
+.hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,8vw,96px);font-weight:300;line-height:1;letter-spacing:-1px;margin-bottom:24px;opacity:0;animation:fadeUp .8s ease .4s forwards;}
+.hero-h1 em{font-style:italic;color:var(--rose);}
+.hero-h1 strong{font-weight:600;}
+.hero-sub{font-size:16px;color:rgba(245,240,235,.6);line-height:1.85;max-width:480px;margin-bottom:36px;font-weight:300;opacity:0;animation:fadeUp .8s ease .65s forwards;}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s ease .85s forwards;}
+.btn-primary{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:15px 40px;background:var(--rose);color:var(--black);text-decoration:none;transition:all .2s;}
+.btn-primary:hover{background:var(--rose-light);}
+.btn-ghost{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:15px 24px;border:1px solid var(--border);color:var(--muted);text-decoration:none;transition:all .2s;}
+.btn-ghost:hover{border-color:var(--white);color:var(--white);}
+.hero-right{position:absolute;right:64px;top:50%;transform:translateY(-50%);opacity:0;animation:fadeUp .8s ease 1s forwards;z-index:1;}
+.hero-stat-stack{display:flex;flex-direction:column;gap:12px;}
+.hero-stat{background:var(--panel);border:1px solid var(--border);padding:20px 28px;min-width:200px;}
+.hero-stat-num{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:var(--rose);line-height:1;margin-bottom:4px;}
+.hero-stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-family:'Barlow Condensed',sans-serif;font-weight:700;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* HONEST SECTION */
+.honest{padding:100px 64px;background:var(--offblack);position:relative;}
+.honest::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,var(--rose),transparent);}
+.honest-inner{max-width:800px;margin:0 auto;}
+.honest-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:5px;color:var(--rose);text-transform:uppercase;font-weight:700;margin-bottom:12px;}
+.honest-h{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,6vw,72px);font-weight:300;line-height:1;margin-bottom:28px;}
+.honest-h em{font-style:italic;color:var(--rose);}
+.honest-body{font-size:16px;color:rgba(245,240,235,.7);line-height:1.9;margin-bottom:20px;font-weight:300;}
+.honest-body strong{color:var(--white);font-weight:500;}
+.honest-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--muted2);margin-top:48px;}
+.honest-card{background:var(--offblack);padding:32px;position:relative;transition:background .2s;}
+.honest-card:hover{background:var(--panel);}
+.honest-card::before{content:'';position:absolute;top:0;left:0;width:2px;height:0;background:var(--rose);transition:height .3s;}
+.honest-card:hover::before{height:100%;}
+.honest-card-q{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--muted);margin-bottom:12px;line-height:1.4;}
+.honest-card-a{font-size:14px;color:rgba(245,240,235,.75);line-height:1.7;font-weight:300;}
+
+/* WHAT YOU GET */
+.what{padding:100px 64px;background:var(--black);}
+.what-inner{max-width:800px;margin:0 auto;}
+.section-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:5px;color:var(--rose);text-transform:uppercase;font-weight:700;margin-bottom:12px;}
+.section-h{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,6vw,72px);font-weight:300;line-height:1;margin-bottom:40px;}
+.section-h em{font-style:italic;color:var(--rose);}
+.what-list{display:flex;flex-direction:column;gap:1px;background:var(--muted2);}
+.what-item{background:var(--black);padding:24px 28px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;transition:background .2s;}
+.what-item:hover{background:var(--panel);}
+.what-icon{font-size:22px;margin-top:2px;}
+.what-title{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:5px;}
+.what-desc{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;}
+
+/* PULL QUOTE */
+.pull-section{padding:80px 64px;background:var(--offblack);text-align:center;}
+.pull-line{width:28px;height:1px;background:var(--rose);margin:0 auto 24px;}
+.pull-text{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,4vw,42px);font-style:italic;font-weight:300;line-height:1.4;color:var(--white);max-width:680px;margin:0 auto 16px;}
+.pull-attr{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+
+/* FOR YOU SECTION */
+.foryou{padding:100px 64px;background:var(--black);}
+.foryou-inner{max-width:800px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+.foryou-left .section-h{margin-bottom:20px;}
+.foryou-body{font-size:15px;color:rgba(245,240,235,.65);line-height:1.85;font-weight:300;margin-bottom:16px;}
+.foryou-items{display:flex;flex-direction:column;gap:1px;background:var(--muted2);}
+.foryou-item{background:var(--black);padding:16px 20px;font-size:13px;color:rgba(245,240,235,.7);line-height:1.6;border-left:2px solid transparent;transition:all .2s;}
+.foryou-item:hover{background:var(--panel);border-left-color:var(--rose);}
+.foryou-item strong{color:var(--white);display:block;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;}
+
+/* HOW */
+.how{padding:100px 64px;background:var(--offblack);}
+.how-inner{max-width:800px;margin:0 auto;}
+.how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--muted2);margin-top:48px;}
+.how-step{background:var(--offblack);padding:32px 24px;text-align:center;transition:background .2s;}
+.how-step:hover{background:var(--panel);}
+.how-step-num{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:rgba(196,122,106,.2);line-height:1;margin-bottom:12px;transition:color .2s;}
+.how-step:hover .how-step-num{color:var(--rose);}
+.how-step-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--white);margin-bottom:10px;}
+.how-step-desc{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;}
+
+/* CTA */
+.cta{padding:120px 64px;background:var(--black);text-align:center;position:relative;overflow:hidden;}
+.cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(196,122,106,.06) 0%,transparent 60%);}
+.cta-h{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,8vw,88px);font-weight:300;line-height:1;margin-bottom:20px;position:relative;z-index:1;}
+.cta-h em{font-style:italic;color:var(--rose);}
+.cta-sub{font-size:15px;color:rgba(245,240,235,.5);max-width:440px;margin:0 auto 40px;line-height:1.8;font-weight:300;position:relative;z-index:1;}
+.cta-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;}
+
+/* MARQUEE */
+.marquee-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--panel);padding:12px 0;}
+.marquee-track{display:flex;animation:marquee 40s linear infinite;white-space:nowrap;}
+.marquee-item{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--muted);padding:0 40px;flex-shrink:0;}
+.marquee-item.rose{color:rgba(196,122,106,.5);}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+footer{padding:32px 64px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;letter-spacing:4px;color:var(--muted);}
+.footer-logo span{color:var(--rose);}
+
+@media(max-width:768px){
+  nav{padding:14px 20px;}
+  .hero{padding:90px 24px 60px;flex-direction:column;}
+  .hero-right{position:static;transform:none;margin-top:40px;}
+  .honest,.what,.pull-section,.foryou,.how,.cta{padding:64px 24px;}
+  .honest-grid,.foryou-inner,.how-steps{grid-template-columns:1fr;}
+  footer{padding:24px 20px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+      <rect x="14" y="16" width="5" height="13" rx="1.5" fill="#c47a6a"/>
+      <rect x="4" y="6" width="24" height="12" rx="3" fill="#c47a6a"/>
+      <rect x="8" y="6" width="7" height="12" fill="#d9967f"/>
+    </svg>
+    Hammertime<span>.</span>
+  </div>
+  <a href="#start" class="nav-cta">Get Started</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Built For Your Real Life &mdash; Not An Imaginary One</div>
+    <h1 class="hero-h1">
+      Simple enough<br>to <em>actually</em><br><strong>happen.</strong>
+    </h1>
+    <p class="hero-sub">You don't need two hours a day. You don't need a perfect diet. You need something honest, realistic, and built around the life you actually have &mdash; not the one you wish you had.</p>
+    <div class="hero-actions">
+      <a href="#start" class="btn-primary">Start Here</a>
+      <a href="#honest" class="btn-ghost">Read More</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stat-stack">
+      <div class="hero-stat">
+        <div class="hero-stat-num">15</div>
+        <div class="hero-stat-label">Minutes per session</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">3x</div>
+        <div class="hero-stat-label">Per week</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">0</div>
+        <div class="hero-stat-label">Excuses needed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item rose">Simple. Consistent. Real.</div>
+    <div class="marquee-item">Built Around Your Life</div>
+    <div class="marquee-item rose">15 Minutes Changes Everything</div>
+    <div class="marquee-item">No Perfection Required</div>
+    <div class="marquee-item rose">Show Up. That's The Whole Strategy.</div>
+    <div class="marquee-item">Built For Women On The Go</div>
+    <div class="marquee-item rose">Simple. Consistent. Real.</div>
+    <div class="marquee-item">Built Around Your Life</div>
+    <div class="marquee-item rose">15 Minutes Changes Everything</div>
+    <div class="marquee-item">No Perfection Required</div>
+    <div class="marquee-item rose">Show Up. That's The Whole Strategy.</div>
+    <div class="marquee-item">Built For Women On The Go</div>
+  </div>
+</div>
+
+<!-- HONEST SECTION -->
+<section class="honest" id="honest">
+  <div class="honest-inner">
+    <div class="honest-tag reveal">The Honest Part</div>
+    <h2 class="honest-h reveal">Most programs<br>fail because they<br>ignore your <em>real life.</em></h2>
+    <p class="honest-body reveal">You're busy. You're on the go. Some days food is a protein drink in the car and that's it. Some days you're exhausted before you even think about a workout. That's not a character flaw. That's life. And any program that doesn't account for it was never going to work for you.</p>
+    <p class="honest-body reveal">This is different. This starts with where you actually are &mdash; not where someone thinks you should be. And it builds from there, one consistent habit at a time, until the things that felt impossible start feeling automatic.</p>
+
+    <div class="honest-grid">
+      <div class="honest-card reveal">
+        <div class="honest-card-q">"I don't want to set a goal I won't hit."</div>
+        <div class="honest-card-a">Good. That means you're being honest with yourself. We start with something you can actually do &mdash; 15 minutes, three times a week &mdash; and build up only when you're ready. Consistency beats ambition every time.</div>
+      </div>
+      <div class="honest-card reveal">
+        <div class="honest-card-q">"My diet is all over the place."</div>
+        <div class="honest-card-a">That's where almost everyone starts. We don't overhaul everything at once. We find what you're already doing that works, build on it, and add one thing at a time. You don't have to be perfect. You just have to be a little better than yesterday.</div>
+      </div>
+      <div class="honest-card reveal">
+        <div class="honest-card-q">"I get frustrated with myself when I fail."</div>
+        <div class="honest-card-a">That frustration means you care. We use it to set goals you can actually hit instead of ones that guarantee failure. Small wins build confidence. Confidence builds consistency. Consistency builds everything else.</div>
+      </div>
+      <div class="honest-card reveal">
+        <div class="honest-card-q">"I'm always on the go."</div>
+        <div class="honest-card-a">Everything in this program is built around that reality. Workouts that fit in your schedule. Nutrition guidance that accounts for the days everything goes sideways. A daily brief that tells you exactly what to do so you don't have to think about it.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PULL QUOTE -->
+<div class="pull-section">
+  <div class="pull-line reveal"></div>
+  <div class="pull-text reveal">"You don't need to be perfect. You need to show up. That single decision, made consistently, changes the entire trajectory."</div>
+  <div class="pull-attr reveal">&mdash; Hammertime Fitness</div>
+</div>
+
+<!-- WHAT YOU GET -->
+<section class="what">
+  <div class="what-inner">
+    <div class="section-tag reveal">What You Get</div>
+    <h2 class="section-h reveal">Everything you need.<br><em>Nothing you don't.</em></h2>
+    <div class="what-list reveal">
+      <div class="what-item">
+        <div class="what-icon">&#128197;</div>
+        <div>
+          <div class="what-title">Personal Dashboard</div>
+          <div class="what-desc">Your own private page with your workouts, your schedule, your progress all in one place. No searching, no thinking -- just open it and follow it.</div>
+        </div>
+      </div>
+      <div class="what-item">
+        <div class="what-icon">&#9749;</div>
+        <div>
+          <div class="what-title">Daily Morning Email</div>
+          <div class="what-desc">Every morning you get exactly what to do that day. Workout, meals, timing. Reads in two minutes. Removes every decision.</div>
+        </div>
+      </div>
+      <div class="what-item">
+        <div class="what-icon">&#127939;</div>
+        <div>
+          <div class="what-title">Strength Training Plan</div>
+          <div class="what-desc">Push, Pull, Legs -- three days per week, 15-30 minutes each. Built for beginners who want to actually learn to lift, not just survive a workout.</div>
+        </div>
+      </div>
+      <div class="what-item">
+        <div class="what-icon">&#127822;</div>
+        <div>
+          <div class="what-title">Realistic Nutrition Guidance</div>
+          <div class="what-desc">Not a meal plan you'll never follow. Practical swaps, on-the-go options, and simple principles that fit your actual eating patterns -- not an imaginary perfect version of them.</div>
+        </div>
+      </div>
+      <div class="what-item">
+        <div class="what-icon">&#128337;</div>
+        <div>
+          <div class="what-title">Morning Routine -- 10 Minutes</div>
+          <div class="what-desc">Spine mobility, core activation, and hip work designed to complement your runs and protect you as you start lifting. Takes less time than your coffee gets cold.</div>
+        </div>
+      </div>
+      <div class="what-item">
+        <div class="what-icon">&#128172;</div>
+        <div>
+          <div class="what-title">Real Coach, Real Feedback</div>
+          <div class="what-desc">This isn't an app. There's a person on the other side who adjusts the program when life happens -- because life always happens.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR YOU -->
+<section class="foryou" id="foryou">
+  <div class="foryou-inner">
+    <div class="foryou-left reveal">
+      <div class="section-tag">Who This Is For</div>
+      <h2 class="section-h">This is<br>for <em>you</em><br>if&mdash;</h2>
+      <p class="foryou-body">You don't have to be at a certain fitness level. You don't have to have your diet figured out. You just have to be done with programs that were never built for your life in the first place.</p>
+    </div>
+    <div class="foryou-items reveal">
+      <div class="foryou-item">
+        <strong>You're always on the go</strong>
+        And you need something that works with that reality, not against it.
+      </div>
+      <div class="foryou-item">
+        <strong>You want to start strength training</strong>
+        But have no idea where to begin and don't want to look lost in a gym.
+      </div>
+      <div class="foryou-item">
+        <strong>You've failed programs before</strong>
+        Because they were too ambitious, too rigid, or just didn't fit your life.
+      </div>
+      <div class="foryou-item">
+        <strong>You want something sustainable</strong>
+        Not a 30-day challenge. Something that becomes part of who you are.
+      </div>
+      <div class="foryou-item">
+        <strong>You're harder on yourself than you need to be</strong>
+        We build around that. The goal is consistency, not perfection. Ever.
+      </div>
+      <div class="foryou-item">
+        <strong>You have some nutrition challenges</strong>
+        Whether it's eating on the go, skipping meals, or just eating whatever's easy -- we start where you actually are.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="how-inner">
+    <div class="section-tag reveal">How It Works</div>
+    <h2 class="section-h reveal">Simple process.<br><em>Real results.</em></h2>
+    <div class="how-steps">
+      <div class="how-step reveal">
+        <div class="how-step-num">01</div>
+        <div class="how-step-title">We Talk</div>
+        <div class="how-step-desc">A quick conversation about where you are, what your life actually looks like, and what you want to change. No forms. No pressure. Just honest conversation.</div>
+      </div>
+      <div class="how-step reveal">
+        <div class="how-step-num">02</div>
+        <div class="how-step-title">We Build</div>
+        <div class="how-step-desc">Your personal dashboard and protocol get built around your real life -- your schedule, your eating habits, your goals, and most importantly your limitations.</div>
+      </div>
+      <div class="how-step reveal">
+        <div class="how-step-num">03</div>
+        <div class="how-step-title">You Show Up</div>
+        <div class="how-step-desc">Every morning you get exactly what to do. You check in through your dashboard. I see your progress and adjust when needed. You just have to show up.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="start">
+  <h2 class="cta-h reveal">
+    15 minutes.<br>Three times<br>a week.<br><em>That's it.</em>
+  </h2>
+  <p class="cta-sub reveal">No perfection required. No two-hour sessions. No overhauling everything at once. Just a start -- built around your real life -- that actually sticks.</p>
+  <div class="cta-actions reveal">
+    <a href="https://hammer25-max.github.io/dashboard/intake-form.html" class="btn-primary">Start Here</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Hammertime<span>.</span></div>
+  <div style="font-size:11px;color:var(--muted);font-weight:300;">Built for your real life.</div>
+  <div style="font-size:10px;color:rgba(122,111,106,.3);">&copy; 2026 Hammertime Fitness</div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+  });
+}, { threshold: .06, rootMargin: '0px 0px -20px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
