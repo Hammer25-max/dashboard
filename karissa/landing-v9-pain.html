@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hammertime Fitness -- What's On The Other Side of Pain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant:ital,wght@0,300;0,400;1,300;1,400;1,600&family=Barlow+Condensed:wght@300;400;600;700;800;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#060606;
+  --off:#0E0E0E;
+  --panel:#161616;
+  --white:#F2EEE8;
+  --gold:#C9A84C;
+  --gold-dim:rgba(201,168,76,.15);
+  --blood:#8B1A1A;
+  --blood-light:#C0392B;
+  --muted:#5A5A5A;
+  --muted2:#222;
+  --border:#1E1E1E;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(6,6,6,.98);border-bottom:1px solid var(--border);padding:16px 48px;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:8px;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:4px;color:var(--white);}
+.logo span{color:var(--gold);}
+.nav-cta{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:9px 22px;border:1px solid rgba(201,168,76,.3);color:var(--gold);text-decoration:none;transition:all .2s;}
+.nav-cta:hover{background:var(--gold);color:var(--black);}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 80px 80px;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(139,26,26,.1) 0%,transparent 55%),var(--black);z-index:0;}
+.hero-ghost{position:absolute;top:50%;right:-40px;transform:translateY(-50%);font-family:'Bebas Neue',sans-serif;font-size:clamp(200px,30vw,420px);color:rgba(255,255,255,.016);line-height:1;pointer-events:none;user-select:none;z-index:0;white-space:nowrap;}
+
+.hero-content{position:relative;z-index:1;max-width:760px;}
+.hero-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:6px;color:rgba(201,168,76,.6);text-transform:uppercase;font-weight:700;margin-bottom:24px;opacity:0;animation:fadeUp .6s ease .2s forwards;}
+
+.hero-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(64px,12vw,160px);line-height:.82;letter-spacing:-2px;text-transform:uppercase;margin-bottom:32px;opacity:0;animation:fadeUp .8s ease .4s forwards;}
+.hero-h1 .line-dim{color:rgba(242,238,232,.18);}
+.hero-h1 .line-gold{color:var(--gold);}
+.hero-h1 .line-blood{color:rgba(192,57,43,.9);}
+
+.hero-sub{font-size:17px;color:rgba(242,238,232,.5);line-height:1.9;max-width:520px;font-weight:300;margin-bottom:40px;opacity:0;animation:fadeUp .8s ease .65s forwards;}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s ease .85s forwards;}
+.btn-gold{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:15px 44px;background:var(--gold);color:var(--black);text-decoration:none;transition:all .2s;}
+.btn-gold:hover{background:#E8C56A;}
+.btn-ghost{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:15px 24px;border:1px solid var(--border);color:var(--muted);text-decoration:none;transition:all .2s;}
+.btn-ghost:hover{border-color:var(--white);color:var(--white);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* MARQUEE */
+.marquee-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--off);padding:14px 0;}
+.marquee-track{display:flex;animation:marquee 45s linear infinite;white-space:nowrap;}
+.marquee-item{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--muted);padding:0 40px;flex-shrink:0;}
+.marquee-item.gold{color:rgba(201,168,76,.45);}
+.marquee-item.blood{color:rgba(192,57,43,.4);}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* GOLF ANALOGY SECTION */
+.golf{padding:100px 80px;background:var(--off);position:relative;}
+.golf::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,var(--blood),transparent);}
+.golf-inner{max-width:820px;margin:0 auto;}
+.section-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;font-weight:700;margin-bottom:14px;}
+.section-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,72px);line-height:.9;letter-spacing:-1px;text-transform:uppercase;margin-bottom:28px;}
+.section-h span{color:var(--gold);}
+.body{font-size:17px;color:rgba(242,238,232,.65);line-height:1.9;margin-bottom:22px;font-weight:300;}
+.body strong{color:var(--white);font-weight:500;}
+
+/* GOLF SCORECARD */
+.scorecard{background:var(--panel);border:1px solid var(--muted2);margin:40px 0;overflow:hidden;}
+.scorecard-header{background:rgba(201,168,76,.08);border-bottom:1px solid var(--muted2);padding:16px 28px;display:flex;justify-content:space-between;align-items:center;}
+.scorecard-title{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.scorecard-sub{font-size:11px;color:var(--muted);letter-spacing:1px;}
+.scorecard-rows{display:flex;flex-direction:column;}
+.sc-row{display:grid;grid-template-columns:80px 1fr 80px;border-bottom:1px solid var(--muted2);transition:background .15s;}
+.sc-row:last-child{border-bottom:none;}
+.sc-row:hover{background:rgba(255,255,255,.02);}
+.sc-hole{padding:14px 28px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;color:var(--muted);}
+.sc-desc{padding:14px 20px;font-size:13px;color:rgba(242,238,232,.6);border-left:1px solid var(--muted2);border-right:1px solid var(--muted2);display:flex;align-items:center;}
+.sc-score{padding:14px 28px;text-align:center;display:flex;align-items:center;justify-content:center;}
+.ace{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--gold);}
+.boring{font-size:18px;opacity:.3;}
+.sc-footer{background:rgba(139,26,26,.06);border-top:1px solid rgba(139,26,26,.2);padding:16px 28px;}
+.sc-footer-text{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(192,57,43,.7);letter-spacing:1px;}
+
+/* POINT SECTION */
+.point{background:var(--black);padding:80px 80px;}
+.point-inner{max-width:820px;margin:0 auto;}
+.point-box{background:rgba(139,26,26,.06);border:1px solid rgba(139,26,26,.2);padding:44px 48px;margin:0 0 32px;}
+.point-text{font-family:'Cormorant',serif;font-size:clamp(22px,3.5vw,36px);font-style:italic;font-weight:300;line-height:1.5;color:var(--white);}
+.point-text span{color:var(--gold);font-style:normal;font-weight:600;}
+
+/* BIG PULL */
+.pull-dark{padding:100px 80px;background:var(--blood);text-align:center;position:relative;overflow:hidden;}
+.pull-dark::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,0,0,.4) 0%,transparent 70%);}
+.pull-line{width:32px;height:2px;background:var(--gold);margin:0 auto 28px;position:relative;z-index:1;}
+.pull-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,10vw,140px);line-height:.85;letter-spacing:-2px;text-transform:uppercase;color:var(--white);position:relative;z-index:1;}
+.pull-h span{color:var(--gold);}
+.pull-sub{font-size:16px;color:rgba(242,238,232,.55);max-width:480px;margin:24px auto 0;line-height:1.85;font-weight:300;position:relative;z-index:1;}
+
+/* WHY PAIN MATTERS */
+.whypain{padding:100px 80px;background:var(--off);}
+.whypain-inner{max-width:820px;margin:0 auto;}
+.pain-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--muted2);margin-top:48px;}
+.pain-card{background:var(--off);padding:36px;transition:background .2s;}
+.pain-card:hover{background:var(--panel);}
+.pain-num{font-family:'Bebas Neue',sans-serif;font-size:56px;color:rgba(201,168,76,.06);line-height:1;margin-bottom:12px;transition:color .2s;}
+.pain-card:hover .pain-num{color:rgba(201,168,76,.15);}
+.pain-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.pain-body{font-size:13px;color:var(--muted);line-height:1.75;font-weight:300;}
+
+/* TRIUMPH SECTION */
+.triumph{padding:100px 80px;background:var(--black);}
+.triumph-inner{max-width:820px;margin:0 auto;}
+.triumph-list{display:flex;flex-direction:column;gap:1px;background:var(--muted2);margin-top:48px;}
+.triumph-item{background:var(--black);padding:24px 32px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;transition:background .2s;}
+.triumph-item:hover{background:var(--off);}
+.triumph-arrow{font-family:'Bebas Neue',sans-serif;font-size:28px;color:rgba(201,168,76,.3);transition:color .2s;}
+.triumph-item:hover .triumph-arrow{color:var(--gold);}
+.triumph-text strong{display:block;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:3px;}
+.triumph-text span{font-size:13px;color:var(--muted);line-height:1.6;}
+
+/* CLOSING SECTION */
+.closing{padding:100px 80px;background:var(--panel);position:relative;}
+.closing::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold),transparent);}
+.closing-inner{max-width:820px;margin:0 auto;}
+.closing-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,80px);line-height:.88;letter-spacing:-1px;text-transform:uppercase;margin-bottom:28px;}
+.closing-h span{color:var(--gold);}
+
+/* CTA */
+.cta{padding:140px 80px;background:var(--black);text-align:center;position:relative;overflow:hidden;}
+.cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(139,26,26,.08) 0%,transparent 65%);}
+.cta-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,10vw,130px);line-height:.85;letter-spacing:-3px;text-transform:uppercase;margin-bottom:20px;position:relative;z-index:1;}
+.cta-h .gold{color:var(--gold);}
+.cta-h .blood{color:rgba(192,57,43,.85);}
+.cta-sub{font-size:16px;color:rgba(242,238,232,.4);max-width:460px;margin:0 auto 44px;line-height:1.85;font-weight:300;position:relative;z-index:1;}
+.cta-btn{display:inline-block;background:var(--gold);color:var(--black);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:18px 56px;text-decoration:none;transition:all .2s;position:relative;z-index:1;}
+.cta-btn:hover{background:#E8C56A;}
+
+footer{padding:28px 48px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;background:var(--black);}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:4px;color:var(--muted);}
+.footer-logo span{color:var(--gold);}
+
+@media(max-width:768px){
+  nav{padding:14px 20px;}
+  .hero{padding:90px 24px 60px;}
+  .hero-ghost{display:none;}
+  .golf,.point,.whypain,.triumph,.closing,.cta,.pull-dark{padding:64px 24px;}
+  .pain-grid{grid-template-columns:1fr;}
+  .sc-row{grid-template-columns:60px 1fr 60px;}
+  footer{padding:24px 20px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+      <rect x="14" y="16" width="5" height="13" rx="1.5" fill="#C9A84C"/>
+      <rect x="4" y="6" width="24" height="12" rx="3" fill="#C9A84C"/>
+      <rect x="8" y="6" width="7" height="12" fill="#E8C56A"/>
+    </svg>
+    Hammertime<span>.</span>
+  </div>
+  <a href="https://hammer25-max.github.io/dashboard/karissa/karissa-intake.html" class="nav-cta">Start Here</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-ghost">TRIUMPH</div>
+  <div class="hero-content">
+    <div class="hero-tag">The Most Important Question In Fitness</div>
+    <h1 class="hero-h1">
+      <span class="line-dim">What's on</span><br>
+      <span class="line-dim">the other</span><br>
+      <span class="line-dim">side</span><br>
+      <span class="line-dim">of</span> <span class="line-blood">pain</span><span class="line-dim">?</span><br>
+      <span class="line-gold">Triumph.</span>
+    </h1>
+    <p class="hero-sub">Not comfort. Not ease. Not a life where everything comes without effort. The other side of pain is the only place triumph has ever lived. And the only way there is through.</p>
+    <div class="hero-cta">
+      <a href="https://hammer25-max.github.io/dashboard/karissa/karissa-intake.html" class="btn-gold">Start Here</a>
+      <a href="#golf" class="btn-ghost">Read More</a>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item gold">What's On The Other Side Of Pain</div>
+    <div class="marquee-item blood">Triumph</div>
+    <div class="marquee-item">We Need The Struggle</div>
+    <div class="marquee-item gold">The Gap Is Growth</div>
+    <div class="marquee-item">The Miss Makes The Hole-In-One Matter</div>
+    <div class="marquee-item blood">Hammertime Fitness</div>
+    <div class="marquee-item gold">What's On The Other Side Of Pain</div>
+    <div class="marquee-item blood">Triumph</div>
+    <div class="marquee-item">We Need The Struggle</div>
+    <div class="marquee-item gold">The Gap Is Growth</div>
+    <div class="marquee-item">The Miss Makes The Hole-In-One Matter</div>
+    <div class="marquee-item blood">Hammertime Fitness</div>
+  </div>
+</div>
+
+<!-- GOLF ANALOGY -->
+<section class="golf" id="golf">
+  <div class="golf-inner">
+    <div class="section-tag reveal">The Golf Analogy</div>
+    <h2 class="section-h reveal">What if you hit a<br>hole in one<br><span>every single time?</span></h2>
+    <p class="body reveal">Picture this. You and I go golfing. Neither of us has ever played before. You tee off on hole one and hit a hole in one. I tee off and hit a hole in one. We go to hole two. Same thing. Hole three. Same thing. Every hole, every round, every week &mdash; a hole in one. Every time. Without fail.</p>
+    <p class="body reveal"><strong>What's the point?</strong></p>
+    <p class="body reveal">You'd stop playing golf. You'd have to. There would be no reason to keep going. No gap between where you are and where you're trying to get. No growth. No moment of triumph because there was never a moment of struggle. The perfection would hollow out the entire thing.</p>
+
+    <!-- SCORECARD VISUAL -->
+    <div class="scorecard reveal">
+      <div class="scorecard-header">
+        <div class="scorecard-title">The Perfect Round That Means Nothing</div>
+        <div class="scorecard-sub">Hole in one every hole &mdash; every round</div>
+      </div>
+      <div class="scorecard-rows">
+        <div class="sc-row">
+          <div class="sc-hole">Hole 1</div>
+          <div class="sc-desc">First swing ever. No practice. No struggle.</div>
+          <div class="sc-score"><span class="ace">ACE</span></div>
+        </div>
+        <div class="sc-row">
+          <div class="sc-hole">Hole 2</div>
+          <div class="sc-desc">Again. Effortless. No miss. No learning.</div>
+          <div class="sc-score"><span class="ace">ACE</span></div>
+        </div>
+        <div class="sc-row">
+          <div class="sc-hole">Hole 3</div>
+          <div class="sc-desc">Still perfect. Nothing to overcome. Nothing gained.</div>
+          <div class="sc-score"><span class="ace">ACE</span></div>
+        </div>
+        <div class="sc-row">
+          <div class="sc-hole">Hole 9</div>
+          <div class="sc-desc">You stopped feeling anything three holes ago.</div>
+          <div class="sc-score"><span class="boring">&#128542;</span></div>
+        </div>
+        <div class="sc-row">
+          <div class="sc-hole">Hole 18</div>
+          <div class="sc-desc">What was the point of any of this?</div>
+          <div class="sc-score"><span class="boring">&#10007;</span></div>
+        </div>
+      </div>
+      <div class="sc-footer">
+        <div class="sc-footer-text">Perfect score. Zero meaning. No growth. No triumph. Because there was never any pain.</div>
+      </div>
+    </div>
+
+    <div class="point-box reveal">
+      <div class="point-text">"If everything was easy and given to you, <span>why go out and try?</span> The same goes for business. For relationships. For fitness. For everything in life. We don't just tolerate the struggle. We need it. The gap between where we are and where we're trying to get &mdash; that gap is called growth. The pain of closing it is called life. And what's on the other side of it, every single time, is triumph."</div>
+    </div>
+  </div>
+</section>
+
+<!-- BIG PULL -->
+<div class="pull-dark">
+  <div class="pull-line"></div>
+  <div class="pull-h reveal">
+    What's on<br>
+    the other<br>
+    side of<br>
+    <span>pain?</span><br>
+    Triumph.
+  </div>
+  <p class="pull-sub reveal">Not sometimes. Not occasionally. Every single time you go through something hard and come out the other side &mdash; something was built that cannot be given, bought, or faked.</p>
+</div>
+
+<!-- WHY PAIN MATTERS -->
+<section class="whypain">
+  <div class="whypain-inner">
+    <div class="section-tag reveal">Why We Need It</div>
+    <h2 class="section-h reveal">Pain is not the<br>enemy.<br><span>Comfort is.</span></h2>
+    <p class="body reveal">We have been sold the idea that the goal is to eliminate discomfort. To find the easiest path. To make things as frictionless as possible. That's backwards. The discomfort is the mechanism. Remove it and you remove the growth.</p>
+
+    <div class="pain-grid">
+      <div class="pain-card reveal">
+        <div class="pain-num">01</div>
+        <div class="pain-title">Pain Builds Evidence</div>
+        <div class="pain-body">Every hard session you get through deposits proof that you can handle hard things. That evidence accumulates. Until the hard things don't feel as hard anymore. Not because they changed. Because you did.</div>
+      </div>
+      <div class="pain-card reveal">
+        <div class="pain-num">02</div>
+        <div class="pain-title">Pain Creates Meaning</div>
+        <div class="pain-body">The hole in one only means something because you've missed before. The PR only matters because of the workouts that didn't go as planned. Ease erases meaning. Struggle is what makes achievement real.</div>
+      </div>
+      <div class="pain-card reveal">
+        <div class="pain-num">03</div>
+        <div class="pain-title">Pain Is Where Growth Lives</div>
+        <div class="pain-body">Muscle doesn't grow in the session. It grows in the recovery after the session tried to break it. The same is true of discipline, confidence, and identity. Growth requires the stress. Without it nothing adapts.</div>
+      </div>
+      <div class="pain-card reveal">
+        <div class="pain-num">04</div>
+        <div class="pain-title">Pain Filters What Matters</div>
+        <div class="pain-body">When something is hard and you do it anyway, you find out what you actually want. Not what you think you want. What you want enough to work for. That clarity is one of the most valuable things a hard pursuit gives you.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRIUMPH -->
+<section class="triumph">
+  <div class="triumph-inner">
+    <div class="section-tag reveal" style="color:var(--gold);">The Other Side</div>
+    <h2 class="section-h reveal" style="color:var(--white);">This is what<br><span style="color:var(--gold);">triumph</span><br>actually looks like.</h2>
+    <p class="body reveal">Not a moment. Not an event. A compounding of everything you chose to go through when you didn't have to. Here is where it shows up.</p>
+    <div class="triumph-list reveal">
+      <div class="triumph-item">
+        <div class="triumph-arrow">&#8594;</div>
+        <div class="triumph-text">
+          <strong>The morning you don't have to argue with yourself</strong>
+          <span>The discipline compounded enough that the alarm goes off and you just go. No negotiation. No internal war. That's triumph built quietly over months.</span>
+        </div>
+      </div>
+      <div class="triumph-item">
+        <div class="triumph-arrow">&#8594;</div>
+        <div class="triumph-text">
+          <strong>The bad day that doesn't break you completely</strong>
+          <span>Life still happens. But you don't fall over. Because the foundation you built in the hard sessions holds you up when everything else tries to knock you down.</span>
+        </div>
+      </div>
+      <div class="triumph-item">
+        <div class="triumph-arrow">&#8594;</div>
+        <div class="triumph-text">
+          <strong>The decision you don't make on impulse</strong>
+          <span>The disciplined mind pauses. The same muscle that brought you back to the plan when you didn't feel like it is the same one that saves you from the decision you'd regret.</span>
+        </div>
+      </div>
+      <div class="triumph-item">
+        <div class="triumph-arrow">&#8594;</div>
+        <div class="triumph-text">
+          <strong>The quiet confidence nobody gave you</strong>
+          <span>Not from how you look. From what you do in private. The knowing that comes from having gone through hard things on purpose, repeatedly, and come out the other side.</span>
+        </div>
+      </div>
+      <div class="triumph-item">
+        <div class="triumph-arrow">&#8594;</div>
+        <div class="triumph-text">
+          <strong>The life that transfers everywhere</strong>
+          <span>Better at work. More present at home. More patient in relationships. Because you stopped running on empty and started investing in the foundation everything else stands on.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing">
+  <div class="closing-inner">
+    <div class="section-tag reveal">The Point Of All Of It</div>
+    <h2 class="closing-h reveal">If it was<br>easy &mdash;<br><span>why go?</span></h2>
+    <p class="body reveal">The same reason you'd stop playing golf if you hit a hole in one every time is the same reason a life without struggle produces a person without depth. The difficulty is not the obstacle. The difficulty is the point. It is the mechanism that builds everything worth having.</p>
+    <p class="body reveal">This program will be hard some days. You will fall off. You will have sessions that don't feel good. You will want to quit. <strong>That is exactly where the growth is hiding.</strong> On the other side of every one of those moments is a version of you that couldn't have been built any other way.</p>
+    <div style="margin-top:32px;padding:28px 36px;border-left:3px solid var(--gold);background:var(--gold-dim);" class="reveal">
+      <p style="font-family:'Cormorant',serif;font-size:clamp(20px,3vw,28px);font-style:italic;line-height:1.5;color:var(--white);">"What's on the other side of pain? <span style="color:var(--gold);font-style:normal;font-weight:600;">Triumph.</span> Every single time. You just have to be willing to go through."</p>
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-top:12px;">&mdash; Hammertime Fitness</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2 class="cta-h reveal">
+    <span class="blood">Pain.</span><br>
+    Then<br>
+    <span class="gold">Triumph.</span>
+  </h2>
+  <p class="cta-sub reveal">Not the easy path. The right one. The one that builds something real on the other side of every hard rep, every early morning, every moment you came back when you didn't have to.</p>
+  <a href="https://hammer25-max.github.io/dashboard/karissa/karissa-intake.html" class="cta-btn reveal">Go Through</a>
+</section>
+
+<footer>
+  <div class="footer-logo">Hammertime<span>.</span></div>
+  <div style="font-size:11px;color:var(--muted);font-weight:300;">What's on the other side of pain? Triumph.</div>
+  <div style="font-size:10px;color:rgba(90,90,90,.4);">&copy; 2026 Hammertime Fitness</div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+}, { threshold: .06, rootMargin: '0px 0px -20px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

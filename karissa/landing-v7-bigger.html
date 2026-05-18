@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hammertime Fitness -- Bigger Than Fitness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anybody:wght@100;200;300;400;600;700;800;900&family=Barlow+Condensed:wght@300;400;600;700;800;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#090909;
+  --off:#111;
+  --panel:#181818;
+  --stone:#E8E0D5;
+  --stone-dark:#D4C8BC;
+  --amber:#C9853A;
+  --amber-light:#E8A055;
+  --sage:#6B9E7A;
+  --white:#F4F0EB;
+  --muted:#666;
+  --muted2:#2A2A2A;
+  --border:#242424;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(9,9,9,.98);border-bottom:1px solid var(--border);padding:16px 48px;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:4px;text-transform:uppercase;}
+.logo span{color:var(--amber);}
+.nav-cta{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:9px 22px;border:1px solid rgba(201,133,58,.4);color:var(--amber);text-decoration:none;transition:all .2s;}
+.nav-cta:hover{background:var(--amber);color:var(--black);}
+
+/* HERO - full dark */
+.hero{min-height:100vh;display:flex;align-items:center;padding:120px 80px 80px;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(201,133,58,.06) 0%,transparent 55%),radial-gradient(ellipse at 80% 20%,rgba(107,158,122,.04) 0%,transparent 45%),var(--black);z-index:0;}
+.hero-ghost{position:absolute;top:50%;right:-40px;transform:translateY(-50%);font-family:'Anybody',sans-serif;font-size:clamp(200px,28vw,400px);font-weight:900;color:rgba(255,255,255,.015);line-height:1;pointer-events:none;user-select:none;white-space:nowrap;z-index:0;}
+.hero-content{position:relative;z-index:1;max-width:680px;}
+.hero-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:6px;color:var(--amber);text-transform:uppercase;font-weight:700;margin-bottom:20px;opacity:0;animation:fadeUp .6s ease .2s forwards;}
+.hero-h1{font-family:'Anybody',sans-serif;font-size:clamp(56px,10vw,130px);font-weight:900;line-height:.85;letter-spacing:-3px;text-transform:uppercase;margin-bottom:28px;opacity:0;animation:fadeUp .8s ease .4s forwards;}
+.hero-h1 .line2{color:var(--amber);}
+.hero-h1 .line3{-webkit-text-stroke:1px rgba(244,240,235,.3);color:transparent;}
+.hero-sub{font-size:17px;color:rgba(244,240,235,.5);line-height:1.85;max-width:500px;font-weight:300;opacity:0;animation:fadeUp .8s ease .65s forwards;}
+.hero-cta{margin-top:40px;opacity:0;animation:fadeUp .8s ease .85s forwards;display:flex;align-items:center;gap:16px;}
+.btn-amber{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:15px 44px;background:var(--amber);color:var(--black);text-decoration:none;transition:all .2s;}
+.btn-amber:hover{background:var(--amber-light);}
+.btn-line{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:15px 24px;border:1px solid var(--border);color:var(--muted);text-decoration:none;transition:all .2s;}
+.btn-line:hover{border-color:var(--white);color:var(--white);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* MARQUEE */
+.marquee-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--off);padding:14px 0;}
+.marquee-track{display:flex;animation:marquee 45s linear infinite;white-space:nowrap;}
+.marquee-item{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--muted);padding:0 40px;flex-shrink:0;}
+.marquee-item.amber{color:rgba(201,133,58,.5);}
+.marquee-item.sage{color:rgba(107,158,122,.45);}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* WHAT THIS REALLY IS */
+.whatitis{padding:100px 80px;background:var(--stone);color:var(--black);}
+.whatitis-inner{max-width:820px;margin:0 auto;}
+.section-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:5px;color:var(--amber);text-transform:uppercase;font-weight:700;margin-bottom:14px;}
+.section-h{font-family:'Anybody',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:900;line-height:.88;letter-spacing:-2px;text-transform:uppercase;margin-bottom:28px;}
+.section-h span{color:var(--amber);}
+.body{font-size:17px;color:rgba(9,9,9,.7);line-height:1.9;margin-bottom:22px;font-weight:300;}
+.body strong{color:var(--black);font-weight:500;}
+
+/* MIND GRID */
+.mind-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--stone-dark);margin:48px 0;}
+.mind-card{background:var(--stone);padding:36px;position:relative;transition:background .2s;}
+.mind-card:hover{background:#fff;}
+.mind-card::before{content:'';position:absolute;top:0;left:0;width:0;height:2px;background:var(--amber);transition:width .3s;}
+.mind-card:hover::before{width:100%;}
+.mind-num{font-family:'Anybody',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--amber);margin-bottom:14px;}
+.mind-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--black);margin-bottom:8px;}
+.mind-body{font-size:13px;color:rgba(9,9,9,.55);line-height:1.7;font-weight:300;}
+
+/* TRANSFER SECTION */
+.transfer{padding:100px 80px;background:var(--black);}
+.transfer-inner{max-width:820px;margin:0 auto;}
+.transfer-h{font-family:'Anybody',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:900;line-height:.88;letter-spacing:-2px;text-transform:uppercase;margin-bottom:48px;color:var(--white);}
+.transfer-h span{color:var(--amber);}
+.transfer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--muted2);}
+.transfer-item{background:var(--black);padding:32px 24px;text-align:center;transition:background .2s;}
+.transfer-item:hover{background:var(--off);}
+.transfer-icon{font-size:32px;margin-bottom:14px;}
+.transfer-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:8px;}
+.transfer-body{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;}
+
+/* PULL */
+.pull-section{padding:100px 80px;background:var(--stone);text-align:center;}
+.pull-line{width:28px;height:2px;background:var(--amber);margin:0 auto 28px;}
+.pull-text{font-family:'Anybody',sans-serif;font-size:clamp(28px,5vw,56px);font-weight:900;line-height:.9;letter-spacing:-2px;text-transform:uppercase;color:var(--black);max-width:720px;margin:0 auto 16px;}
+.pull-text span{color:var(--amber);}
+.pull-attr{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;color:rgba(9,9,9,.35);text-transform:uppercase;}
+
+/* DECISION SECTION */
+.decisions{padding:100px 80px;background:var(--off);}
+.decisions-inner{max-width:820px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.dec-left .section-h{color:var(--white);}
+.dec-left .section-h span{color:var(--amber);}
+.dec-left .body{color:rgba(244,240,235,.55);}
+.dec-right{display:flex;flex-direction:column;gap:1px;background:var(--muted2);}
+.dec-item{background:var(--off);padding:20px 24px;display:flex;gap:14px;align-items:flex-start;transition:background .2s;}
+.dec-item:hover{background:var(--panel);}
+.dec-check{font-family:'Barlow Condensed',sans-serif;font-size:20px;color:var(--amber);flex-shrink:0;line-height:1.2;}
+.dec-text strong{display:block;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:3px;}
+.dec-text span{font-size:12px;color:var(--muted);line-height:1.6;}
+
+/* CTA */
+.cta{padding:140px 80px;background:var(--stone);text-align:center;position:relative;overflow:hidden;}
+.cta-h{font-family:'Anybody',sans-serif;font-size:clamp(48px,9vw,110px);font-weight:900;line-height:.85;letter-spacing:-3px;text-transform:uppercase;color:var(--black);margin-bottom:20px;}
+.cta-h span{color:var(--amber);}
+.cta-sub{font-size:16px;color:rgba(9,9,9,.5);max-width:460px;margin:0 auto 44px;line-height:1.85;font-weight:300;}
+.cta-btn{display:inline-block;background:var(--black);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:16px 52px;text-decoration:none;transition:all .2s;}
+.cta-btn:hover{background:var(--amber);color:var(--black);}
+
+footer{padding:28px 48px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;background:var(--black);}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:var(--muted);}
+.footer-logo span{color:var(--amber);}
+
+@media(max-width:768px){
+  nav{padding:14px 20px;}
+  .hero{padding:90px 28px 60px;}
+  .hero-ghost{display:none;}
+  .whatitis,.transfer,.pull-section,.decisions,.cta{padding:64px 24px;}
+  .mind-grid,.transfer-grid{grid-template-columns:1fr;}
+  .decisions-inner{grid-template-columns:1fr;gap:40px;}
+  footer{padding:24px 20px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+      <rect x="14" y="16" width="5" height="13" rx="1.5" fill="#C9A84C"/>
+      <rect x="4" y="6" width="24" height="12" rx="3" fill="#C9A84C"/>
+      <rect x="8" y="6" width="7" height="12" fill="#E8C56A"/>
+    </svg>
+    Hammertime<span>.</span>
+  </div>
+  <a href="https://hammer25-max.github.io/dashboard/karissa/karissa-intake.html" class="nav-cta">Start Here</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-ghost">MIND</div>
+  <div class="hero-content">
+    <div class="hero-tag">This Is Not A Fitness Program</div>
+    <h1 class="hero-h1">
+      Bigger<br>
+      <span class="line2">than</span><br>
+      <span class="line3">fitness.</span>
+    </h1>
+    <p class="hero-sub">The body is a side effect. What you are actually building is a mind. A mind that makes better decisions, shows up without being told, and compounds into every area of your life whether you planned it to or not.</p>
+    <div class="hero-cta">
+      <a href="https://hammer25-max.github.io/dashboard/karissa/karissa-intake.html" class="btn-amber">Build The Mind</a>
+      <a href="#what" class="btn-line">Read More</a>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item amber">Build The Mind First</div>
+    <div class="marquee-item">The Body Follows</div>
+    <div class="marquee-item sage">Better Decisions</div>
+    <div class="marquee-item">Discipline Compounds</div>
+    <div class="marquee-item amber">It Transfers Everywhere</div>
+    <div class="marquee-item">Hammertime Fitness</div>
+    <div class="marquee-item amber">Build The Mind First</div>
+    <div class="marquee-item">The Body Follows</div>
+    <div class="marquee-item sage">Better Decisions</div>
+    <div class="marquee-item">Discipline Compounds</div>
+    <div class="marquee-item amber">It Transfers Everywhere</div>
+    <div class="marquee-item">Hammertime Fitness</div>
+  </div>
+</div>
+
+<!-- WHAT THIS REALLY IS -->
+<section class="whatitis" id="what">
+  <div class="whatitis-inner">
+    <div class="section-tag reveal">What You Are Actually Building</div>
+    <h2 class="section-h reveal">The gym is<br>the door.<br><span>Not the destination.</span></h2>
+    <p class="body reveal">Most people think fitness is about the body. It's not. The body is just the most honest arena you have access to. The weight doesn't care about your excuses. The alarm doesn't negotiate. The rep either happened or it didn't.</p>
+    <p class="body reveal">And in that honesty &mdash; in that space where there is nothing to hide behind &mdash; you build something that transfers everywhere. A mind that follows through. A self that shows up. A person who <strong>makes decisions from discipline instead of impulse.</strong></p>
+    <p class="body reveal">That's what this is actually for. The body getting stronger is a welcome side effect of the real work.</p>
+
+    <div class="mind-grid">
+      <div class="mind-card reveal">
+        <div class="mind-num">01 / Building</div>
+        <div class="mind-title">A Calloused Mind</div>
+        <div class="mind-body">Callouses don't come from comfort. They come from repetition. Every time you show up when you don't feel like it, your mind gets a little harder to break. A little less reactive. A little more solid. That is what we are building.</div>
+      </div>
+      <div class="mind-card reveal">
+        <div class="mind-num">02 / Building</div>
+        <div class="mind-title">Better Decisions</div>
+        <div class="mind-body">A disciplined mind doesn't make impulse decisions. The same mechanism that brings you back to the plan instead of quitting works in your relationships, your career, your finances. You stop reacting and start responding.</div>
+      </div>
+      <div class="mind-card reveal">
+        <div class="mind-num">03 / Building</div>
+        <div class="mind-title">Compound Interest On Yourself</div>
+        <div class="mind-body">Day one feels like nothing. Month six feels like everything. Each small action deposits evidence that you are someone who can be trusted. That evidence compounds. Until one day the discipline isn't something you practice &mdash; it's who you are.</div>
+      </div>
+      <div class="mind-card reveal">
+        <div class="mind-num">04 / Building</div>
+        <div class="mind-title">Identity Over Motivation</div>
+        <div class="mind-body">Motivation comes and goes. Identity stays. Once you have built enough evidence that you are someone who shows up &mdash; in private, without applause, when no one is watching &mdash; the question stops being if you'll do it. It becomes when.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHERE IT TRANSFERS -->
+<section class="transfer">
+  <div class="transfer-inner">
+    <div class="section-tag reveal" style="color:var(--amber);">Where It Goes</div>
+    <h2 class="transfer-h reveal">It doesn't stay<br>in the <span>gym.</span></h2>
+    <div class="transfer-grid">
+      <div class="transfer-item reveal">
+        <div class="transfer-icon">&#128149;</div>
+        <div class="transfer-title">Relationships</div>
+        <div class="transfer-body">You show up differently when you trust yourself. You stop reacting from a place of stress and start responding from a place of groundedness. The people around you feel the difference.</div>
+      </div>
+      <div class="transfer-item reveal">
+        <div class="transfer-icon">&#128188;</div>
+        <div class="transfer-title">Work & Career</div>
+        <div class="transfer-body">The follow-through muscle you build in the gym is the same one that finishes the project, keeps the commitment, shows up prepared. Discipline doesn't know the difference between a workout and a deadline.</div>
+      </div>
+      <div class="transfer-item reveal">
+        <div class="transfer-icon">&#127968;</div>
+        <div class="transfer-title">Home & Family</div>
+        <div class="transfer-body">The best version of you in every room you walk into. More energy. More patience. More presence. Because you stopped running on empty and started investing in the foundation everything else stands on.</div>
+      </div>
+      <div class="transfer-item reveal">
+        <div class="transfer-icon">&#129504;</div>
+        <div class="transfer-title">Mental Clarity</div>
+        <div class="transfer-body">Exercise is neurologically proven to improve focus, reduce anxiety, and strengthen impulse control. You don't just feel better physically. Your brain actually works better. Every single day you train.</div>
+      </div>
+      <div class="transfer-item reveal">
+        <div class="transfer-icon">&#128176;</div>
+        <div class="transfer-title">Financial Decisions</div>
+        <div class="transfer-body">The discipline that says no to skipping the workout is the same discipline that says no to the impulse purchase. Better decisions is not a gym skill. It is a life skill you happen to develop in the gym.</div>
+      </div>
+      <div class="transfer-item reveal">
+        <div class="transfer-icon">&#127775;</div>
+        <div class="transfer-title">Self-Worth</div>
+        <div class="transfer-body">Not the kind that comes from how you look. The kind that comes from what you do in private, for yourself, when no one is watching. That is the most durable confidence available to a human being.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PULL QUOTE -->
+<div class="pull-section">
+  <div class="pull-line reveal"></div>
+  <div class="pull-text reveal">The gym is where it <span>starts.</span><br>The rest of your life is where it ends up.</div>
+  <div class="pull-attr reveal">&mdash; Hammertime Fitness</div>
+</div>
+
+<!-- DECISION MAKING -->
+<section class="decisions">
+  <div class="decisions-inner">
+    <div class="dec-left reveal">
+      <div class="section-tag">The Decision Engine</div>
+      <h2 class="section-h">A disciplined<br>mind doesn't<br>make <span>impulse</span><br>decisions.</h2>
+      <p class="body">The same mechanism that brings you back to the plan after falling off &mdash; that pause between impulse and action &mdash; works in every room you walk into. You are training your brain to respond instead of react. That is not a fitness benefit. That is a life benefit.</p>
+    </div>
+    <div class="dec-right reveal">
+      <div class="dec-item">
+        <div class="dec-check">01</div>
+        <div class="dec-text">
+          <strong>You pause before you react</strong>
+          <span>The trained mind creates space between stimulus and response. That space is where better decisions live.</span>
+        </div>
+      </div>
+      <div class="dec-item">
+        <div class="dec-check">02</div>
+        <div class="dec-text">
+          <strong>You choose long-term over short-term</strong>
+          <span>Every rep is practice in delayed gratification. That practice transfers to every other choice you make.</span>
+        </div>
+      </div>
+      <div class="dec-item">
+        <div class="dec-check">03</div>
+        <div class="dec-text">
+          <strong>You follow through on what you said</strong>
+          <span>The person who keeps promises to themselves keeps promises to others. That reputation is built one session at a time.</span>
+        </div>
+      </div>
+      <div class="dec-item">
+        <div class="dec-check">04</div>
+        <div class="dec-text">
+          <strong>You stop being managed by your emotions</strong>
+          <span>You feel everything. You just aren't controlled by it anymore. That is the compound effect of discipline on the mind.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2 class="cta-h reveal">
+    Build the<br>
+    mind <span>first.</span><br>
+    Everything<br>
+    else follows.
+  </h2>
+  <p class="cta-sub reveal">Not a workout plan. Not a diet. A system that builds a better version of you from the inside out &mdash; and then lets the compounding do the rest.</p>
+  <a href="https://hammer25-max.github.io/dashboard/karissa/karissa-intake.html" class="cta-btn reveal">Start Building</a>
+</section>
+
+<footer>
+  <div class="footer-logo">Hammertime<span>.</span></div>
+  <div style="font-size:11px;color:var(--muted);font-weight:300;">Bigger than fitness.</div>
+  <div style="font-size:10px;color:rgba(102,102,102,.4);">&copy; 2026 Hammertime Fitness</div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+}, { threshold: .06, rootMargin: '0px 0px -20px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
