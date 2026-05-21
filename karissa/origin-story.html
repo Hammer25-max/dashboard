@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Origin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600;1,700&family=Barlow+Condensed:wght@300;400;600;700;800;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#040404;
+  --off:#0C0C0C;
+  --panel:#121212;
+  --white:#F0EBE3;
+  --gold:#C9A84C;
+  --blood:#8B1A1A;
+  --blood-light:#C0392B;
+  --muted:#5A5050;
+  --muted2:#1C1C1C;
+  --border:#1A1A1A;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden;line-height:1.6;}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:.6;}
+
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .8s ease,transform .8s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* GRAPHIC BREAKS */
+.graphic-break{padding:60px 72px;display:flex;align-items:center;gap:0;}
+.gb-line{flex:1;height:1px;background:linear-gradient(to right,transparent,var(--muted2));}
+.gb-line.right{background:linear-gradient(to left,transparent,var(--muted2));}
+.gb-center{padding:0 24px;font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:6px;color:rgba(201,168,76,.3);text-transform:uppercase;}
+
+/* BIG NUMBER CALLOUT */
+.big-callout{padding:60px 72px;background:var(--panel);display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;}
+.bc-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(100px,15vw,180px);color:rgba(201,168,76,.08);line-height:1;flex-shrink:0;}
+.bc-content{}
+.bc-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;font-weight:700;margin-bottom:10px;}
+.bc-text{font-family:'Cormorant',serif;font-size:clamp(22px,3vw,30px);font-style:italic;font-weight:300;color:var(--white);line-height:1.45;}
+
+/* HORIZONTAL RULE WITH TEXT */
+.rule-text{padding:40px 72px;display:flex;align-items:center;gap:20px;}
+.rule-line{flex:1;height:1px;background:var(--border);}
+.rule-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:5px;color:var(--muted);text-transform:uppercase;font-weight:700;white-space:nowrap;}
+
+/* MILESTONE MARKERS */
+.milestones{padding:0 72px 60px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--muted2);}
+.milestone{background:var(--off);padding:24px 20px;text-align:center;transition:background .2s;}
+.milestone:hover{background:var(--panel);}
+.milestone-age{font-family:'Bebas Neue',sans-serif;font-size:44px;color:rgba(201,168,76,.2);line-height:1;margin-bottom:6px;transition:color .2s;}
+.milestone:hover .milestone-age{color:var(--gold);}
+.milestone-title{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:4px;}
+.milestone-body{font-size:11px;color:var(--muted);line-height:1.5;}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:80px 72px;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 60%,rgba(139,26,26,.14) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(201,168,76,.04) 0%,transparent 45%),var(--black);z-index:0;}
+.hero-vline{position:absolute;left:72px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent 0%,rgba(201,168,76,.2) 30%,rgba(201,168,76,.2) 70%,transparent 100%);z-index:0;}
+.hero-word{position:absolute;bottom:-40px;right:-60px;font-family:'Bebas Neue',sans-serif;font-size:clamp(280px,40vw,560px);color:rgba(255,255,255,.012);line-height:1;pointer-events:none;user-select:none;z-index:0;}
+.hero-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:7px;color:rgba(201,168,76,.55);text-transform:uppercase;font-weight:700;margin-bottom:24px;position:relative;z-index:1;opacity:0;animation:fadeUp .7s ease .3s forwards;}
+.hero-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(80px,15vw,220px);line-height:.82;letter-spacing:-3px;text-transform:uppercase;position:relative;z-index:1;opacity:0;animation:fadeUp .9s ease .5s forwards;}
+.hero-h1 .dim{color:rgba(240,235,227,.12);}
+.hero-h1 .gold{color:var(--gold);}
+.hero-h1 .blood{color:rgba(192,57,43,.85);}
+.hero-sub{font-size:17px;color:rgba(240,235,227,.4);max-width:560px;line-height:1.9;font-weight:300;margin-top:32px;position:relative;z-index:1;opacity:0;animation:fadeUp .9s ease .8s forwards;}
+.hero-scroll{position:absolute;bottom:40px;right:72px;font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:4px;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:12px;opacity:0;animation:fadeUp .8s ease 1.2s forwards;}
+.hero-scroll::before{content:'';width:48px;height:1px;background:var(--muted);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+/* SECTIONS */
+.section{padding:100px 72px;position:relative;}
+.section-inner{max-width:780px;}
+.section-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:6px;color:var(--gold);text-transform:uppercase;font-weight:700;margin-bottom:16px;}
+.section-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,7vw,96px);line-height:.88;letter-spacing:-2px;text-transform:uppercase;margin-bottom:28px;}
+.section-h span{color:var(--gold);}
+.section-h .blood{color:rgba(192,57,43,.85);}
+.body{font-size:17px;color:rgba(240,235,227,.68);line-height:1.95;margin-bottom:24px;font-weight:300;}
+.body strong{color:var(--white);font-weight:500;}
+.body:last-child{margin-bottom:0;}
+
+.section-divider{height:1px;background:linear-gradient(to right,rgba(201,168,76,.25),transparent);}
+.divider-blood{height:1px;background:linear-gradient(to right,rgba(139,26,26,.5),transparent);}
+
+/* PULL QUOTES */
+.pull{margin:40px 0;padding:32px 40px;border-left:3px solid var(--gold);background:rgba(201,168,76,.04);}
+.pull-text{font-family:'Cormorant',serif;font-size:clamp(22px,3.5vw,32px);font-style:italic;font-weight:300;line-height:1.45;color:var(--white);margin-bottom:10px;}
+.pull-text span{color:var(--gold);font-style:normal;font-weight:600;}
+.pull-blood{margin:40px 0;padding:32px 40px;border-left:3px solid rgba(192,57,43,.7);background:rgba(139,26,26,.06);}
+.pull-blood .pull-text{color:rgba(240,235,227,.92);}
+
+/* STATS */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--muted2);margin:40px 0;}
+.stat-box{background:var(--panel);padding:28px 24px;text-align:center;}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--blood-light);line-height:1;margin-bottom:6px;}
+.stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-family:'Barlow Condensed',sans-serif;font-weight:700;line-height:1.4;}
+
+/* FULL BLEED PULL */
+.full-pull{padding:100px 72px;text-align:center;position:relative;overflow:hidden;}
+.full-pull.blood-bg{background:var(--blood);}
+.full-pull.dark-bg{background:var(--panel);}
+.full-pull::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,0,0,.5) 0%,transparent 70%);}
+.fp-line{width:36px;height:2px;background:var(--gold);margin:0 auto 28px;position:relative;z-index:1;}
+.fp-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,9vw,120px);line-height:.85;letter-spacing:-2px;text-transform:uppercase;color:var(--white);position:relative;z-index:1;}
+.fp-h span{color:var(--gold);}
+.fp-sub{font-size:17px;color:rgba(240,235,227,.5);max-width:520px;margin:24px auto 0;line-height:1.85;font-weight:300;position:relative;z-index:1;}
+
+/* INVISIBLE WORK LIST */
+.invisible-list{display:flex;flex-direction:column;gap:1px;background:var(--muted2);margin:40px 0;}
+.invisible-item{background:var(--off);padding:20px 28px;display:flex;gap:20px;align-items:center;transition:background .2s;}
+.invisible-item:hover{background:var(--panel);}
+.invisible-time{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:rgba(201,168,76,.35);text-transform:uppercase;flex-shrink:0;width:90px;transition:color .2s;}
+.invisible-item:hover .invisible-time{color:var(--gold);}
+.invisible-text{font-size:14px;color:rgba(240,235,227,.58);line-height:1.6;}
+.invisible-text strong{color:var(--white);font-weight:500;}
+
+/* VALUES GRID */
+.values-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--muted2);margin:40px 0;}
+.value-card{background:var(--panel);padding:32px;position:relative;overflow:hidden;transition:background .2s;}
+.value-card:hover{background:var(--off);}
+.value-card::before{content:'';position:absolute;top:0;left:0;width:0;height:2px;background:var(--gold);transition:width .4s ease;}
+.value-card:hover::before{width:100%;}
+.value-num{font-family:'Bebas Neue',sans-serif;font-size:64px;color:rgba(201,168,76,.04);position:absolute;top:12px;right:16px;line-height:1;}
+.value-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;position:relative;z-index:1;}
+.value-body{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;position:relative;z-index:1;}
+
+/* ACCOUNTABILITY CHAIN */
+.chain-wrap{margin:40px 0;}
+.chain-item{display:flex;align-items:stretch;gap:0;}
+.chain-left{display:flex;flex-direction:column;align-items:center;width:48px;flex-shrink:0;}
+.chain-dot{width:14px;height:14px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:4px;}
+.chain-line{width:1px;flex:1;background:linear-gradient(to bottom,rgba(201,168,76,.4),rgba(201,168,76,.1));margin-top:4px;}
+.chain-item:last-child .chain-line{display:none;}
+.chain-content{padding:0 0 28px 20px;flex:1;}
+.chain-head{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+.chain-body{font-size:14px;color:var(--muted);line-height:1.7;font-weight:300;}
+
+/* AGE BOX */
+.age-box{background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.15);padding:36px 40px;margin:40px 0;}
+.age-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;font-weight:700;margin-bottom:16px;}
+
+/* CLOSING */
+.closing{padding:120px 72px;background:var(--off);text-align:center;position:relative;overflow:hidden;}
+.closing::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(201,168,76,.05) 0%,transparent 65%);}
+.closing-line{width:32px;height:2px;background:var(--gold);margin:0 auto 28px;position:relative;z-index:1;}
+.closing-h{font-family:'Cormorant',serif;font-size:clamp(36px,6vw,72px);font-style:italic;font-weight:300;line-height:1.1;color:var(--white);max-width:700px;margin:0 auto 20px;position:relative;z-index:1;}
+.closing-h span{color:var(--gold);font-style:normal;}
+.closing-body{font-size:17px;color:rgba(240,235,227,.45);max-width:520px;margin:0 auto;line-height:1.9;font-weight:300;position:relative;z-index:1;}
+
+@media(max-width:768px){
+  .hero{padding:80px 24px 48px;}
+  .hero-vline,.hero-word,.hero-scroll{display:none;}
+  .section{padding:64px 24px;}
+  .full-pull{padding:64px 24px;}
+  .stat-row,.values-grid{grid-template-columns:1fr;}
+  .closing{padding:72px 24px;}
+  .pull,.pull-blood,.age-box{padding:24px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-vline"></div>
+  <div class="hero-word">ORIGIN</div>
+  <div class="hero-tag">The Story Behind The System</div>
+  <h1 class="hero-h1">
+    <span class="dim">I Should've</span><br>
+    <span class="dim">Been A</span><br>
+    <span class="blood">Statistic.</span><br>
+    <span class="gold">I'm Not.</span>
+  </h1>
+  <p class="hero-sub" style="margin-bottom:20px;">Most people see the final product. They see the discipline, the confidence, the work ethic. They don't see what it cost. They don't see where it came from. They don't see the years nobody was watching. This is that story.</p>
+  <div style="display:inline-flex;align-items:center;gap:12px;opacity:0;animation:fadeUp .8s ease 1s forwards;position:relative;z-index:1;">
+    <div style="width:24px;height:1px;background:rgba(201,168,76,.4);flex-shrink:0;"></div>
+    <p style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,.5);">This isn't about me. It's about what the work can build in anyone willing to do it.</p>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<div class="divider-blood"></div>
+
+<!-- INTRO BRIDGE -->
+<section style="background:var(--black);padding:80px 72px 60px;position:relative;overflow:hidden;">
+
+  <!-- BIG GHOST TEXT BEHIND -->
+  <div style="position:absolute;top:50%;left:-20px;transform:translateY(-50%);font-family:'Bebas Neue',sans-serif;font-size:clamp(120px,18vw,240px);color:rgba(255,255,255,.018);line-height:1;pointer-events:none;user-select:none;white-space:nowrap;">NOT GIVEN. EARNED.</div>
+
+  <div style="max-width:780px;position:relative;z-index:1;">
+
+    <!-- OPENING LINE - BIG -->
+    <div class="reveal" style="margin-bottom:40px;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,60px);line-height:.95;letter-spacing:-1px;text-transform:uppercase;color:rgba(240,235,227,.15);margin-bottom:16px;">Most people see the discipline.</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,60px);line-height:.95;letter-spacing:-1px;text-transform:uppercase;color:rgba(240,235,227,.3);">They see the confidence.</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,60px);line-height:.95;letter-spacing:-1px;text-transform:uppercase;color:rgba(240,235,227,.45);">The work ethic.</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,60px);line-height:.95;letter-spacing:-1px;text-transform:uppercase;color:rgba(240,235,227,.6);">The results.</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,60px);line-height:.95;letter-spacing:-1px;text-transform:uppercase;color:var(--white);margin-top:8px;">They don't see where it came from.</div>
+    </div>
+
+    <!-- HORIZONTAL RULE -->
+    <div class="reveal" style="display:flex;align-items:center;gap:16px;margin-bottom:36px;">
+      <div style="width:36px;height:2px;background:var(--gold);flex-shrink:0;"></div>
+      <div style="height:1px;flex:1;background:var(--border);"></div>
+    </div>
+
+    <!-- BODY COPY -->
+    <p class="reveal" style="font-size:18px;color:rgba(240,235,227,.5);line-height:1.95;font-weight:300;margin-bottom:20px;">I am not sharing this to impress you. I am sharing it because if you know the real starting point &mdash; not the version people see today &mdash; then you have no reason left to believe that where you are right now is where you have to stay.</p>
+    <p class="reveal" style="font-size:18px;color:rgba(240,235,227,.65);line-height:1.95;font-weight:300;font-style:italic;">This is where it actually started.</p>
+
+  </div>
+</section>
+
+
+<!-- SECTION 1: THE BEGINNING -->
+<section class="section" style="background:var(--off);">
+  <div class="section-inner">
+    <div class="section-tag reveal">Where It Started</div>
+    <h2 class="section-h reveal">I Was Six <span>Years Old.</span></h2>
+
+    <p class="body reveal">My father passed away when I was six years old. Alcohol took him. And what came after that shaped everything &mdash; the good and the hard. My mother did everything she could but there were days with no electricity because she couldn't pay the bill. Days with no running water. Hard days. Days where seeing a brighter future felt impossible because nothing around me was pointing toward one.</p>
+
+    <p class="body reveal">I couldn't fathom having my own place someday. Couldn't picture getting on a plane. Couldn't imagine any version of the life I have now. The lens I was looking through was cracked and everything coming through it looked broken. It was hard to fathom even where I am at today.</p>
+
+    <div class="pull-blood reveal">
+      <div class="pull-text">"Nobody saw those days. Nobody saw the repercussions of losing a father at a young age. Nobody saw what that does to a mother, to a household, to a kid trying to figure out what the future even looks like when it feels like there isn't one."</div>
+    </div>
+
+    <p class="body reveal">The statistics were not on my side. And they are not on the side of most kids in that situation.</p>
+
+    <div class="stat-row reveal">
+      <div class="stat-box">
+        <div class="stat-num">12x</div>
+        <div class="stat-label">More likely to develop substance abuse issues after sudden parental loss &mdash; PubMed Central</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">40%</div>
+        <div class="stat-label">Of children who lose a parent show significant behavioral and academic decline within two years</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">1</div>
+        <div class="stat-label">Decision. That's all it took to go a different direction. One decision made in private. Repeated.</div>
+      </div>
+    </div>
+
+    <p class="body reveal">I could have become those numbers. The easy path was right there &mdash; substances, giving up, deciding life was too hard and the effort wasn't worth it. I understood why people took that road. I probably should have statistically. I just didn't.</p>
+
+    <p class="body reveal">Not because I was special. Not because I had something figured out. Because somewhere along the way I found the one thing I could control &mdash; and I held onto it.</p>
+  </div>
+</section>
+
+<!-- SECTION 2: THE INVISIBLE WORK -->
+<section class="section" style="background:var(--black);">
+  <div class="section-inner">
+    <div class="section-tag reveal">The Invisible Work</div>
+    <h2 class="section-h reveal">The Gym At <span>Fifteen.</span><br>No Plan.<br>Just Showed Up.</h2>
+
+    <p class="body reveal">At fifteen years old my mother signed me up at the local Y for a program called Athletes of Tomorrow. Three days a week in the gym. I didn't fully understand what I was walking into. I didn't know at the time that the repetition, the showing up, the structure &mdash; all of it was laying groundwork for something I couldn't see yet.</p>
+
+    <p class="body reveal">Here's what I know now: <strong>values inform decisions that have not yet been made yet.</strong> The values being built in that gym three days a week were quietly programming the choices I would make years later &mdash; in situations I couldn't have anticipated, under pressure I hadn't faced yet. I had no idea. I just kept going back.</p>
+
+    <p class="body reveal">What nobody saw were the years that followed. And here is the thing about the values being built in that gym &mdash; discipline, consistency, accountability, work ethic &mdash; I wasn't consciously applying them. They were just in me. Baked in. When the workload came &mdash; three jobs, full college schedule, the gym &mdash; I didn't question it. I didn't look at it and decide whether I could handle it. I just handled it. Because the gym had already built the framework. It opened the door to having no excuses. It didn't matter what the load was. I could take it on. And through taking it on, something became undeniable.</p>
+
+    <!-- TIMELINE -->
+    <div class="reveal" style="margin:40px 0;position:relative;">
+
+      <!-- VERTICAL LINE -->
+      <div style="position:absolute;left:80px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,rgba(201,168,76,.5),rgba(201,168,76,.1));z-index:0;"></div>
+
+      <!-- ITEM 1 -->
+      <div style="display:flex;align-items:flex-start;gap:0;margin-bottom:48px;position:relative;">
+        <div style="width:80px;flex-shrink:0;text-align:right;padding-right:0;position:relative;">
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:42px;color:rgba(201,168,76,.18);line-height:1;display:block;padding-right:20px;">1am</span>
+        </div>
+        <div style="width:16px;height:16px;border-radius:50%;background:var(--gold);border:3px solid var(--black);flex-shrink:0;margin-top:6px;position:relative;z-index:1;"></div>
+        <div style="padding-left:24px;flex:1;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Pizza Shop</div>
+          <p style="font-size:15px;color:rgba(240,235,227,.65);line-height:1.8;font-weight:300;">I could have quit that job. I didn't. I went in at 1am every morning to make it fit &mdash; a schedule that already had two other jobs and a full load of college classes stacked into it. It was never an excuse not to succeed. It was a problem to solve.</p>
+        </div>
+      </div>
+
+      <!-- ITEM 2 -->
+      <div style="display:flex;align-items:flex-start;gap:0;margin-bottom:48px;position:relative;">
+        <div style="width:80px;flex-shrink:0;text-align:right;">
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:42px;color:rgba(201,168,76,.18);line-height:1;display:block;padding-right:20px;">Day</span>
+        </div>
+        <div style="width:16px;height:16px;border-radius:50%;background:var(--gold);border:3px solid var(--black);flex-shrink:0;margin-top:6px;position:relative;z-index:1;"></div>
+        <div style="padding-left:24px;flex:1;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Two Other Jobs</div>
+          <p style="font-size:15px;color:rgba(240,235,227,.65);line-height:1.8;font-weight:300;">Back to back throughout the day. Because one income wasn't enough and quitting wasn't an option. Nobody saw the math of a schedule with no room left in it. Nobody saw what it took to make it work anyway.</p>
+        </div>
+      </div>
+
+      <!-- ITEM 3 -->
+      <div style="display:flex;align-items:flex-start;gap:0;margin-bottom:48px;position:relative;">
+        <div style="width:80px;flex-shrink:0;text-align:right;">
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:rgba(201,168,76,.18);line-height:1;display:block;padding-right:20px;">All day</span>
+        </div>
+        <div style="width:16px;height:16px;border-radius:50%;background:var(--gold);border:3px solid var(--black);flex-shrink:0;margin-top:6px;position:relative;z-index:1;"></div>
+        <div style="padding-left:24px;flex:1;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Full College Schedule</div>
+          <p style="font-size:15px;color:rgba(240,235,227,.65);line-height:1.8;font-weight:300;">Showing up tired. Showing up anyway. Because falling behind, dropping out, giving up &mdash; none of those were acceptable conclusions. The gym had already built the framework for that decision.</p>
+        </div>
+      </div>
+
+      <!-- ITEM 4 -->
+      <div style="display:flex;align-items:flex-start;gap:0;margin-bottom:48px;position:relative;">
+        <div style="width:80px;flex-shrink:0;text-align:right;">
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:rgba(201,168,76,.18);line-height:1;display:block;padding-right:20px;">Eve&shy;ning</span>
+        </div>
+        <div style="width:16px;height:16px;border-radius:50%;background:var(--gold);border:3px solid var(--black);flex-shrink:0;margin-top:6px;position:relative;z-index:1;"></div>
+        <div style="padding-left:24px;flex:1;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">The Gym. The Meals. Then Sleep.</div>
+          <p style="font-size:15px;color:rgba(240,235,227,.65);line-height:1.8;font-weight:300;">After everything else. Sessions done. Food prepped. Then repeat the next day. Nobody was watching. Nobody was keeping score. That was the whole point &mdash; building something in private that would show up everywhere else without being planned.</p>
+        </div>
+      </div>
+
+      <!-- ITEM 5 - ALWAYS (different style - gold dot larger, text brighter) -->
+      <div style="display:flex;align-items:flex-start;gap:0;position:relative;">
+        <div style="width:80px;flex-shrink:0;text-align:right;">
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:rgba(201,168,76,.35);line-height:1;display:block;padding-right:20px;">Always</span>
+        </div>
+        <div style="width:20px;height:20px;border-radius:50%;background:var(--gold);border:3px solid var(--black);flex-shrink:0;margin-top:4px;position:relative;z-index:1;box-shadow:0 0 16px rgba(201,168,76,.3);"></div>
+        <div style="padding-left:22px;flex:1;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Reliability. In Private First.</div>
+          <p style="font-size:15px;color:rgba(240,235,227,.8);line-height:1.8;font-weight:300;">When you show up for yourself in private, day after day, it transfers. At work I became the person people could count on &mdash; not because I performed for them but because I had already been performing for myself when no one was watching. <strong style="color:var(--white);">That is where reliability actually comes from.</strong></p>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="body reveal">People look at me today and say &mdash; you're just a disciplined person, you have great willpower. No. <strong>Those values were earned. Not given.</strong> There is a difference between the two that only the people who had to earn them understand. What started in that gym at fifteen &mdash; three days a week, no idea what was being built &mdash; compounded 10x into everything I am today. The gym didn't just build my body. It built the person who said yes to the workload, who found the way instead of the excuse, who became more undeniable with every year the work continued in private.</p>
+
+    <div class="pull reveal">
+      <div class="pull-text">"I was a kid with <span>no confidence.</span> None. But consistently showing up day after day &mdash; in private, with no audience, no accountability partner, no one watching &mdash; you develop a quiet confidence. Because you start to know who you are. You proved it to yourself one session at a time."</div>
+    </div>
+  </div>
+</section>
+
+<!-- 100LBS FULL BLEED -->
+<div class="full-pull blood-bg">
+  <div class="fp-line"></div>
+  <div class="fp-h reveal">
+    100lbs is<br>
+    <span>100lbs.</span><br>
+    Every time.
+  </div>
+  <p class="fp-sub reveal">The weight doesn't grade on effort. It doesn't care what day you're having. It doesn't feel sorry for you. 100lbs on your best day is 100lbs on your worst day. It will shoot you straight every single time. That honesty is why the gym builds what it builds.</p>
+</div>
+
+<!-- SECTION 3: THE VALUES -->
+<section class="section" style="background:var(--off);">
+  <div class="section-inner">
+    <div class="section-tag reveal">What The Gym Actually Built</div>
+    <h2 class="section-h reveal">Not A Body.<br><span>A Foundation.</span></h2>
+
+    <p class="body reveal">Each rep pushing past failure when you don't want to go. When you have nothing left and every reasonable voice says stop. You keep going anyway. Not for anyone watching. Because you decided you were going to. That is where the real work happens &mdash; not in the comfortable sets, in the ones where you had every reason to quit and didn't.</p>
+
+    <p class="body reveal">The gym calloused the mind. And a calloused mind transfers. The four values built under that bar showed up in every area of life &mdash; in ways I didn't plan for and couldn't have predicted.</p>
+
+    <div class="values-grid reveal">
+      <div class="value-card">
+        <div class="value-num">01</div>
+        <div class="value-title">Discipline</div>
+        <div class="value-body">Doing the thing whether you feel like it or not. Not because someone is watching. Not because there's a reward waiting. Because you decided who you are and this is what that person does. Day over day. In private.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-num">02</div>
+        <div class="value-title">Consistency</div>
+        <div class="value-body">Showing up is the whole strategy. Not the perfect session. Not the perfect plan. Just showing up. Again. And again. Until it stops being something you do and starts being who you are.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-num">03</div>
+        <div class="value-title">Accountability</div>
+        <div class="value-body">The bar tells the truth about how you lived the day before. You cannot hide from it. That honesty made me better at everything else because I stopped hiding from those truths elsewhere too.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-num">04</div>
+        <div class="value-title">Work Ethic</div>
+        <div class="value-body">Nobody was going to hand me anything. I knew that early. The only variable I could control was how hard I worked when no one was watching. That understanding changed how I approached every room I walked into.</div>
+      </div>
+    </div>
+
+    <p class="body reveal">These values showed up everywhere. Work. Decisions. Relationships. People around me started to notice. The follow-through. The reliability. The fact that I didn't make impulse decisions. I was able to avoid some of the early struggles that most people in my situation make &mdash; not because I was smarter, but because the discipline I built gave me a framework for every decision outside the gym.</p>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SECTION 4: THE ACCOUNTABILITY MIRROR -->
+<section class="section" style="background:var(--black);">
+  <div class="section-inner">
+    <div class="section-tag reveal">The Accountability Mirror</div>
+    <h2 class="section-h reveal">The Gym <span>Shows</span><br>Everything.</h2>
+
+    <p class="body reveal">Your gym performance is a direct readout of how you lived the day before. You cannot fake it. If you were up until 2am doom scrolling, ate junk, and drank nothing but coffee &mdash; the bar will tell you. Loudly. Clearly. Without apology.</p>
+
+    <p class="body reveal">Once you see that connection you cannot unsee it. And you start making better decisions not because someone told you to but because you feel the consequence immediately in the one place that is completely honest with you.</p>
+
+    <div class="chain-wrap reveal">
+      <div class="chain-item">
+        <div class="chain-left"><div class="chain-dot"></div><div class="chain-line"></div></div>
+        <div class="chain-content">
+          <div class="chain-head">Gym Performance Suffers</div>
+          <div class="chain-body">Something is off. The weight feels heavier than it should. The energy isn't there. The focus is gone. The bar is telling you the truth.</div>
+        </div>
+      </div>
+      <div class="chain-item">
+        <div class="chain-left"><div class="chain-dot"></div><div class="chain-line"></div></div>
+        <div class="chain-content">
+          <div class="chain-head">You Trace It Back</div>
+          <div class="chain-body">Bad sleep. Poor food. No hydration. Doom scrolling until 2am. The gym just showed you the bill for yesterday's choices.</div>
+        </div>
+      </div>
+      <div class="chain-item">
+        <div class="chain-left"><div class="chain-dot"></div><div class="chain-line"></div></div>
+        <div class="chain-content">
+          <div class="chain-head">You Start Protecting Your Sleep</div>
+          <div class="chain-body">Not because someone told you to. Because you felt what bad sleep costs you in the one place that won't let you pretend otherwise.</div>
+        </div>
+      </div>
+      <div class="chain-item">
+        <div class="chain-left"><div class="chain-dot"></div><div class="chain-line"></div></div>
+        <div class="chain-content">
+          <div class="chain-head">You Start Eating Better and Hydrating</div>
+          <div class="chain-body">The food you put in your body shows up in your performance. Not hydrating has repercussions. That feedback loop changes everything about how you approach the day.</div>
+        </div>
+      </div>
+      <div class="chain-item">
+        <div class="chain-left"><div class="chain-dot"></div><div class="chain-line"></div></div>
+        <div class="chain-content">
+          <div class="chain-head">Work Performance Improves</div>
+          <div class="chain-body">Same input, same output principle. Show up to work on two hours of sleep and junk food and your output reflects it. The accountability goes everywhere.</div>
+        </div>
+      </div>
+      <div class="chain-item">
+        <div class="chain-left"><div class="chain-dot"></div></div>
+        <div class="chain-content">
+          <div class="chain-head">Everything Lifts</div>
+          <div class="chain-body">Relationships. Patience. Presence. Focus. Energy. All of it comes from the same foundation. The gym was never just about the gym.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: THE AGE QUESTION -->
+<section class="section" style="background:var(--off);">
+  <div class="section-inner">
+    <div class="section-tag reveal">The Counter Argument</div>
+    <h2 class="section-h reveal">"But You Started <span>Young.</span>"</h2>
+
+    <p class="body reveal">I hear this. And I understand it. If you are 35 and just starting, it can feel like you missed a window. Like someone got a head start on a race you didn't know you were running.</p>
+
+    <p class="body reveal">Here's what's true: the brain is more malleable before 25. Habits built young compound longer. The frontal lobe isn't fully developed until around 25 &mdash; and that means starting younger comes with a certain plasticity that makes building habits feel more natural. Yes. That part is real.</p>
+
+    <div class="age-box reveal">
+      <div class="age-label">Here's What's Also True</div>
+      <p class="body" style="margin-bottom:16px;">At 35 your prefrontal cortex is fully developed. That's the part of your brain responsible for planning, decision-making, and impulse control. A teenager goes to the gym because someone took them or dragged them there. A 35-year-old goes because they <strong style="color:var(--white);">consciously chose to.</strong></p>
+      <p class="body" style="margin-bottom:16px;">That choice &mdash; made with full awareness of the cost, the difficulty, the sacrifice required &mdash; is actually more powerful than anything I did at 15 when I had no idea what I was building or why. You are making a deliberate decision with a fully developed brain. That's not a disadvantage. That's a different kind of strength.</p>
+      <p class="body" style="margin-bottom:0;">The discipline built after 25 is harder won. And harder won means worth more. Every year you wait is a choice. Every year you don't is a choice too. The question is which choice you can live with.</p>
+    </div>
+
+    <div class="pull reveal">
+      <div class="pull-text">"The decision not to try is still a decision. At any age. Every day you don't start is a choice. <span>Every day you do &mdash; that is a choice too.</span> Your brain is fully equipped to make it. So is your life."</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: QUIET CONFIDENCE -->
+<section class="section" style="background:var(--black);">
+  <div class="section-inner">
+    <div class="section-tag reveal">What Gets Built Over Time</div>
+    <h2 class="section-h reveal">A Quiet <span>Humble</span><br>Confidence.</h2>
+
+    <p class="body reveal">People have told me they see it. I don't think about it much. That's kind of the whole point.</p>
+
+    <p class="body reveal">The less you can be offended in life the better. Most things don't get to me. Not because I'm cold or detached but because I know who I am, what I am about, and what I am capable of. That knowing &mdash; that bedrock certainty &mdash; came from one place. Showing up for myself every single day in private when no one was watching and no one was holding me accountable.</p>
+
+    <p class="body reveal">You cannot fake that kind of confidence. It is not affirmations or positive thinking. It is the accumulated evidence of a thousand kept promises to yourself. The alarm that went off and you got up. The session that happened when you didn't feel like it. The meal that got prepped when ordering out was easier. The day you came back after falling off instead of using the fall as a reason to stop.</p>
+
+    <div class="pull-blood reveal">
+      <div class="pull-text">"I'm not perfect. There were mistakes along the way and there always will be. Nobody can be perfect. But for the most part I have lived a clean life &mdash; not because I'm better than anyone &mdash; but because having <span style="color:var(--gold);">no discipline and no values costs you.</span> I had seen that cost up close. I knew what it looked like. I decided early that I wasn't paying it."</div>
+    </div>
+
+    <p class="body reveal">When I fell off I got right back to it. Not with a dramatic restart. Not waiting for Monday. Just back to it. The next day. And by practicing that return &mdash; over and over &mdash; I built something undeniable. A mind that is battle tested. Ready for what life is going to throw at it. And life has thrown plenty.</p>
+
+    <p class="body reveal">I built something quietly over years and I am reaping the benefits of it now. It compounded into family, relationships, work, decisions. Into how I handle hard moments. Into how I show up every single day. The grind that nobody saw became the foundation for everything they do see.</p>
+  </div>
+</section>
+
+<!-- BLUEPRINT FULL BLEED -->
+<div class="full-pull dark-bg">
+  <div class="fp-line"></div>
+  <div class="fp-h reveal" style="color:var(--white);">
+    I am living<br>proof that<br>
+    <span>the blueprint</span><br>
+    works.
+  </div>
+  <p class="fp-sub reveal">If someone starting from where I started was still able to build this &mdash; then someone reading this has no excuse. Not motivation. Not inspiration. A blueprint. A real one built from real circumstances, real private grind, and real compounding over real years.</p>
+</div>
+
+<!-- CLOSING -->
+<section class="closing">
+  <div class="closing-line"></div>
+  <div class="closing-h reveal">
+    "The mind is a<br>
+    <span>powerful place.</span><br>
+    Build it right and<br>
+    everything else follows."
+  </div>
+  <p class="closing-body reveal" style="margin-top:24px;">This is not about the gym. This is not about the body. This is about building something inside yourself that nobody can take from you. Something earned in private, proven in private, that transfers into every room you walk into for the rest of your life. The gym was the door. This is what's on the other side of it.</p>
+</section>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+  });
+}, { threshold: .06, rootMargin: '0px 0px -20px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
